@@ -1,0 +1,21 @@
+// The package.json is not required to run README-MD-GENERATOR
+{
+  "name": "git-repo",
+  "description": "A Terraform module to manage Git Repo accross multiple hosting services.",
+  "version": "0.0.0",
+  "author": {
+    "name": "Romain Deville",
+    "email": "pro+code@romaindeville.fr",
+    "url": "https://romaindeville.fr"
+  },
+  "license": "(MIT or Beerware)",
+  "homepage": "https://docs.romaindeville.fr/",
+  "repository": {
+    "type": "git",
+    "url": "https://framagit.org/rdeville/git-repo.git"
+  },
+  "bugs": {
+    "url": "https://framagit.org/rdeville/git-repo/-/issues"
+  }
+}
+// vim: ft=jsonc
