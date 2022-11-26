@@ -1,0 +1,3 @@
+name: git-repo
+description: A Pulumi program to manage Git Repo accross multiple hosting services.
+runtime: nodejs

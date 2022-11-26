@@ -1,11 +1,5 @@
 # Include custom Gitlab library
-include:
-  # Upload terraform module on release
-  local: .gitlab/terraform_upload.yaml
-
 stages:
-  - &deploy deplou
-
-upload_meta_module:
-  extends: .terraform_upload
-  stage: *deploy
+  - &test test
+  - &build build
+  - &deploy deploy

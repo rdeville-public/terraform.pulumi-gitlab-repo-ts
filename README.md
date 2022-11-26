@@ -1,3 +1,3 @@
-# Terraform Module - Git Repo
+# Pulumi Module - Git Repo
 
-A Terraform module to manage Git Repo accross multiple hosting services.
+A pulumi program to manage Git Repo accross multiple hosting services.
