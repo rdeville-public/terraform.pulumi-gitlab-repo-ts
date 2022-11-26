@@ -1,8 +1,8 @@
-// The package.json is not required to run README-MD-GENERATOR
 {
   "name": "git-repo",
   "description": "A Terraform module to manage Git Repo accross multiple hosting services.",
   "version": "0.0.0",
+  "main": "src/index.ts",
   "author": {
     "name": "Romain Deville",
     "email": "pro+code@romaindeville.fr",
@@ -16,6 +16,11 @@
   },
   "bugs": {
     "url": "https://framagit.org/rdeville/git-repo/-/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^14"
+  },
+  "dependencies": {
+    "@pulumi/pulumi": "^3.0.0"
   }
 }
-// vim: ft=jsonc
