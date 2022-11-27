@@ -18,7 +18,7 @@
     "url": "https://framagit.org/rdeville/git-repo/-/issues"
   },
   "scripts": {
-    "test": "ava"
+    "test": "c8 ava"
   },
   "devDependencies": {
     "@ava/typescript": "^3.0.1",
@@ -26,6 +26,7 @@
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
     "ava": "^5.1.0",
+    "c8": "^7.12.0",
     "eslint": "^8.28.0",
     "prettier-eslint": "^15.0.1",
     "ts-node": "^10.9.1",
@@ -38,7 +39,7 @@
   },
   "ava": {
     "files": [
-      "src/**/*-test.ts"
+      "**/tests/*.ts"
     ],
     "typescript": {
       "rewritePaths": {
