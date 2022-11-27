@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "strict": true,
-    "outDir": "bin",
-    "target": "es2016",
+    "outDir": "build",
+    "target": "es2022",
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
@@ -12,7 +12,8 @@
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true
   },
-  "files": [
-    "src/**"
+  "include": [
+    "src/*.ts",
+    "src/**/*.ts"
   ]
 }
