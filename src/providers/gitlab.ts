@@ -1,4 +1,4 @@
-import {Provider} from "../providers"
+import {Provider} from "./providers"
 
 export class GitlabProvider extends Provider {
   constructor(name: string, data: Partial<Provider>) {
