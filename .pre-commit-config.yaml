@@ -53,17 +53,19 @@ repos:
       additional_dependencies:
       - mdformat-gfm
       - mdformat-black
+      args:
+        - --check
   - repo: local
     hooks:
     - id: npm-lint
       name: npm-lint
-      entry: bash -c 'npm run lint'
+      entry: bash -c 'yarn lint'
       language: system
       files: '.*\.[tj]s$'
       pass_filenames: false
     - id: npm-test
       name: npm-test
-      entry: bash -c 'npm test'
+      entry: bash -c 'yarn test'
       language: system
       files: '.*\.[tj]s$'
       pass_filenames: false
