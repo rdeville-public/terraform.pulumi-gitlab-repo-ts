@@ -1,0 +1,38 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:all",
+    "plugin:@typescript-eslint/all"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": [
+      "./tsconfig.json"
+    ]
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "function-call-argument-newline": [
+      "error",
+      "consistent"
+    ],
+    "func-style": [
+      "error",
+      "declaration"
+    ],
+    "one-var": [
+      "error",
+      "never"
+    ],
+    "@typescript-eslint/prefer-readonly-parameter-types": "off",
+    "@typescript-eslint/consistent-indexed-object-style": [
+      "error",
+      "index-signature"
+    ]
+  },
+  "ignorePatterns": [
+    "build/**/*"
+  ]
+}
