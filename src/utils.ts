@@ -1,34 +1,60 @@
-import {spawnSync} from "child_process"
-import * as process from "process"
+import * as process from "process";
+import {spawnSync} from "child_process";
 
-export function getValue(parent: string, data: {[key: string]: string}): string {
-  if (Object.keys(data).length > 1) {
-    throw new Error(
-      `Pulumi config key '${parent}' should only have one subkey`
-    )
-  }
-  const key = Object.keys(data)[0]
-  switch (key) {
-    case "cmd":
-      const cmd = data[key].split(" ")[0]
-      const args = data[key].split(" ").slice(1)
-      const exec = spawnSync(cmd, args, {encoding: "utf8"})
-      if (exec.status != 0) {
-        throw new Error(
-          `Command ${data[key]} exited with following error: \n${process.stderr}`
-        )
-      }
-      return exec.stdout.replace("\n", "")
-    case "env":
-      const env = process.env[data[key]]
-      if (!env) {
-        throw new Error(
-          `Environment variable '${data[key]}' does not exists`
-        )
-      }
-      return env
-  }
-  throw new Error(
-    `Pulumi config key '${parent}' should have a subkey valid amongs(cmd | env)`
-  )
+
+function getCmdValue (data: {[key: string]: string}): string {
+
+    const zero = 0;
+    const one = 1;
+    const cmd = data.cmd.split(" ")[zero];
+    const args = data.cmd.split(" ").slice(one);
+    const exec = spawnSync(cmd, args, {"encoding": "utf8"});
+
+    if (exec.status !== zero) {
+
+        throw new Error(`Command ${data.cmd} exited with following error: \n${exec.stderr}`); // eslint-disable-line max-len
+
+    }
+    return exec.stdout.replace("\n", "");
+
+}
+
+function getEnvValue (data: {[key: string]: string}): string {
+
+    const env = process.env[data.env];
+    if (env === "" || typeof env === "undefined") {
+
+        throw new Error(`Environment variable '${data.env}' does not exists`); // eslint-disable-line max-len
+
+    } else {
+
+        return env;
+
+    }
+
+}
+
+export function getValue (
+    parent: string,
+    data: {[key: string]: string}
+): string {
+
+    const minSize = 1;
+
+    if (Object.keys(data).length > minSize) {
+
+        throw new Error(`Pulumi config key '${parent}' should only have one subkey`); // eslint-disable-line max-len
+
+    }
+    if (data.cmd) {
+
+        return getCmdValue(data);
+
+    } else if (data.env) {
+
+        return getEnvValue(data);
+
+    }
+    throw new Error(`Pulumi config key '${parent}' should have a subkey valid amongs(cmd | env)`); // eslint-disable-line max-len
+
 }

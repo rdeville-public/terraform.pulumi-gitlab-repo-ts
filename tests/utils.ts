@@ -1,79 +1,147 @@
-import test from 'ava';
-import * as utils from '../src/utils'
+import * as utils from "../src/utils";
+import test from "ava";
 
 const ENV: {[key: string]: string} = {
-  "FAKETOKEN": "FAKEVALUE"
-}
+    "fakeToken": "FAKEVALUE"
+};
 
-Object.entries(ENV).forEach(
-  ([key, val]) => {
-    process.env[key] = val
-  }
+Object.entries(ENV).forEach(([
+    key,
+    val
+]) => {
+
+    process.env[key] = val;
+
+});
+
+// Utils.getValue testing
+test(
+    "getValue multiple subkey error",
+    (currTest) => {
+
+        const fakeData = {
+            "cmd": "echo foo",
+            "env": "fakeToken"
+        };
+        const fakeParent = "fakeParent";
+        const errorMsg = `Pulumi config key '${fakeParent}' should only have one subkey`; // eslint-disable-line max-len
+
+        currTest.throws(
+            () => {
+
+                utils.getValue(
+                    fakeParent,
+                    fakeData
+                );
+
+            },
+            {"instanceOf": Error},
+            errorMsg
+        );
+
+    }
 );
 
-// utils.getValue testing
-test('getValue multiple subkey error', t => {
-  const fakeData = {
-    'env': 'FAKETOKEN',
-    'cmd': 'echo foo'
-  }
-  const fakeParent = "fakeParent"
-  const errorMsg = `Pulumi config key '${fakeParent}' should only have one subkey`
-  t.throws(() => {
-    utils.getValue(fakeParent, fakeData)
-  }, {instanceOf: Error}, errorMsg)
-});
+test(
+    "getValue wrong subkey error",
+    (currTest) => {
 
-test('getValue wrong subkey error', t => {
-  const fakeData = {
-    'wrongKey': 'WRONGTOKEN'
-  }
-  const fakeParent = "fakeParent"
-  const errorMsg = `Pulumi config key '${fakeParent}' should have a subkey valid amongs(cmd | env)`
-  const error = t.throws(() => {
-    utils.getValue(fakeParent, fakeData)
-  }, {instanceOf: Error});
-  t.is(error?.message, errorMsg)
-});
+        const fakeData = {
+            "wrongKey": "WRONGTOKEN"
+        };
+        const fakeParent = "fakeParent";
+        const errorMsg = `Pulumi config key '${fakeParent}' should have a subkey valid amongs(cmd | env)`; // eslint-disable-line max-len
+        const error = currTest.throws(
+            () => {
 
-test('getValue "cmd" working', t => {
-  const fakeData = {
-    'cmd': 'true'
-  }
-  const fakeParent = "fakeParent"
-  const value = utils.getValue(fakeParent, fakeData)
-  t.is(value, "");
-});
+                utils.getValue(
+                    fakeParent,
+                    fakeData
+                );
 
-test('getValue "cmd" error', t => {
-  const fakeData = {
-    'cmd': 'false'
-  }
-  const fakeParent = "fakeParent"
-  const errorMsg = `Command ${fakeData["cmd"]} exited with following error: \n[object Object]`
-  const error = t.throws(() => {
-    utils.getValue(fakeParent, fakeData)
-  }, {instanceOf: Error});
-  t.is(error?.message, errorMsg)
-});
+            },
+            {"instanceOf": Error}
+        );
 
-test('getValue "env" working', t => {
-  const fakeData = {
-    'env': 'FAKETOKEN'
-  }
-  const fakeParent = "fakeParent"
-  const value = utils.getValue(fakeParent, fakeData)
-  t.is(value, "FAKEVALUE");
-});
+        currTest.is(
+            error?.message,
+            errorMsg
+        );
 
-test('getValue "env" error', t => {
-  const fakeData = {
-    'env': 'WRONGTOKEN'
-  }
-  const fakeParent = "fakeParent"
-  const errorMsg = `Environment variable '${fakeData["env"]}' does not exists`
-  const error = t.throws(() => {
-    utils.getValue(fakeParent, fakeData)
-  }, {instanceOf: Error});
-  t.is(error?.message, errorMsg)
-});
+    }
+);
+
+test(
+    "getValue \"cmd\" working",
+    (currTest) => {
+
+        const fakeData = {
+            "cmd": "true"
+        };
+        const fakeParent = "fakeParent";
+        const value = utils.getValue(
+            fakeParent,
+            fakeData
+        );
+        currTest.is(
+            value,
+            ""
+        );
+
+    }
+);
+
+test(
+    "getValue \"cmd\" error",
+    (currTest) => {
+
+        const fakeData = {
+            "cmd": "false"
+        };
+        const fakeParent = "fakeParent";
+        const errorMsg = `Command ${fakeData.cmd} exited with following error: \n`; // eslint-disable-line max-len
+        const error = currTest.throws(() => {
+
+            utils.getValue(fakeParent, fakeData);
+
+        }, {"instanceOf": Error});
+        currTest.is(
+            error?.message,
+            errorMsg
+        );
+
+    }
+);
+
+test(
+    "getValue \"env\" working",
+    (currTest) => {
+
+        const fakeData = {"env": "fakeToken"};
+        const fakeParent = "fakeParent";
+        const value = utils.getValue(fakeParent, fakeData);
+
+        currTest.is(value, "FAKEVALUE");
+
+    }
+);
+
+test(
+    "getValue \"env\" error",
+    (currTest) => {
+
+        const fakeData = {"env": "wrongToken"};
+        const fakeParent = "fakeParent";
+        const errorMsg = `Environment variable '${fakeData.env}' does not exists`; // eslint-disable-line max-len
+        const error = currTest.throws(() => {
+
+            utils.getValue(fakeParent, fakeData);
+
+        }, {"instanceOf": Error});
+        currTest.is(
+            error?.message,
+            errorMsg
+        );
+
+    }
+);

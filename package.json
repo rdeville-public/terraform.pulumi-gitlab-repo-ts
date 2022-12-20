@@ -2,13 +2,16 @@
   "name": "git-repo",
   "description": "A Terraform module to manage Git Repo accross multiple hosting services.",
   "version": "0.0.0",
-  "main": "build/src/index.js",
+  "main": "src/index.ts",
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "author": {
     "name": "Romain Deville",
     "email": "pro+code@romaindeville.fr",
     "url": "https://romaindeville.fr"
   },
-  "license": "(MIT or Beerware)",
+  "license": "(MIT OR Beerware)",
   "homepage": "https://docs.romaindeville.fr/",
   "repository": {
     "type": "git",
@@ -18,7 +21,7 @@
     "url": "https://framagit.org/rdeville/git-repo/-/issues"
   },
   "scripts": {
-    "lint": "eslint",
+    "lint": "eslint --fix ./",
     "test": "c8 --check-coverage --lines 95 --functions 95 --branches 95 --statements 95 ava"
   },
   "devDependencies": {
