@@ -41,10 +41,6 @@ repos:
       - id: no-commit-to-branch
         # Trims trailing whitespace.
       - id: trailing-whitespace
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.28.0
-    hooks:
-      - id: eslint
   - repo: https://github.com/executablebooks/mdformat
     rev: 0.7.16  # Use the ref you want to point at
     hooks:
