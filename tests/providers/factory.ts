@@ -12,14 +12,13 @@ Object.entries(ENV).forEach(([
     key,
     val
 ]) => {
-
     process.env[key] = val;
-
 });
 
 // Mocking pulumi config key fakename.tld
 process.env.PULUMI_CONFIG = JSON.stringify({
-    "project:fakename.tld": JSON.stringify({ // eslint-disable-line @typescript-eslint/naming-convention, max-len
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "project:fakename.tld": JSON.stringify({
         "env": "fakeToken"
     })
 });
@@ -27,18 +26,10 @@ process.env.PULUMI_CONFIG = JSON.stringify({
 test(
     "Github provider type",
     (currTest) => {
-
         const gitType = "github";
-        const provider = providerFactory(
-            gitType,
-            providerName,
-            {}
-        );
-        currTest.is(
-            typeof provider,
-            typeof GithubProvider.prototype
-        );
+        const provider = providerFactory(gitType, providerName, {});
 
+        currTest.is(typeof provider, typeof GithubProvider.prototype);
     }
 );
 
@@ -46,19 +37,10 @@ test(
 test(
     "Gitlab provider type",
     (currTest) => {
-
         const gitType = "gitlab";
-        const provider = providerFactory(
-            gitType,
-            providerName,
-            {}
-        );
+        const provider = providerFactory(gitType, providerName, {});
 
-        currTest.is(
-            typeof provider,
-            typeof GitlabProvider.prototype
-        );
-
+        currTest.is(typeof provider, typeof GitlabProvider.prototype);
     }
 );
 
@@ -66,27 +48,12 @@ test(
 test(
     "Wrong provider type error",
     (currTest) => {
-
         const gitType = "wrongType";
         const errorMsg = `Git provider type not supported: "${gitType}"`;
-        const error = currTest.throws(
-            () => {
+        const error = currTest.throws(() => {
+            providerFactory(gitType, providerName, {});
+        }, {"instanceOf": Error}, errorMsg);
 
-                providerFactory(
-                    gitType,
-                    providerName,
-                    {}
-                );
-
-            },
-            {"instanceOf": Error},
-            errorMsg
-        );
-
-        currTest.is(
-            error?.message,
-            errorMsg
-        );
-
+        currTest.is(error?.message, errorMsg);
     }
 );

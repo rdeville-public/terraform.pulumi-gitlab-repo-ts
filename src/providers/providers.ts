@@ -23,7 +23,6 @@ export class Provider implements IProvider {
     public baseUrl: string;
 
     public constructor (name: string, data: Partial<IProvider>) {
-
         const config = new pulumi.Config();
         this.name = name;
         this.type = "";
@@ -32,14 +31,11 @@ export class Provider implements IProvider {
         Object.assign(this, data);
 
         if (this.token === "") {
-
             this.token = util.getValue(
                 this.name,
                 config.requireObject<{[key: string]: string}>(this.name)
             );
-
         }
-
     }
 
 }
