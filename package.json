@@ -21,8 +21,11 @@
     "url": "https://framagit.org/rdeville/git-repo/-/issues"
   },
   "scripts": {
-    "lint": "eslint --fix ./",
-    "test": "c8 --check-coverage --lines 95 --functions 95 --branches 95 --statements 95 ava"
+    "lint": "yarn lint:js --fix ./ && yarn lint:spelling",
+    "lint:ci": "yarn lint:js --quiet ./ && yarn lint:spelling",
+    "lint:js": "eslint --cache --report-unused-disable-directives",
+    "lint:spelling": "cspell \"**\" --no-progress",
+    "test": "c8 --check-coverage --lines 95 --functions 95 --branches 95 --statements 95 --per-file ava"
   },
   "devDependencies": {
     "@ava/typescript": "^3.0.1",
@@ -31,6 +34,7 @@
     "@typescript-eslint/parser": "^5.44.0",
     "ava": "^5.1.0",
     "c8": "^7.12.0",
+    "cspell": "^6.18.0",
     "eslint": "^8.29.0",
     "esm": "^3.2.25",
     "prettier-eslint": "^15.0.1",
