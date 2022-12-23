@@ -1,5 +1,0 @@
-# Include custom Gitlab library
-stages:
-  - &test test
-  - &build build
-  - &deploy deploy
