@@ -1,0 +1,6 @@
+fakename
+FAKEVALUE
+pulumi
+Pulumi
+subkey
+WRONGTOKEN

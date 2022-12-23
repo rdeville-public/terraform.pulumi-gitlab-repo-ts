@@ -1,7 +1,6 @@
 import * as process from "process";
 import {spawnSync} from "child_process";
 
-
 function getCmdValue (data: {[key: string]: string}): string {
     const zero = 0;
     const one = 1;
@@ -19,7 +18,6 @@ function getCmdValue (data: {[key: string]: string}): string {
 function getEnvValue (data: {[key: string]: string}): string {
     const env = process.env[data.env];
     if (env === "" || typeof env === "undefined") {
-        // eslint-disable-next-line max-len
         throw new Error(`Environment variable '${data.env}' does not exists`);
     } else {
         return env;
@@ -41,6 +39,7 @@ export function getValue (
     } else if (data.env) {
         return getEnvValue(data);
     }
+
     // eslint-disable-next-line max-len
-    throw new Error(`Pulumi config key '${parent}' should have a subkey valid amongs(cmd | env)`);
+    throw new Error(`Pulumi config key '${parent}' should have a subkey valid among (cmd | env)`);
 }

@@ -2,7 +2,7 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
-        # Prevents giant files from being committed.
+      # Prevents giant files from being committed.
       - id: check-added-large-files
         # Forbids files which have a utf-8 byte-order marker.
       - id: check-byte-order-marker
@@ -41,27 +41,32 @@ repos:
       - id: no-commit-to-branch
         # Trims trailing whitespace.
       - id: trailing-whitespace
-  - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.16  # Use the ref you want to point at
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.7.1
     hooks:
-    - id: mdformat
-      # Optionally add plugins
-      additional_dependencies:
-      - mdformat-gfm
-      - mdformat-black
-      args:
-        - --check
+      - id: prettier
+        exclude: "^.*.(json|ts)"
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.16 # Use the ref you want to point at
+    hooks:
+      - id: mdformat
+        # Optionally add plugins
+        additional_dependencies:
+          - mdformat-gfm
+          - mdformat-black
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.32.2
+    hooks:
+      - id: markdownlint
   - repo: local
     hooks:
-    - id: npm-lint
-      name: npm-lint
-      entry: bash -c 'yarn lint'
-      language: system
-      files: '.*\.[tj]s$'
-      pass_filenames: false
-    - id: npm-test
-      name: npm-test
-      entry: bash -c 'yarn test'
-      language: system
-      files: '.*\.[tj]s$'
-      pass_filenames: false
+      - id: npm-lint
+        name: npm-lint
+        entry: bash -c 'yarn lint'
+        language: system
+        pass_filenames: false
+      - id: npm-test
+        name: npm-test
+        entry: bash -c 'yarn test'
+        language: system
+        pass_filenames: false
