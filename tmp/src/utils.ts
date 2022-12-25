@@ -1,24 +1,24 @@
 import * as process from "process";
 import {spawnSync} from "child_process";
 
-function getCmdValue (data: {[key: string]: string}): string {
+function getCmdValue (fullCmd: string): string {
     const zero = 0;
     const one = 1;
-    const cmd = data.cmd.split(" ")[zero];
-    const args = data.cmd.split(" ").slice(one);
+    const cmd = fullCmd.split(" ")[zero];
+    const args = fullCmd.split(" ").slice(one);
     const exec = spawnSync(cmd, args, {"encoding": "utf8"});
 
     if (exec.status !== zero) {
         // eslint-disable-next-line max-len
-        throw new Error(`Command ${data.cmd} exited with following error: \n${exec.stderr}`);
+        throw new Error(`Command ${fullCmd} exited with following error: \n${exec.stderr}`);
     }
     return exec.stdout.replace("\n", "");
 }
 
-function getEnvValue (data: {[key: string]: string}): string {
-    const env = process.env[data.env];
+function getEnvValue (envVarName: string): string {
+    const env = process.env[envVarName];
     if (env === "" || typeof env === "undefined") {
-        throw new Error(`Environment variable '${data.env}' does not exists`);
+        throw new Error(`Environment variable '${envVarName}' does not exists`);
     } else {
         return env;
     }
@@ -35,9 +35,9 @@ export function getValue (
         throw new Error(`Pulumi config key '${parent}' should only have one subkey`);
     }
     if (data.cmd) {
-        return getCmdValue(data);
+        return getCmdValue(data.cmd);
     } else if (data.env) {
-        return getEnvValue(data);
+        return getEnvValue(data.env);
     }
 
     // eslint-disable-next-line max-len
