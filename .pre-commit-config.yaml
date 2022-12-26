@@ -65,8 +65,10 @@ repos:
         entry: bash -c 'yarn lint'
         language: system
         pass_filenames: false
+        files: "(.*.(tj)sx?|tsconfig.json|package.json|.eslintrc.json)$"
       - id: npm-test
         name: npm-test
         entry: bash -c 'yarn test'
         language: system
         pass_filenames: false
+        files: "(.*.(tj)sx?|tsconfig.json|package.json|.eslintrc.json)$"

@@ -1,8 +1,13 @@
 {
   "root": true,
+  "plugins": [
+    "@typescript-eslint",
+    "jsdoc"
+  ],
   "extends": [
     "eslint:all",
-    "plugin:@typescript-eslint/all"
+    "plugin:@typescript-eslint/all",
+    "plugin:jsdoc/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -10,9 +15,6 @@
       "./tsconfig.json"
     ]
   },
-  "plugins": [
-    "@typescript-eslint"
-  ],
   "rules": {
     "padded-blocks": [
       "error",
@@ -41,6 +43,19 @@
     "@typescript-eslint/consistent-indexed-object-style": [
       "error",
       "index-signature"
+    ],
+    "jsdoc/require-jsdoc": [
+      "error",
+      {
+        "require": {
+          "ArrowFunctionExpression": true,
+          "ClassDeclaration": true,
+          "ClassExpression": true,
+          "FunctionDeclaration": true,
+          "FunctionExpression": true,
+          "MethodDefinition": true
+        }
+      }
     ]
   },
   "ignorePatterns": [
