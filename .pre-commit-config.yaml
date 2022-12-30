@@ -45,7 +45,7 @@ repos:
     rev: v2.7.1
     hooks:
       - id: prettier
-        exclude: "^.*.(json|ts)"
+        exclude: "^.*.(json|ts|COMMIT_EDITMSG|md|hbs)"
   - repo: https://github.com/executablebooks/mdformat
     rev: 0.7.16 # Use the ref you want to point at
     hooks:
