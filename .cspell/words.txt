@@ -1,5 +1,8 @@
+commitlint
 fakename
 FAKEVALUE
+gitmoji
+gitmojis
 pulumi
 Pulumi
 subkey
