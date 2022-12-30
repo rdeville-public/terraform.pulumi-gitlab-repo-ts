@@ -100,7 +100,6 @@ module.exports = {
         changelogTitle: "# CHANGELOG",
       },
     ],
-    "@semantic-release/github",
     [
       "@semantic-release/git",
       {
