@@ -58,6 +58,7 @@ repos:
     rev: v0.32.2
     hooks:
       - id: markdownlint
+        exclude: "^.*.ts.md$"
   - repo: local
     hooks:
       - id: npm-lint
