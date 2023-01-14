@@ -3,6 +3,7 @@ fakename
 FAKEVALUE
 gitmoji
 gitmojis
+PROVIDERNAME
 pulumi
 Pulumi
 subkey
