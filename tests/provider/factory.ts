@@ -1,12 +1,12 @@
-import type * as provider from "../../src/provider";
 import {GitlabProvider, providerFactory} from "../../src/provider/";
+import type {ProviderData} from "../../src/provider/types";
 import test from "ava";
 
 const FAKE_BASEURL = "https://fake.gitlab.tld";
 const FAKE_NAME = "fakeName";
 const FAKE_ALIAS = "fakeAlias";
 const FAKE_TOKEN = "fakeToken";
-const DATA: provider.ProviderData = {
+const DATA: ProviderData = {
     "args": {
         "baseUrl": FAKE_BASEURL,
         "token": FAKE_TOKEN
