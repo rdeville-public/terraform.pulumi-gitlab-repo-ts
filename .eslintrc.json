@@ -16,24 +16,30 @@
     ]
   },
   "rules": {
-    "padded-blocks": [
-      "error",
-      {
-        "blocks": "never",
-        "classes": "always"
-      }
-    ],
     "array-element-newline": [
       "error",
       "consistent"
     ],
+    "capitalized-comments": "off",
     "function-call-argument-newline": [
+      "error",
+      "consistent"
+    ],
+    "function-paren-newline": [
       "error",
       "consistent"
     ],
     "func-style": [
       "error",
       "declaration"
+    ],
+    "lines-around-comment": "off",
+    "padded-blocks": [
+      "error",
+      {
+        "blocks": "never",
+        "classes": "always"
+      }
     ],
     "one-var": [
       "error",
@@ -43,6 +49,12 @@
     "@typescript-eslint/consistent-indexed-object-style": [
       "error",
       "index-signature"
+    ],
+    "@typescript-eslint/no-type-alias": [
+      "warn",
+      {
+        "allowAliases": "in-unions"
+      }
     ],
     "jsdoc/require-jsdoc": [
       "error",
