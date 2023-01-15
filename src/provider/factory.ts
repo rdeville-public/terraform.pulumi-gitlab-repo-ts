@@ -1,11 +1,8 @@
-import type * as gitlab from "@pulumi/gitlab";
 import * as gitlabProvider from "./gitlab";
-import type * as pulumi from "@pulumi/pulumi";
-
-export interface ProviderData {
-    args: gitlab.ProviderArgs;
-    opts: pulumi.CustomResourceOptions;
-}
+import type {
+    ProviderData,
+    ProviderSupportedObject
+} from "./types";
 
 /**
  * [TODO:description]
@@ -14,13 +11,13 @@ export interface ProviderData {
  * @param {string} name - [TODO:description]
  * @param {ProviderData} data - [TODO:description]
  * @throws {Error} - [TODO:description]
- * @returns {gitlabProvider.GitlabProvider} [TODO:description]
+ * @returns {ProviderSupportedObject} [TODO:description]
  */
 export function providerFactory (
     type: string,
     name: string,
     data: ProviderData
-): gitlabProvider.GitlabProvider {
+): ProviderSupportedObject {
     if (type === "gitlab") {
         return new gitlabProvider.GitlabProvider(name, data.args, data.opts);
     }
