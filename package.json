@@ -25,7 +25,7 @@
     "lint:ci": "yarn lint:js --quiet ./ && yarn lint:spelling",
     "lint:js": "eslint --cache --report-unused-disable-directives",
     "lint:spelling": "cspell \"**\" --no-progress",
-    "test": "c8 --check-coverage --lines 95 --functions 95 --branches 95 --statements 95 --per-file ava"
+    "test": "c8 -x src/index.ts -x tests --src src/ --all --check-coverage --lines 95 --functions 95 --branches 95 --statements 95 --per-file ava"
   },
   "devDependencies": {
     "@ava/typescript": "^3.0.1",
