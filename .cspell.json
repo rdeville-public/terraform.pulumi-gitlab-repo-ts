@@ -23,7 +23,8 @@
     "CHANGELOG.md",
     "package.json",
     "yarn.lock",
-    "Pulumi.*.yaml"
+    "Pulumi.*.yaml",
+    "**/snapshots/*.snap"
   ],
   "ignoreRegExpList": [
     "Email",
