@@ -14,6 +14,8 @@ export interface IGitlabProvider {
 export class GitlabProvider extends pulumi.ComponentResource
     implements IGitlabProvider {
 
+    public readonly providerType = "gitlab";
+
     public name = "";
 
     public provider: gitlab.Provider;
@@ -30,7 +32,7 @@ export class GitlabProvider extends pulumi.ComponentResource
         args: gitlab.ProviderArgs,
         opts?: pulumi.CustomResourceOptions
     ) {
-        super("git-repo:gitlab-provider", name, args, opts);
+        super(`git-repo:gitlab-provider:${name}`, name, args, opts);
         this.name = name;
         this.provider = new gitlab.Provider(
             this.name,
@@ -40,7 +42,6 @@ export class GitlabProvider extends pulumi.ComponentResource
                 "parent": this
             }
         );
-        this.registerOutputs(this.provider.urn);
     }
 
 }
