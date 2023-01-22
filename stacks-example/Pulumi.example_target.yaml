@@ -1,0 +1,398 @@
+encryptionsalt: v1:VLOdW1ooUK0=:v1:QfZsT9kj5yH+s6eN:V65y0bIvAc4kMowkyb+dJb9zAk3uig==
+config:
+  git-repo:gitProvider:
+    framagit.org:
+      base_url: https://framagit.org/api/v4
+      type: gitlab
+      token:
+        cmd: cmd to get framagit token api
+    gitlab.com:
+      base_url: https://gitlab.com/api/v4
+      type: gitlab
+      token:
+        cmd: cmd to get gitlab token api
+    github.com:
+      type: github
+      token:
+        cmd: cmd to get github token api
+  git-repo:mainProvider: framagit.org
+  git-repo:repo_config:
+    gitlab:
+      default:
+        # Set to true if you want to treat skipped pipelines as if they finished
+        # with success.
+        allowMergeOnSkippedPipeline: false
+        # Set the analytics access level.
+        analyticsAccessLevel: private
+        # Set to true to archive the project instead of deleting on destroy.
+        # If set to true it will entire omit the DELETE operation.
+        archiveOnDestroy: true
+        # Whether the project is in read-only mode (archived).
+        # Repositories can be archived/unarchived by toggling this parameter.
+        archived: false
+        # Auto-cancel pending pipelines. This isn’t a boolean, but
+        # enabled/disabled.
+        autoCancelPendingPipelines: enabled
+        # Enable Auto DevOps for this project.
+        autoDevopsEnabled: false
+        # Set whether auto-closing referenced issues on default branch.
+        autocloseReferencedIssues: true
+        # The Git strategy.
+        buildGitStrategy: clone
+        # The maximum amount of time, in seconds, that a job can run.
+        buildTimeout: 3600
+        # Set the builds access level.
+        buildsAccessLevel: enabled
+        # When a new deployment job starts, skip older deployment jobs that are
+        # still pending.
+        ciForwardDeploymentEnabled: true
+        # Set the image cleanup policy for this project. Note: this field is sometimes named
+        # container_expiration_policy_attributes in the GitLab Upstream API.
+        containerExpirationPolicy:
+          cadence: 7d
+          enabled: true
+        # Set visibility of container registry, for this project.
+        containerRegistryAccessLevel: disabled
+        # The default branch for the project.
+        defaultBranch: main
+        # Disable email notifications.
+        emailsDisabled: false
+        # Set the forking access level.
+        forkingAccessLevel: enabled
+        # Create main branch with first commit containing a README.md file.
+        initializeWithReadme: false
+        # Set the issues access level.
+        issuesAccessLevel: enabled
+        # (PREMIUM)
+        # Sets the template for new issues in the project.
+        # issuesTemplate: null
+        # Enable LFS for the project.
+        lfsEnabled: false
+        # Template used to create merge commit message in merge requests.
+        mergeCommitTemplate: |-
+          🔀 %{source_branch} into %{target_branch}
+
+          %{title}
+
+          %{description}
+
+          %{issues}
+          See MR %{url}
+
+          %{co_authored_by}
+          %{reviewed_by}
+          %{approved_by}
+          %{merged_by}
+        # Enable or disable merge pipelines.
+        mergePipelinesEnabled: true
+        # Set the merge requests access level.
+        mergeRequestsAccessLevel: enabled
+        # (PREMIUM)
+        # Sets the template for new merge requests in the project.
+        mergeRequestsTemplate: null
+        # Enable or disable merge trains.
+        mergeTrainsEnabled: true
+        # Set to true if you want allow merges only if all discussions are resolved.
+        onlyAllowMergeIfAllDiscussionsAreResolved: true
+        # Set to true if you want allow merges only if a pipeline succeeds.
+        onlyAllowMergeIfPipelineSucceeds: true
+        # Set the operations access level. Valid values are disabled, private, enabled.
+        operationsAccessLevel: disabled
+        # Enable packages repository for the project.
+        packagesEnabled: false
+        # Enable pages access control
+        pagesAccessLevel: disabled
+        # Enable pipelines for the project.
+        pipelinesEnabled: enabled
+        # Show link to create/view merge request when pushing from the command line
+        printingMergeRequestLinkEnabled: true
+        # If true, jobs can be viewed by non-project members.
+        publicBuilds: true
+        # (PREMIUM)
+        # Push rules for the project.
+        # pushRules: |-
+        #   commit_message_regex: null
+        #   commit_message_negative_regex: null
+        #   branch_name_regex: "(feature|hotfix|bugfix)"
+        #   deny_delete_tag: true
+        #   # prevent_secrets: false
+        #   # author_email_regex: ""
+        #   # file_name_regex: ""
+        #   # max_file_size: 5
+        #   # commit_committer_check: false,
+        #   reject_unsigned_commits: true
+        # Enable Delete source branch option by default for all new merge requests.
+        removeSourceBranchAfterMerge: true
+        # Set the repository access level.
+        repositoryAccessLevel: enabled
+        # Allow users to request member access.
+        requestAccessEnabled: true
+        # Set the requirements access level.
+        requirementsAccessLevel: enabled
+        # Automatically resolve merge request diffs discussions on lines
+        # changed with a push.
+        resolveOutdatedDiffDiscussions: false
+        # Set the security and compliance access level.
+        securityAndComplianceAccessLevel: private
+        # Enable shared runners for this project.
+        sharedRunnersEnabled: true
+        # If true, the default behavior to wait for the default branch protection
+        # to be created is skipped. This is necessary if the current user is not
+        # an admin and the default branch protection is disabled on an
+        # instance-level. There is currently no known way to determine if the
+        # default branch protection is disabled on an instance-level for
+        # non-admin users. This attribute is only used during resource creation,
+        # thus changes are suppressed and the attribute cannot be imported.
+        skipWaitForDefaultBranchProtection: false
+        # Set the snippets access level.
+        snippetsAccessLevel: disabled
+        # Template used to create squash commit message in merge requests.
+        squashCommitTemplate: |-
+          %{title}
+
+          %{description}
+
+          %{issues}
+          See MR %{url}
+
+          %{co_authored_by}
+        # Squash commits when merge request.
+        squashOption: default_off
+        # Set to public to create a public project.
+        visibilityLevel: public
+        # Set the wiki access level.
+        wikiAccessLevel: disabled
+      fork:
+        # Set the builds access level.
+        buildsAccessLevel: private
+        # Set the forking access level.
+        forkingAccessLevel: disabled
+        # Set the issues access level.
+        issuesAccessLevel: disabled
+        # If true, jobs can be viewed by non-project members.
+        publicBuilds: false
+        # Set the repository access level.
+        repositoryAccessLevel: private
+        # Allow users to request member access.
+        requestAccessEnabled: false
+        # Set the requirements access level.
+        requirementsAccessLevel: private
+        # Set to public to create a public project.
+        visibilityLevel: private
+      mirror:
+        # Set the builds access level.
+        buildsAccessLevel: private
+        # Set the forking access level.
+        forkingAccessLevel: disabled
+        # Set the issues access level.
+        issuesAccessLevel: disabled
+        # If true, jobs can be viewed by non-project members.
+        publicBuilds: false
+        # Set the repository access level.
+        repositoryAccessLevel: private
+        # Allow users to request member access.
+        requestAccessEnabled: false
+        # Set the requirements access level.
+        requirementsAccessLevel: private
+        # Set to public to create a public project.
+        visibilityLevel: private
+    github:
+      default:
+        # Allow auto-merge on pull requests, or not.
+        allowAutoMerge: false
+        # Allow merging pull requests with a merge commit, or prevent merging
+        # pull requests with merge commits.
+        allowMergeCommit: true
+        # Allow rebase-merging pull requests, or false to prevent rebase-merging.
+        allowRebaseMerge: false
+        # Allow squash-merging pull requests, or false to prevent squash-merging.
+        allowSquashMerge: false
+        # Either true to always allow a pull request head branch that is behind
+        # its base branch to be updated even if it is not required to be up to
+        # date before merging, or false otherwise
+        allowUpdateBranch: false
+        # Set to true to archive the project instead of deleting on destroy.
+        # If set to true it will entire omit the DELETE operation.
+        archiveOnDestroy: true
+        # Whether the project is in read-only mode (archived).
+        # Repositories can be archived/unarchived by toggling this parameter.
+        archived: false
+        # Whether the repository is initialized with a minimal README.
+        autoInit: false
+        # The default branch for the project.
+        defaultBranch: main
+        # Whether to delete head branches when pull requests are merged
+        deleteBranchOnMerge: true
+        # Whether to delete head branches when pull requests are merged
+        hasDownloads: true
+        # Whether issues are enabled.
+        hasIssues: true
+        # Whether projects are enabled.
+        hasProjects: true
+        # Whether wiki is enabled.
+        hasWiki: false
+        # The default value for a merge commit message.
+        #   PR_TITLE - default to the pull request's title.
+        #   PR_BODY - default to the pull request's body.
+        #   BLANK - default to a blank commit message.
+        mergeCommitMessage: PR_BODY
+        # The default value for a merge commit title.
+        #   PR_TITLE - default to the pull request's title.
+        #   MERGE_MESSAGE - default to the classic title for a merge message (e.g., Merge pull request #123 from branch-name).
+        mergeCommitTitle: PR_TITLE
+        # The default value for a squash merge commit message:
+        #   PR_BODY - default to the pull request's body.
+        #   COMMIT_MESSAGES - default to the branch's commit messages.
+        #   BLANK - default to a blank commit message.
+        squashMergeCommitMessage: PR_BODY
+        # The default value for a squash merge commit title:
+        #   PR_TITLE - default to the pull request's title.
+        #   COMMIT_OR_PR_TITLE - default to the commit's title (if only one commit) or the pull request's title (when more than one commit).
+        squashMergeCommitTitle: COMMIT_OR_PR_TITLE
+        # Visibility of the project, can be public, private or internal
+        visibility: public
+        # Enables dependency alerts and the dependency graph for a repository.
+        vulnerabilityAlerts: true
+      fork:
+        # Whether to delete head branches when pull requests are merged
+        hasDownloads: false
+        # Whether issues are enabled.
+        hasIssues: false
+        # Whether projects are enabled.
+        hasProjects: false
+        # Visibility of the project, can be public, private or internal
+        visibility: private
+      mirror:
+        # Whether to delete head branches when pull requests are merged
+        hasDownloads: false
+        # Whether issues are enabled.
+        hasIssues: false
+        # Whether projects are enabled.
+        hasProjects: false
+        # Visibility of the project, can be public, private or internal
+        visibility: private
+  git-repo:groupConfigs:
+    gitlab:
+      default:
+        # Default to Auto DevOps pipeline for all projects within this group.
+        autoDevopsEnabled: false
+        # See https://docs.gitlab.com/ee/api/groups.html#options-for-defaultbranchprotection
+        defaultBranchProtection: 2
+        # Disable email notifications.
+        emailsDisabled: false
+        # Enable/disable Large File Storage (LFS) for the projects in this group.
+        lfsEnabled: true
+        # Disable the capability of a group from getting mentioned.
+        mentionsDisabled: true
+        # When enabled, users can not fork projects from this group to external namespaces.
+        preventForkingOutsideGroup: false
+        # Determine if developers can create projects in the group.
+        projectCreationLevel: maintainer
+        # Allow users to request member access.
+        requestAccessEnabled: true
+        # Require all users in this group to setup Two-factor authentication.
+        requireTwoFactorAuthentication: true
+        # Prevent sharing a project with another group within this group.
+        shareWithGroupLock: false
+        # Allowed to create subgroups.
+        subgroupCreationLevel: owner
+        # Time before Two-factor authentication is enforced (in hours).
+        twoFactorGracePeriod: 48
+        # The group's visibility. Can be private, internal, or public.
+        visibilityLevel: public
+      fork:
+        # Disable email notifications.
+        emailsDisabled: true
+        # Disable the capability of a group from getting mentioned.
+        mentionsDisabled: false
+        # When enabled, users can not fork projects from this group to external namespaces.
+        preventForkingOutsideGroup: true
+        # Allow users to request member access.
+        requestAccessEnabled: false
+        # Prevent sharing a project with another group within this group.
+        shareWithGroupLock: true
+        # The group's visibility. Can be private, internal, or public.
+        visibilityLevel: private
+      mirror:
+        # Disable email notifications.
+        emailsDisabled: true
+        # Disable the capability of a group from getting mentioned.
+        mentionsDisabled: false
+        # When enabled, users can not fork projects from this group to external namespaces.
+        preventForkingOutsideGroup: true
+        # Allow users to request member access.
+        requestAccessEnabled: false
+        # Prevent sharing a project with another group within this group.
+        shareWithGroupLock: true
+        # The group's visibility. Can be private, internal, or public.
+        visibilityLevel: private
+  git-repo:groups:
+    my_group:
+      desc: My group desctipn
+      logo: ./img/namespace/my_group_logo.png
+      provider:
+        - framagit.org
+        - gitlab.com # will be a mirror of group at framagit.org
+        - github.com # will be a mirror of group at framagit.org
+      # labels:
+      #     # The color of the label given in 6-digit hex notation with leading
+      #     # '#' sign (e.g. #FFAABB) or one of the CSS color names.
+      #   - color: "#000000"
+      #     # The description of the label.
+      #     description: TODO
+      #     # The name of the label.
+      #     name: TODO
+      # variables:
+      #     # The name of the variable.
+      #   - key: TODO
+      #     # The environment scope of the variable. Defaults to all environment (*).
+      #     # Note that in Community Editions of Gitlab, values other than * will
+      #     # cause inconsistent plans.
+      #     environmentScope: "*"
+      #     # If set to true, the value of the variable will be hidden in job logs.
+      #     # The value must meet the masking requirements. Defaults to false.
+      #     masked: true
+      #     # If set to true, the variable will be passed only to pipelines
+      #     # running on protected branches and tags. Defaults to false.
+      #     protected: true
+      #     # The value of the variable.
+      #     value: TODO
+      #     # The type of a variable. Valid values are: env_var, file.
+      #     # Default is env_var.
+      #     variableType: env_var
+      # access_token:
+      #     # The name of the group access token.
+      #   - name: TODO
+      #     # The scope for the group access token. It determines the actions
+      #     # which can be performed when authenticating with this token.
+      #     # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
+      #     scopes: []
+      #     # The access level for the group access token.
+      #     # Valid values are: guest, reporter, developer, maintainer, owner.
+      #     accessLevel: owner
+      #     # The token expires at midnight UTC on that date.
+      #     # The date must be in the format YYYY-MM-DD. Default is never.
+      #     expiresAt:
+      # badges:
+      #     # The image url which will be presented on group overview.
+      #   - imageUrl: TODO
+      #     # The url linked with the badge.
+      #     linkUrl: TODO
+      # Set of subgroups of the main group with the same structure of a group
+      groups:
+        programs:
+          desc: My Programs and Scripts
+          logo: ./img/namespace/programs.png
+    another_group:
+      desc: My Private Repository
+      logo: ./img/namespace/rdeville.private.png
+      # Specify that this group will host a fork the a group on provider below
+      fork:
+        framagit.org: rdeville.public
+  # Set of repos de deploy within the group architecture
+  git-repo:repos:
+    my_group:
+      programs:
+        my-repo:
+          desc: My repo description
+          logo: ./img/repos/programs/my-repo.png

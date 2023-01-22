@@ -1,0 +1,19 @@
+encryptionsalt: "SHOULD_BE_GENERATED_WITH_COMMAND 'Pulumi stack init'"
+config:
+  git-repo:gitProvider:
+    provider_name.tld:
+      type: gitlab
+      base_url: https://gitlab.com/api/v4
+      token: abcdefghijklmno
+    another_provider_name:
+      type: gitlab
+      base_url: https://another_provider.com/api/v4
+      token:
+        env: ENV_VARIABLE_NAME
+  git-repo:mainProvider: provider_name.tld
+  git-repo:groups:
+    my_group:
+      desc: My Test group descrpition
+      provider:
+        - provider_name.tld
+        - another_provider_name
