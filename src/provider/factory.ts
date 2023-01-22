@@ -5,13 +5,15 @@ import type {
 import {GitlabProvider} from "./gitlab";
 
 /**
- * [TODO:description]
+ * Factory design pattern to build multiple type of provider depending on the
+ * provider type
  *
- * @param {string} type - [TODO:description]
- * @param {string} name - [TODO:description]
- * @param {ProviderData} data - [TODO:description]
- * @throws {Error} - [TODO:description]
- * @returns {ProviderSupportedObject} [TODO:description]
+ * @param {string} type - Type of the provider
+ * @param {string} name - Name of the provider
+ * @param {ProviderData} data - Provider arguments and pulumi resource options
+ * @throws {Error} - If provider is not supported, throw an error
+ * @returns {ProviderSupportedObject} A provider object depending on the
+ *  provider
  */
 export function providerFactory (
     type: string,

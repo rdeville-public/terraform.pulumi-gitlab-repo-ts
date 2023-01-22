@@ -10,12 +10,13 @@ import type {
 } from "./types";
 import {ProviderSupportedType} from "./types";
 
+
 /**
- * [TODO:description]
+ * Create pulumi git provider corresponding to gitProvider in the stack
  *
- * @param {string} providerName - [TODO:description]
- * @param {ProviderConfig} currProvider - [TODO:description]
- * @returns {ProviderSupportedObject} [TODO:description]
+ * @param {string} providerName - Name of the provider
+ * @param {ProviderConfig} currProvider - configuration of the provider
+ * @returns {ProviderSupportedObject} Pulumi provider object
  */
 function createProvider (
     providerName: string,
@@ -39,10 +40,11 @@ function createProvider (
 }
 
 /**
- * [TODO:description]
+ * Initialize the deployment of Providers
  *
- * @param {ProvidersPulumiConfig} providerConfig - [TODO:description]
- * @returns {ProvidersDict} [TODO:description]
+ * @param {ProvidersPulumiConfig} providerConfig - Configuration of the
+ *      providers
+ * @returns {ProvidersDict} Set of Providers objects
  */
 export function initProvider (
     providerConfig: ProvidersPulumiConfig
