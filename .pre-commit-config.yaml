@@ -46,15 +46,6 @@ repos:
     hooks:
       - id: prettier
         exclude: "^.*.(json|ts|COMMIT_EDITMSG|md|hbs)"
-  - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.16 # Use the ref you want to point at
-    hooks:
-      - id: mdformat
-        # Optionally add plugins
-        additional_dependencies:
-          - mdformat-gfm
-          - mdformat-black
-        exclude: "^(CHANGELOG.md|.*/snapshots/.*md)$"
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.32.2
     hooks:
@@ -67,10 +58,16 @@ repos:
         entry: bash -c 'yarn lint'
         language: system
         pass_filenames: false
-        files: "(.*.(tj)sx?|tsconfig.json|package.json|.eslintrc.json)$"
+        files: "((src|test)/.*.[tj]s|tsconfig.json|package.json|.eslintrc.json)$"
       - id: npm-test
         name: npm-test
         entry: bash -c 'yarn test'
         language: system
         pass_filenames: false
-        files: "(.*.(tj)sx?|tsconfig.json|package.json|.eslintrc.json)$"
+        files: "((src|test)/.*.[tj]s|tsconfig.json|package.json|.eslintrc.json)$"
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.4.0
+    hooks:
+      - id: commitlint
+        stages:
+          - commit-msg
