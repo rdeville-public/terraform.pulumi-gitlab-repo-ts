@@ -1,4 +1,5 @@
 commitlint
+Deville
 fakename
 FAKEVALUE
 gitmoji
@@ -6,5 +7,6 @@ gitmojis
 PROVIDERNAME
 pulumi
 Pulumi
+Romain
 subkey
 WRONGTOKEN
