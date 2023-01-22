@@ -2,12 +2,14 @@ import * as process from "process";
 import * as pulumi from "@pulumi/pulumi";
 import {spawnSync} from "child_process";
 
+type ProtectedData = string | {[key: string]: string};
+
 /**
- * [TODO:description]
+ * Compute a value from a command provided.
  *
- * @param {string} fullCmd - [TODO:description]
- * @throws {Error} - [TODO:description]
- * @returns {string} [TODO:description]
+ * @param {string} fullCmd - Command to execute
+ * @throws {Error} - If command failed, throws an error
+ * @returns {string} Result of the executed command if no error
  */
 function getCmdValue (fullCmd: string): string {
     const zero = 0;
@@ -24,11 +26,11 @@ function getCmdValue (fullCmd: string): string {
 }
 
 /**
- * [TODO:description]
+ * Get a value from a environment variable name provided.
  *
- * @param {string} envVarName - [TODO:description]
- * @throws {Error} - [TODO:description]
- * @returns {string} [TODO:description]
+ * @param {string} envVarName - Name of the environment variable
+ * @throws {Error} - If variable environment is not set, throws an error
+ * @returns {string} Value of the environment variable if sets
  */
 function getEnvValue (envVarName: string): string {
     const env = process.env[envVarName];
@@ -40,17 +42,17 @@ function getEnvValue (envVarName: string): string {
 }
 
 /**
- * [TODO:description]
+ * Compute value from a command or an environment variable for an object
  *
- * @param {string} parent - [TODO:description]
- * @param {object} data - [TODO:description]
- * @throws {Error} - [TODO:description]
- * @throws {Error} - [TODO:description]
- * @returns {string} [TODO:description]
+ * @param {string} parent - Parent key of the object with value to compute
+ * @param {ProtectedData} data - Object with subkey which
+ *      define how to get the value
+ * @throws {Error} - Throw an error if unable to get the value
+ * @returns {pulumi.Output<string> | string} Value computed
  */
 export function getValue (
     parent: string,
-    data: string | {[key: string]: string}
+    data: ProtectedData
 ): pulumi.Output<string> | string {
     if (typeof data === "string") {
         return data;
