@@ -1,21 +1,43 @@
-import * as provider from "./provider/index";
+import * as group from "./group";
+import * as provider from "./provider";
 import * as pulumi from "@pulumi/pulumi";
+import type {
+    GroupsDict,
+    GroupsPulumiConfig,
+    GroupsPulumiInfo
+} from "./group";
 import type {
     ProvidersDict,
     ProvidersPulumiConfig
 } from "./provider/types";
+
+interface Output {
+    groups: GroupsDict;
+    providers: ProvidersDict;
+}
 
 /**
  * [TODO:description]
  *
  * @returns {provider.GitlabProvider[]} [TODO:description]
  */
-export function deploy (): ProvidersDict {
+function deploy (): Output {
     const config: pulumi.Config = new pulumi.Config();
+
     const providers = provider.initProvider(
         config.requireObject<ProvidersPulumiConfig>("gitProvider")
     );
-    return providers;
+
+    const groups = group.initGroup(
+        providers,
+        config.requireObject<GroupsPulumiInfo>("groups"),
+        config.requireObject<GroupsPulumiConfig>("groupConfigs")
+    );
+
+    return {
+        groups,
+        providers
+    };
 }
 
 /**
@@ -23,9 +45,8 @@ export function deploy (): ProvidersDict {
  *
  * @returns {boolean} [TODO:description]
  */
-export function main (): boolean {
-    deploy();
-    return true;
+function main (): object {
+    return deploy();
 }
 
-main();
+export const output = main();
