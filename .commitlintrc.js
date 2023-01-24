@@ -31,7 +31,5 @@ module.exports = {
   ],
   rules: {
     "header-match-pattern": [2, "always"],
-    "body-max-line-length": [2, "always", 80],
-    "footer-max-line-length": [2, "always", 80],
   },
 };

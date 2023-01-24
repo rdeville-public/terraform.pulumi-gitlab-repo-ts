@@ -33,7 +33,18 @@ const RULES = {
 };
 
 module.exports = {
-  branches: ["main"],
+  branches: [
+    "main",
+    "next",
+    {
+      name: "beta",
+      prerelease: true,
+    },
+    {
+      name: "alpha",
+      prerelease: true,
+    },
+  ],
   plugins: [
     [
       "semantic-release-gitmoji",
@@ -47,7 +58,6 @@ module.exports = {
               return dateFormat(new Date(), format);
             },
             commitlist: function (commits, options) {
-              console.log(RULES);
               let commitlist = {};
               let currRule = null;
               const rules = RULES;
@@ -76,15 +86,6 @@ module.exports = {
                 options.data.root["commits"] = commitlist;
               }
             },
-            hasKey: function (object, key) {
-              if (Object.prototype.hasOwnProperty.call(object, key))
-                return true;
-              return false;
-            },
-            isSemver: function (gitmojiSemver, rtype) {
-              if (gitmojiSemver == rtype) return true;
-              return false;
-            },
           },
           issueResolution: {
             template: "{baseUrl}/{owner}/{repo}/issues/{ref}",
@@ -101,12 +102,20 @@ module.exports = {
       },
     ],
     [
-      "@semantic-release/git",
+      "@semantic-release/npm",
       {
-        assets: ["CHANGELOG.md"],
-        message: "🔖 ${nextRelease.version} [skip-ci]\n\n${nextRelease.notes}",
+        npmPublish: false,
       },
     ],
+    [
+      "@semantic-release/git",
+      {
+        assets: ["CHANGELOG.md", "package.json"],
+        message:
+          "🔖 Release ${nextRelease.version} [skip-ci]\n\n${nextRelease.notes}",
+      },
+    ],
+    // "@semantic-release/github",
   ],
   tagFormat: "${version}",
 };
