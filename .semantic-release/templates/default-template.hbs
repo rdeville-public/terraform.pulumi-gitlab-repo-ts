@@ -1,5 +1,4 @@
-{{#if compareUrl}}
-## [v{{nextRelease.version}}]({{compareUrl}}) ({{datetime "UTC:yyyy-mm-dd"}})
+{{#if compareUrl}} ## [v{{nextRelease.version}}]({{compareUrl}}) ({{datetime "UTC:yyyy-mm-dd"}})
 {{else}}
 ## v{{nextRelease.version}} ({{datetime "UTC:yyyy-mm-dd"}})
 {{/if}}
@@ -8,6 +7,7 @@
 {{#with commits}}
 {{#if major}}
 ### Major
+
 {{#each major}}
   * {{> commitTemplate}}
 {{/each}}
@@ -16,6 +16,7 @@
 
 {{#if minor}}
 ### Minor
+
 {{#each minor}}
   * {{> commitTemplate}}
 {{/each}}
@@ -24,7 +25,17 @@
 
 {{#if patch}}
 ### Patch
+
 {{#each patch}}
+  * {{> commitTemplate}}
+{{/each}}
+{{/if}}
+
+
+{{#if others}}
+### Others
+
+{{#each others}}
   * {{> commitTemplate}}
 {{/each}}
 {{/if}}
