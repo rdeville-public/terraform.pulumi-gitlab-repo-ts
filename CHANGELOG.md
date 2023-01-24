@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [v0.2.0](https://github.com/rdeville-public/git-repo/compare/0.1.2...0.2.0) (2023-01-24)
+
+### Minor
+
+  * ✨ Add support for gitlab-api to gitlabProvider [`466abff`](https://github.com/rdeville-public/git-repo/commit/466abff)
+
+### Others
+
+  * 🔀 ✨ Add support for GitlabApi within GitlabProvider (#32) (Issues:[`#32`](https://github.com/rdeville-public/git-repo/issues/32)[`#28`](https://github.com/rdeville-public/git-repo/issues/28))[`a6c03e6`](https://github.com/rdeville-public/git-repo/commit/a6c03e6)
+  * 🚨 Fix cspell warning [`c859b9f`](https://github.com/rdeville-public/git-repo/commit/c859b9f)
+  * ✅ Update tests with gitlab-api [`4b7bf9c`](https://github.com/rdeville-public/git-repo/commit/4b7bf9c)
+
 ## [v0.1.2](https://github.com/rdeville-public/git-repo/compare/0.1.1...0.1.2) (2023-01-24)
 
 ### Patch
