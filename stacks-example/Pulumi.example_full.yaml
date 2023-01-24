@@ -1,0 +1,34 @@
+encryptionsalt: v1:VLOdW1ooUK0=:v1:QfZsT9kj5yH+s6eN:V65y0bIvAc4kMowkyb+dJb9zAk3uig==
+config:
+  git-repo:gitProvider:
+    provider_name.tld:
+      type: gitlab
+      base_url: https://gitlab.com/api/v4
+      token: abcdefghijklmno
+    another_provider_name:
+      type: gitlab
+      base_url: https://another_provider.com/api/v4
+      token:
+        env: ENV_VARIABLE_NAME
+  git-repo:mainProvider: provider_name.tld
+  git-repo:groupConfigs:
+    gitlab:
+      default:
+        autoDevopsEnabled: false
+        defaultBranchProtection: 2
+        emailsDisabled: false
+        lfsEnabled: true
+        mentionsDisabled: true
+        preventForkingOutsideGroup: false
+        projectCreationLevel: maintainer
+        requestAccessEnabled: true
+        requireTwoFactorAuthentication: true
+        shareWithGroupLock: false
+        subgroupCreationLevel: owner
+        twoFactorGracePeriod: 48
+        visibilityLevel: public
+  git-repo:groups:
+    my_group:
+      desc: My Test group description
+      provider:
+        - provider_name.tld

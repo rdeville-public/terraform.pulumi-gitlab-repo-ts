@@ -6,9 +6,12 @@ export interface IGitlabProvider {
     provider: gitlab.Provider;
 }
 
+
 /**
- * [TODO:description]
+ * Pulumi custom ComponentResource which deploy a gitlab provider and its
+ * associated API client.
  *
+ * @augments pulumi.ComponentResource
  * @implements {IGitlabProvider} IGitlabProvider
  */
 export class GitlabProvider extends pulumi.ComponentResource
@@ -21,11 +24,12 @@ export class GitlabProvider extends pulumi.ComponentResource
     public provider: gitlab.Provider;
 
     /**
-     * [TODO:description]
+     * Constructor of the ComponentResource GitlabProvider
      *
-     * @param {string} name - [TODO:description]
-     * @param {object} args - [TODO:description]
-     * @param {object} opts - [TODO:description]
+     * @param {string} name - Name of the provider
+     * @param {gitlab.ProviderArgs} args - Gitlab provider arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
+     *      options
      */
     public constructor (
         name: string,

@@ -16,8 +16,10 @@ export interface IGitlabGroup {
      */
 }
 
+
 /**
- * [TODO:description]
+ * Pulumi custom ComponentResource which deploy a gitlab groups and associated
+ * resources such as labels, hooks, etc.
  *
  * @augments pulumi.ComponentResource
  * @implements {IGitlabGroup} IGitlabGroup
@@ -38,16 +40,17 @@ export class GitlabGroup extends pulumi.ComponentResource
      */
 
     /**
-     * [TODO:description]
+     * Constructor of the ComponentResource GitlabGroup
      *
-     * @param {string} name - [TODO:description]
-     * @param {object} args - [TODO:description]
-     * @param {object} opts - [TODO:description]
+     * @param {string} name - Name of the group
+     * @param {GroupArgs} args - Gitlab group arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
+     *      options
      */
     public constructor (
         name: string,
         args: GroupArgs,
-        opts?: object
+        opts?: pulumi.ComponentResourceOptions
     ) {
         super("git-repo:gitlab-group", name, args, opts);
         this.name = name;

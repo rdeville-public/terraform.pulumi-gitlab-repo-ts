@@ -4,14 +4,16 @@ import type {
 } from "./types";
 import {GitlabGroup} from "./gitlab";
 
+
 /**
- * [TODO:description]
+ * Factory design pattern to build multiple type of groups depending on the
+ * provider type.
  *
- * @param {string} type - [TODO:description]
- * @param {string} name - [TODO:description]
- * @param {GroupData} data - [TODO:description]
- * @throws {Error} - [TODO:description]
- * @returns {GroupSupportedObject} [TODO:description]
+ * @param {string} type - Type of the provider
+ * @param {string} name - Name of the group
+ * @param {GroupData} data - Groups arguments and pulumi resource options
+ * @throws {Error} - If provider is not supported, throw an error
+ * @returns {GroupSupportedObject} A group object depending on the provider
  */
 export function groupFactory (
     type: string,

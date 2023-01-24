@@ -36,7 +36,7 @@
     "lines-around-comment": "off",
     "max-params": [
       "error",
-      4
+      5
     ],
     "padded-blocks": [
       "error",
@@ -57,7 +57,8 @@
     "@typescript-eslint/no-type-alias": [
       "warn",
       {
-        "allowAliases": "in-unions"
+        "allowAliases": "in-unions",
+        "allowLiterals": "in-unions"
       }
     ],
     "jsdoc/require-jsdoc": [

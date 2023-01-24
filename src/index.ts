@@ -17,9 +17,9 @@ interface Output {
 }
 
 /**
- * [TODO:description]
+ * Function to deploy of every resources.
  *
- * @returns {provider.GitlabProvider[]} [TODO:description]
+ * @returns {Output} Output of pulumi deployed resources
  */
 function deploy (): Output {
     const config: pulumi.Config = new pulumi.Config();
@@ -41,11 +41,11 @@ function deploy (): Output {
 }
 
 /**
- * [TODO:description]
+ * Main function of the program
  *
- * @returns {boolean} [TODO:description]
+ * @returns {Output} Output of pulumi deployed resources
  */
-function main (): object {
+function main (): Output {
     return deploy();
 }
 

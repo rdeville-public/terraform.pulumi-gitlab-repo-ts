@@ -13,13 +13,13 @@ import type {
 import type {ProvidersDict} from "../provider";
 
 /**
- * [TODO:description]
+ * Compute group configuration depending on the type of group
  *
- * @param {string} providerName - [TODO:description]
- * @param {string} providerType - [TODO:description]
- * @param {GroupsPulumiConfig} groupsConfig - [TODO:description]
- * @param {[TODO:type]} [groupType] - [TODO:description]
- * @returns {GroupArgs} [TODO:description]
+ * @param {string} providerName - Name of the gitProvider
+ * @param {string} providerType - Type of the gitProvider
+ * @param {GroupsPulumiConfig} groupsConfig - Group configuration from the stack
+ * @param {string} [groupType] - Type of the group (default: "default")
+ * @returns {GroupArgs} Set of group args corresponding to group configuration
  */
 function computeGroupConfig (
     providerName: string,
@@ -46,16 +46,17 @@ function computeGroupConfig (
     return {} as GroupArgs;
 }
 
+
 /**
- * [TODO:description]
+ * Process to the deployment of git groups for defined providers
  *
- * @param {string} groupName - [TODO:description]
- * @param {GroupInfo} groupInfo - [TODO:description]
- * @param {ProvidersDict} providers - [TODO:description]
- * @param {GroupSupportedObject} [parentGroup] - [TODO:description]
- * @returns {GroupSupportedObject[]} [TODO:description]
+ * @param {string} groupName - Name of the group
+ * @param {GroupInfo} groupInfo - Information of the group (such as desc, etc.)
+ * @param {GroupsPulumiConfig} groupsConfig - groupConfigs set in the stack
+ * @param {ProvidersDict} providers - Set of providers
+ * @param {GroupSupportedObject} [parentGroup] - Group object to define subgroup
+ * @returns {GroupSupportedObject[]} List of groups deployed
  */
-// eslint-disable-next-line max-params
 function processGroups (
     groupName: string,
     groupInfo: GroupInfo,
@@ -94,10 +95,12 @@ function processGroups (
 }
 
 /**
- * [TODO:description]
+ * Initialize the processing of each groups defined in the stack
  *
- * @param {ProvidersDict} providers - [TODO:description]
- * @returns {GroupsDict} [TODO:description]
+ * @param {ProvidersDict} providers - Set of providers
+ * @param {GroupsPulumiInfo} groupsInfo - groups entry set in the stack
+ * @param {GroupsPulumiConfig} groupsConfig - groupConfigs set in the stack
+ * @returns {GroupsDict} Set of groups deployed
  */
 export function initGroup (
     providers: ProvidersDict,

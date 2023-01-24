@@ -1,0 +1,53 @@
+encryptionsalt: "SHOULD_BE_GENERATED_WITH_COMMAND 'Pulumi stack init'"
+config:
+  # Git provider configuration
+  git-repo:gitProvider:
+    # Keys can be arbitrary, like foo or mydomain.tld. It is this key which will
+    # be used later
+    provider_name.tld:
+      # Type of provider, for the moment only 'gitlab' is supported
+      type: gitlab
+      # Required for Gitlab provider
+      base_url: https://gitlab.com/api/v4
+      # Token API to connect to this provider can be set with :
+      #   * The 'pulumi config set' command
+      #     `pulumi config set --secret --path 'gitProvider["provider_name"].token' TOKEN_API`
+      #   * Using the subkey 'cmd' to provider a command to key the token api, ex:
+      #     ```
+      #     token:
+      #       cmd: cat /path/to/file.txt
+      #     ```
+      #   * Using the subkey 'env' to provide the name of the env variable
+      #     storing the token api, ex:
+      #     ```
+      #     token:
+      #       env: MY_PROVIDER_TOKEN_API
+      #     ```
+      token: abcdefghijklmno
+    another_provider_name:
+      type: gitlab
+      base_url: https://another_provider.com/api/v4
+      token:
+        env: ENV_VARIABLE_NAME
+  # Required, set the name of the provider you want to use as main provider
+  # for your group and repo.
+  git-repo:mainProvider: provider_name.tld
+  # (OPTIONAL)
+  # Set type of group configuration per provider type.
+  git-repo:groupConfigs:
+    # Type of the provider, for instance gitlab or github
+    gitlab:
+      # Default key, specify the default group configuration for the provider,
+      # for instance for Gitlab see
+      # https://www.pulumi.com/registry/packages/gitlab/api-docs/group/#inputs
+      default: {}
+      # Later will be added support for another type of group config (such as mirror or fork)
+  # Groups to create/manage with pulumi
+  git-repo:groups:
+    # Name of the group, can be any string
+    my_group:
+      # Description of the group
+      desc: My Test group description
+      # List of provider where to create the group, must be among `gitProvider` key
+      provider:
+        - provider_name.tld
