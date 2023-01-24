@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [v0.1.2](https://github.com/rdeville-public/git-repo/compare/0.1.1...0.1.2) (2023-01-24)
+
+### Patch
+
+  * ✏️ Fix typo in stack example [`c8ad2af`](https://github.com/rdeville-public/git-repo/commit/c8ad2af)
+  * 🔧 Update commitlint config [`d823b30`](https://github.com/rdeville-public/git-repo/commit/d823b30)
+
 ## [v0.1.1](https://github.com/rdeville-public/git-repo/compare/0.1.0...0.1.1) (2023-01-24)
 
 ### Patch
