@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## [v0.1.1](https://github.com/rdeville-public/git-repo/compare/0.1.0...0.1.1) (2023-01-24)
+
+### Patch
+
+  * 🔧 Update releaserc to create release on github [`de3723b`](https://github.com/rdeville-public/git-repo/commit/de3723b)
+
+### Others
+
+  * 💚 Fix author and commit env variable in release [`82a3421`](https://github.com/rdeville-public/git-repo/commit/82a3421)
+  * 💚 Improve semantic release to push on protected branch (#27) (Issues:[`#27`](https://github.com/rdeville-public/git-repo/issues/27)[`#26`](https://github.com/rdeville-public/git-repo/issues/26))[`06e9a6a`](https://github.com/rdeville-public/git-repo/commit/06e9a6a)
+  * 💚 Fix CI environment variable [`96ff94c`](https://github.com/rdeville-public/git-repo/commit/96ff94c)
+  * 💚 Fix CI environment variables [`fb1bee9`](https://github.com/rdeville-public/git-repo/commit/fb1bee9)
+  * 💚 Add Token to git checkout action [`752433e`](https://github.com/rdeville-public/git-repo/commit/752433e)
+
 ## [v0.1.0](https://github.com/rdeville-public/git-repo/compare/v0.0.0...0.1.0) (2023-01-24)
 
 ### Minor
