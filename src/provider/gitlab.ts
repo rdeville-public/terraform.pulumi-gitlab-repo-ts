@@ -1,5 +1,7 @@
+import type * as Gitbeaker from "@gitbeaker/core";
 import * as gitlab from "@pulumi/gitlab";
 import * as pulumi from "@pulumi/pulumi";
+import {Gitlab} from "@gitbeaker/node";
 
 export interface IGitlabProvider {
     name: string;
@@ -22,6 +24,8 @@ export class GitlabProvider extends pulumi.ComponentResource
     public name = "";
 
     public provider: gitlab.Provider;
+
+    public api: Gitbeaker.Gitlab;
 
     /**
      * Constructor of the ComponentResource GitlabProvider
@@ -46,6 +50,11 @@ export class GitlabProvider extends pulumi.ComponentResource
                 "parent": this
             }
         );
+        this.api = new Gitlab({
+            "host": args.baseUrl?.toString(),
+            // eslint-disable-next-line @typescript-eslint/no-base-to-string
+            "token": args.token.toString()
+        });
     }
 
 }

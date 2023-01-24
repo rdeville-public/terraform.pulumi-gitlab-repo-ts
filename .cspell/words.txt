@@ -5,6 +5,8 @@ FAKEVALUE
 Framagit
 gitmoji
 gitmojis
+Gitbeaker
+gitbeaker
 PROVIDERNAME
 pulumi
 Pulumi

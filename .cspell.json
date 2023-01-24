@@ -24,7 +24,8 @@
     "package.json",
     "yarn.lock",
     "Pulumi.*.yaml",
-    "**/snapshots/*.snap"
+    "**/snapshots/*.snap",
+    "**/snapshots/*.md"
   ],
   "ignoreRegExpList": [
     "Email",
