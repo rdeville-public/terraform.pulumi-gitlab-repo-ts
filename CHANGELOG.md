@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [v0.2.1](https://github.com/rdeville-public/git-repo/compare/0.2.0...0.2.1) (2023-01-25)
+
+### Patch
+
+  * 🔧 Remove gitbeaker from cspell [`bee46cd`](https://github.com/rdeville-public/git-repo/commit/bee46cd)
+  * ➖ Remove gitbeaker dependency [`aad62e0`](https://github.com/rdeville-public/git-repo/commit/aad62e0)
+
+### Others
+
+  * 🔀 ⏪️ Remove support for gitlabApi (#33) (Issues:[`#33`](https://github.com/rdeville-public/git-repo/issues/33))[`dffa5d6`](https://github.com/rdeville-public/git-repo/commit/dffa5d6)
+  * ✅ Revert test without gitlabApi [`92cd223`](https://github.com/rdeville-public/git-repo/commit/92cd223)
+
 ## [v0.2.0](https://github.com/rdeville-public/git-repo/compare/0.1.2...0.2.0) (2023-01-24)
 
 ### Minor
