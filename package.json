@@ -47,7 +47,6 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
-    "@gitbeaker/node": "^35.8.0",
     "@pulumi/gitlab": "^4.9.0",
     "@pulumi/pulumi": "^3.0.0"
   },
