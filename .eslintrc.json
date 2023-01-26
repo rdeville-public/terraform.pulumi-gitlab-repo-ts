@@ -36,7 +36,7 @@
     "lines-around-comment": "off",
     "max-params": [
       "error",
-      5
+      6
     ],
     "padded-blocks": [
       "error",
