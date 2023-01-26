@@ -21,7 +21,13 @@ export function groupFactory (
     data: GroupData
 ): GroupSupportedObject {
     if (type === "gitlab") {
-        return new GitlabGroup(name, data.args ?? {"path": name}, data.opts);
+        const defaultArgs = {
+            "groupConfig": {
+                name,
+                "path": name
+            }
+        };
+        return new GitlabGroup(name, data.args ?? defaultArgs, data.opts);
     }
     throw new Error(`Groups for provider type not supported: "${type}"`);
 }
