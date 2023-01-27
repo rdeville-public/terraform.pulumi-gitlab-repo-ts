@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## [v0.3.0](https://github.com/rdeville-public/git-repo/compare/0.2.1...0.3.0) (2023-01-27)
+
+### Minor
+
+  * ✨ Add support for gitlab nested groups [`d9e6fb1`](https://github.com/rdeville-public/git-repo/commit/d9e6fb1)
+
+### Patch
+
+  * 🔧 Update eslint config [`dc5a372`](https://github.com/rdeville-public/git-repo/commit/dc5a372)
+
+### Others
+
+  * 🔀 ✨ Add support for Gitlab nested group (aka subgroup) (#35) (Issues:[`#35`](https://github.com/rdeville-public/git-repo/issues/35)[`#34`](https://github.com/rdeville-public/git-repo/issues/34))[`1026435`](https://github.com/rdeville-public/git-repo/commit/1026435)
+  * ✅ Improve test for gitlabGroup with nested group [`6bead7f`](https://github.com/rdeville-public/git-repo/commit/6bead7f)
+
 ## [v0.2.1](https://github.com/rdeville-public/git-repo/compare/0.2.0...0.2.1) (2023-01-25)
 
 ### Patch
