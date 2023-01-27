@@ -4,7 +4,7 @@ import type * as pulumi from "@pulumi/pulumi";
 
 // Interface
 export interface GroupData {
-    args?: GroupArgs | undefined;
+    args?: gitlabGroup.IGitlabGroupArgs | undefined;
     opts: pulumi.CustomResourceOptions;
 }
 
@@ -20,7 +20,7 @@ export interface GroupsPulumiInfo {
 }
 
 export interface GroupsDict {
-    [key: string]: GroupSupportedObject[];
+    [key: string]: GroupsOutput;
 }
 
 export interface GroupPulumiConfig {
@@ -29,6 +29,15 @@ export interface GroupPulumiConfig {
 
 export interface GroupsPulumiConfig {
     [key: string]: GroupPulumiConfig;
+}
+
+export interface GroupOutput {
+    "group": GroupSupportedObject;
+    "subgroup": GroupsDict | undefined;
+}
+
+export interface GroupsOutput {
+    [key: string]: GroupOutput;
 }
 
 // Type

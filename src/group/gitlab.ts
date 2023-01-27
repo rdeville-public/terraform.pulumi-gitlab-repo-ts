@@ -1,11 +1,19 @@
 import * as gitlab from "@pulumi/gitlab";
 import * as pulumi from "@pulumi/pulumi";
 import type {
+    GitlabProvider
+} from "../provider";
+import type {
     GroupArgs
 } from "./types";
 
+export interface IGitlabGroupArgs {
+    groupConfig: GroupArgs;
+    provider?: GitlabProvider | undefined;
+}
 export interface IGitlabGroup {
     name: string;
+    provider: GitlabProvider | undefined;
     group: gitlab.Group;
     /*
      * accessTokens: gitlab.GroupAccessToken[];
@@ -29,6 +37,8 @@ export class GitlabGroup extends pulumi.ComponentResource
 
     public name: string;
 
+    public provider: GitlabProvider | undefined;
+
     public group: gitlab.Group;
 
     /*
@@ -49,19 +59,23 @@ export class GitlabGroup extends pulumi.ComponentResource
      */
     public constructor (
         name: string,
-        args: GroupArgs,
+        args: IGitlabGroupArgs,
         opts?: pulumi.ComponentResourceOptions
     ) {
         super("git-repo:gitlab-group", name, args, opts);
         this.name = name;
+        if (args.provider) {
+            this.provider = args.provider;
+        }
         this.group = new gitlab.Group(
             name,
-            args,
+            args.groupConfig,
             {
                 ...opts,
                 "parent": this
             }
         );
+        this.registerOutputs();
     }
 
 }
