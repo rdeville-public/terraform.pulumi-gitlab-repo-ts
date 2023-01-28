@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## [v0.3.1](https://github.com/rdeville-public/git-repo/compare/0.3.0...0.3.1) (2023-01-28)
+
+### Patch
+
+  * ✏️ Fix typos in stack due to group utils refacto [`1c7b800`](https://github.com/rdeville-public/git-repo/commit/1c7b800)
+
+### Others
+
+  * 🔀 ♻️ Refactor group output into providers output (#39) (Issues:[`#39`](https://github.com/rdeville-public/git-repo/issues/39))[`bf37c9b`](https://github.com/rdeville-public/git-repo/commit/bf37c9b)
+  * ♻️ Refactor group output into providers output [`00c26f2`](https://github.com/rdeville-public/git-repo/commit/00c26f2)
+  * ✅ Update group test according to new refacto [`fb92585`](https://github.com/rdeville-public/git-repo/commit/fb92585)
+  * 🚨 Fix cspell warning [`36b7296`](https://github.com/rdeville-public/git-repo/commit/36b7296)
+
 ## [v0.3.0](https://github.com/rdeville-public/git-repo/compare/0.2.1...0.3.0) (2023-01-27)
 
 ### Minor
