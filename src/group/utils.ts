@@ -1,23 +1,22 @@
 import * as group from "../group";
-import * as log from "../log";
 import * as pulumi from "@pulumi/pulumi";
-import type {
-    GitlabProvider,
-    ProviderSupportedObject,
-    ProvidersDict
-} from "../provider";
 import type {
     GroupArgs,
     GroupData,
     GroupInfo,
-    GroupOutput,
     GroupPulumiConfig,
     GroupSupportedObject,
-    GroupsDict,
-    GroupsOutput,
     GroupsPulumiConfig,
     GroupsPulumiInfo
 } from "./types";
+import type {
+    ProviderSupportedObject,
+    ProvidersDict
+} from "../provider";
+import {
+    genId,
+    slugify
+} from "../utils";
 
 /**
  * Compute group configuration depending on the type of group
@@ -31,50 +30,53 @@ import type {
 function computeGroupConfig (
     providerName: string,
     providerType: string,
-    groupsConfig: GroupsPulumiConfig,
+    groupsConfig?: GroupsPulumiConfig,
     groupType = "default"
 ): GroupArgs {
-    const config: pulumi.Config = new pulumi.Config();
+    if (groupsConfig) {
+        const config: pulumi.Config = new pulumi.Config();
 
-    const providerGroupConfigs: GroupPulumiConfig = groupsConfig[providerType];
+        const providerGroupConfigs: GroupPulumiConfig =
+            groupsConfig[providerType];
 
-    if (
-        typeof providerGroupConfigs !== "undefined" &&
-        "default" in providerGroupConfigs
-    ) {
-        if (providerName === config.require("mainProvider")) {
-            return providerGroupConfigs.default as GroupArgs;
+        if (
+            typeof providerGroupConfigs !== "undefined" &&
+            "default" in providerGroupConfigs
+        ) {
+            if (providerName === config.require("mainProvider")) {
+                return providerGroupConfigs.default as GroupArgs;
+            }
+            return {
+                ...providerGroupConfigs.default,
+                ...providerGroupConfigs[groupType]
+            } as GroupArgs;
         }
-        return {
-            ...providerGroupConfigs.default,
-            ...providerGroupConfigs[groupType]
-        } as GroupArgs;
     }
+
     return {} as GroupArgs;
 }
 
 /**
- * [TODO:description]
+ * Compute data, i.e. args and opts for the group
  *
- * @param {GitlabProvider} provider - [TODO:description]
- * @param {GroupsPulumiConfig} groupsConfig - [TODO:description]
- * @param {GroupInfo} groupInfo - [TODO:description]
- * @param {string} groupName - [TODO:description]
- * @param {GroupSupportedObject} [parentGroup] - [TODO:description]
- * @returns {GroupData} [TODO:description]
+ * @param {ProviderSupportedObject} provider - Provider object
+ * @param {GroupInfo} groupInfo - Info of the group
+ * @param {string} groupName - Name of the group
+ * @param {GroupsPulumiConfig} [groupsConfig] - Possible group configurations
+ * @param {GroupSupportedObject} [parentGroup] - Pulumi group object depending
+ *      on provider
+ * @returns {GroupData} Object with args and data for Pulumi Group object
  */
 function computeGroupData (
-    provider: GitlabProvider,
-    groupsConfig: GroupsPulumiConfig,
+    provider: ProviderSupportedObject,
+    // Will be used later when other type of group resources will be supported
     groupInfo: GroupInfo,
     groupName: string,
+    groupsConfig?: GroupsPulumiConfig,
     parentGroup?: GroupSupportedObject
 ): GroupData {
     let data: GroupArgs = {
-        "path": groupName.
-            replace(/ /ugi, "-").
-            replace(/---/ugi, "-").
-            toLowerCase()
+        "path": slugify(groupName)
     };
 
     if (parentGroup) {
@@ -96,126 +98,135 @@ function computeGroupData (
                 ),
                 ...data,
                 "name": groupName
-            } as GroupArgs,
-            provider
+            } as GroupArgs
         },
         "opts": {
-            "parent": parentGroup ?? provider,
+            "parent": parentGroup?.group ?? provider,
             "provider": provider.provider
         }
     };
 }
 
 /**
- * [TODO:description]
+ * Create provider supported group
  *
- * @param {ProviderSupportedObject} provider - [TODO:description]
- * @param {string} groupName - [TODO:description]
- * @param {GroupInfo} groupInfo - [TODO:description]
- * @param {GroupsPulumiConfig} groupsConfig - [TODO:description]
- * @param {ProvidersDict} providers - [TODO:description]
- * @param {GroupSupportedObject} [parentGroup] - [TODO:description]
- * @returns {GroupOutput} [TODO:description]
+ * @param {ProviderSupportedObject} provider - Provider object
+ * @param {string} groupName - Name of the group
+ * @param {GroupInfo} groupInfo - Info of the group
+ * @param {GroupsPulumiConfig} [groupsConfig] - Possible group configurations
+ * @param {GroupSupportedObject} [parentGroup] - Pulumi parent group
+ * @returns {GroupSupportedObject} Pulumi group object depending on provider
  */
 function createGroup (
     provider: ProviderSupportedObject,
     groupName: string,
     groupInfo: GroupInfo,
-    groupsConfig: GroupsPulumiConfig,
-    providers: ProvidersDict,
+    groupsConfig?: GroupsPulumiConfig,
     parentGroup?: GroupSupportedObject
-): GroupOutput {
+): GroupSupportedObject {
     const data = computeGroupData(
-        provider, groupsConfig, groupInfo, groupName, parentGroup
+        provider, groupInfo, groupName, groupsConfig, parentGroup
     );
+    const groupNameSlug = slugify(`${groupName}-${genId()}`);
     const currGroup = group.groupFactory(
-        provider.providerType, groupName, data
+        provider.providerType, groupNameSlug, data
     );
 
-    return {
-        "group": currGroup,
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        "subgroup": initGroup(
-            providers, groupsConfig, groupInfo.groups, currGroup
-        )
-    };
+    if (parentGroup) {
+        parentGroup.subgroup[groupName] = currGroup;
+    } else {
+        provider.groups[groupName] = currGroup;
+    }
+    return currGroup;
 }
 
 /**
  * Process to the deployment of git groups for defined providers
  *
+ * @param {ProvidersDict} providers - Set of providers
  * @param {string} groupName - Name of the group
  * @param {GroupInfo} groupInfo - Information of the group (such as desc, etc.)
  * @param {GroupsPulumiConfig} groupsConfig - groupConfigs set in the stack
- * @param {ProvidersDict} providers - Set of providers
  * @param {GroupSupportedObject} [parentGroup] - Group object to define subgroup
- * @returns {GroupSupportedObject[]} List of groups deployed
  */
 function processGroups (
+    providers: ProvidersDict,
     groupName: string,
     groupInfo: GroupInfo,
-    groupsConfig: GroupsPulumiConfig,
-    providers: ProvidersDict,
+    groupsConfig?: GroupsPulumiConfig,
     parentGroup?: GroupSupportedObject
-): GroupsOutput {
-    const groups: GroupsOutput = {};
-    if (parentGroup?.provider) {
-        groups[parentGroup.provider.name] = createGroup(
-            parentGroup.provider,
-            groupName,
-            groupInfo,
-            groupsConfig,
-            providers,
-            parentGroup
-        );
-    } else {
-        for (const iProvider of groupInfo.provider) {
-            if (iProvider in providers) {
-                groups[iProvider] = createGroup(
+): void {
+    if (parentGroup) {
+        for (const iProvider in providers) {
+            // eslint-disable-next-line max-len
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+            if (groupInfo.providers?.includes(iProvider)) {
+                createGroup(
                     providers[iProvider],
                     groupName,
                     groupInfo,
                     groupsConfig,
-                    providers
-                );
-            } else {
-                log.warn(
-                    "TODO: Implement 'fork' in createGroup() groups/utils.ts"
+                    parentGroup
                 );
             }
         }
+    } else {
+        for (const iProvider in providers) {
+            // eslint-disable-next-line max-len
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+            if (groupInfo.providers?.includes(iProvider)) {
+                createGroup(
+                    providers[iProvider],
+                    groupName,
+                    groupInfo,
+                    groupsConfig
+                );
+                if (groupInfo.groups) {
+                    // eslint-disable-next-line max-len
+                    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                    initGroup(
+                        providers,
+                        groupInfo.groups,
+                        groupsConfig,
+                        providers[iProvider].groups[groupName],
+                        groupInfo.providers
+                    );
+                }
+            }
+        }
     }
-    return groups;
 }
 
 /**
  * Initialize the processing of each groups defined in the stack
  *
  * @param {ProvidersDict} providers - Set of providers
+ * @param {GroupsPulumiInfo | undefined} groupsInfo - groups entry set in the
+ *      stack
  * @param {GroupsPulumiConfig} groupsConfig - groupConfigs set in the stack
- * @param {GroupsPulumiInfo} groupsInfo - groups entry set in the stack
  * @param {GroupSupportedObject} parentGroup - Group parent if group is a
  *      subgroup
- * @returns {GroupsDict} Set of groups deployed
+ * @param {string[]} [parentProviders] - List of provider used for parent Group
  */
 export function initGroup (
     providers: ProvidersDict,
-    groupsConfig: GroupsPulumiConfig,
-    groupsInfo?: GroupsPulumiInfo,
-    parentGroup?: GroupSupportedObject
-): GroupsDict {
-    const groups: GroupsDict = {};
-
+    groupsInfo: GroupsPulumiInfo | undefined,
+    groupsConfig?: GroupsPulumiConfig,
+    parentGroup?: GroupSupportedObject,
+    parentProviders?: string[]
+): void {
     for (const iGroup in groupsInfo) {
         if (groupsInfo[iGroup].desc) {
-            groups[iGroup] = processGroups(
-                iGroup,
-                groupsInfo[iGroup],
-                groupsConfig,
+            processGroups(
                 providers,
+                iGroup,
+                {
+                    ...groupsInfo[iGroup],
+                    "providers": parentProviders ?? groupsInfo[iGroup].providers
+                },
+                groupsConfig,
                 parentGroup
             );
         }
     }
-    return groups;
 }
