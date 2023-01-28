@@ -1,4 +1,5 @@
 import * as group from "./group";
+import * as project from "./project";
 import * as provider from "./provider";
 import * as pulumi from "@pulumi/pulumi";
 import type {
@@ -6,9 +7,17 @@ import type {
     GroupsPulumiInfo
 } from "./group";
 import type {
+    ProjectsPulumiConfig,
+    ProjectsPulumiInfo
+} from "./project";
+import type {
     ProvidersDict,
     ProvidersPulumiConfig
 } from "./provider/types";
+
+interface Output {
+    providers: ProvidersDict;
+}
 
 /**
  * Function to deploy of every resources.
@@ -26,6 +35,12 @@ function deploy (): ProvidersDict {
         providers,
         config.requireObject<GroupsPulumiInfo>("groups"),
         config.getObject<GroupsPulumiConfig>("groupConfigs")
+    );
+
+    project.initProject(
+        providers,
+        config.requireObject<ProjectsPulumiInfo>("projects"),
+        config.getObject<ProjectsPulumiConfig>("projectConfigs")
     );
 
     return providers;
