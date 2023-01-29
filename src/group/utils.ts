@@ -98,7 +98,8 @@ function computeGroupData (
                 ),
                 ...data,
                 "name": groupName
-            } as GroupArgs
+            } as GroupArgs,
+            "labels": groupInfo.labels ?? {}
         },
         "opts": {
             "parent": parentGroup?.group ?? provider,

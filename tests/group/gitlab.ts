@@ -22,3 +22,22 @@ test("Create basic group", (currTest) => {
 
     currTest.is(gitlabGroup.name, FAKE_NAME);
 });
+
+
+test("Create basic group with labels", (currTest) => {
+    const args: gitlab.IGitlabGroupArgs = {
+        "groupConfig": {
+            "path": FAKE_NAME
+        }
+    };
+    const opts: pulumi.CustomResourceOptions = {
+        "aliases": [{"name": FAKE_ALIAS}]
+    };
+    const gitlabGroup = new gitlab.GitlabGroup(
+        FAKE_NAME,
+        args,
+        opts
+    );
+
+    currTest.is(gitlabGroup.name, FAKE_NAME);
+});

@@ -197,3 +197,38 @@ test("group with supported provider with subgroup", (currTest) => {
         /fakegroupname-[A-Za-z0-9]{5}/u
     );
 });
+
+test("group with supported provider with labels", (currTest) => {
+    const fakeGroups: group.GroupsPulumiInfo = {
+        "fakeGroupName": {
+            "desc": GROUP_DESC,
+            "labels": {
+                "fakeLabelName": {
+                    "color": "#000000",
+                    // Left empty as it should be handled by utils
+                    "group": ""
+                }
+            },
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]]
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    group.initGroup(
+        providers,
+        fakeGroups
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].groups.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            groups.fakeGroupName.
+            labels.fakeLabelName.name
+    );
+});
