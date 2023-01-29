@@ -1,6 +1,7 @@
 import * as project from "../project";
 import * as pulumi from "@pulumi/pulumi";
 import type {
+    ArgsDict,
     ProjectArgs,
     ProjectData,
     ProjectInfo,
@@ -96,7 +97,8 @@ function computeProjectData (
     }
     return {
         "args": {
-            "badges": projectInfo.badges ?? {},
+            "badges": projectInfo.badges ?? {} as ArgsDict,
+            "hooks": projectInfo.hooks ?? {} as ArgsDict,
             "projectConfig": {
                 ...computeProjectConfig(
                     provider.name,
