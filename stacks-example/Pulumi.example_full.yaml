@@ -197,3 +197,14 @@ config:
         badgeName:
           imageUrl: TODO
           linkUrl: TODO
+      hooks:
+        hookName:
+          # REQUIRED
+          # The url of the hook to invoke.
+          url: TODO
+          token:
+            env: SHELL
+        anotherHookName:
+          url: TODO
+          token:
+            env: SHELL

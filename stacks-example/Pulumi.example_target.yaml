@@ -599,3 +599,78 @@ config:
           imageUrl: TODO
           # The url linked with the badge.
           linkUrl: TODO
+      hooks:
+        hookName:
+          # REQUIRED
+          # The url of the hook to invoke.
+          url: TODO
+          # Invoke the hook for confidential issues events.
+          confidentialIssuesEvents: false
+          # Invoke the hook for confidential notes events.
+          confidentialNoteEvents: false
+          # Invoke the hook for deployment events.
+          deploymentEvents: false
+          # Enable ssl verification when invoking the hook.
+          enableSslVerification: false
+          # Invoke the hook for issues events.
+          issuesEvents: false
+          # Invoke the hook for job events.
+          jobEvents: false
+          # Invoke the hook for merge requests.
+          mergeRequestsEvents: false
+          # Invoke the hook for notes events.
+          noteEvents: false
+          # Invoke the hook for pipeline events.
+          pipelineEvents: false
+          # Invoke the hook for push events.
+          pushEvents: false
+          # Invoke the hook for push events on matching branches only.
+          pushEventsBranchFilter: main
+          # Invoke the hook for releases events.
+          releasesEvents: false
+          # Invoke the hook for subgroup events.
+          subgroupEvents: false
+          # Invoke the hook for tag push events.
+          tagPushEvents: false
+          # A token to present when invoking the hook. The token is not available for imported resources.
+          token:
+            cmd: echo "TODO"
+          # Invoke the hook for wiki page events.
+          wikiPageEvents: false
+        anotherHookName:
+          # REQUIRED
+          # The url of the hook to invoke.
+          url: TODO
+          # Invoke the hook for confidential issues events.
+          confidentialIssuesEvents: false
+          # Invoke the hook for confidential notes events.
+          confidentialNoteEvents: false
+          # Invoke the hook for deployment events.
+          deploymentEvents: false
+          # Enable ssl verification when invoking the hook.
+          enableSslVerification: false
+          # Invoke the hook for issues events.
+          issuesEvents: false
+          # Invoke the hook for job events.
+          jobEvents: false
+          # Invoke the hook for merge requests.
+          mergeRequestsEvents: false
+          # Invoke the hook for notes events.
+          noteEvents: false
+          # Invoke the hook for pipeline events.
+          pipelineEvents: false
+          # Invoke the hook for push events.
+          pushEvents: false
+          # Invoke the hook for push events on matching branches only.
+          pushEventsBranchFilter: main
+          # Invoke the hook for releases events.
+          releasesEvents: false
+          # Invoke the hook for subgroup events.
+          subgroupEvents: false
+          # Invoke the hook for tag push events.
+          tagPushEvents: false
+          # A token to present when invoking the hook. The token is not available for imported resources.
+          token:
+            env: SHELL
+          # Invoke the hook for wiki page events.
+          wikiPageEvents: false
