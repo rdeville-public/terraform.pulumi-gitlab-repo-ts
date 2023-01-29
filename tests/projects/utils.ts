@@ -305,3 +305,36 @@ test("project with supported provider with hooks", (currTest) => {
             hooks.fakeHookName.urn
     );
 });
+
+test("project with supported provider with variables", (currTest) => {
+    const fakeProjects: project.ProjectsPulumiInfo = {
+        "fakeProjectName": {
+            "desc": PROJECT_DESC,
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]],
+            "variables": {
+                "fakeVariableName": {
+                    "value": "fakeValue"
+                }
+            }
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    project.initProject(
+        providers,
+        fakeProjects
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
+        /fakeprojectname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            projects.fakeProjectName.
+            variables.fakeVariableName.urn
+    );
+});
