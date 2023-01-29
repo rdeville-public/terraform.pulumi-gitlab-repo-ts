@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## [v0.7.0](https://github.com/rdeville-public/git-repo/compare/0.6.0...0.7.0) (2023-01-29)
+
+### Minor
+
+  * ✨ Add support for gitlab group hooks [`878feaf`](https://github.com/rdeville-public/git-repo/commit/878feaf)
+  * ✨ Add support of gitlab group variables [`4454a26`](https://github.com/rdeville-public/git-repo/commit/4454a26)
+  * ✨ Add support for gitlab group accessToken [`190a690`](https://github.com/rdeville-public/git-repo/commit/190a690)
+
+### Patch
+
+  * 🐛 Fix utils.getValue in case of undefined data [`7bc38c3`](https://github.com/rdeville-public/git-repo/commit/7bc38c3)
+
+### Others
+
+  * 🔀 ✨ Add support for Gitlab Group Hooks, Variables and AccessToken (#49) (Issues:[`#49`](https://github.com/rdeville-public/git-repo/issues/49)[`#46`](https://github.com/rdeville-public/git-repo/issues/46)[`#47`](https://github.com/rdeville-public/git-repo/issues/47)[`#48`](https://github.com/rdeville-public/git-repo/issues/48))[`40575df`](https://github.com/rdeville-public/git-repo/commit/40575df)
+  * 📝 Update stack-example with new support [`3317c13`](https://github.com/rdeville-public/git-repo/commit/3317c13)
+  * ♻️ Minor src/index.ts refacto [`d09983c`](https://github.com/rdeville-public/git-repo/commit/d09983c)
+  * ✅ Add gitlab group hook test [`da36c78`](https://github.com/rdeville-public/git-repo/commit/da36c78)
+  * ✅ Add gitlab group variable test [`432d6ed`](https://github.com/rdeville-public/git-repo/commit/432d6ed)
+  * ✅ Add gitlab accessToken tests [`b8a06b2`](https://github.com/rdeville-public/git-repo/commit/b8a06b2)
+
 ## [v0.6.0](https://github.com/rdeville-public/git-repo/compare/0.5.0...0.6.0) (2023-01-29)
 
 ### Minor
