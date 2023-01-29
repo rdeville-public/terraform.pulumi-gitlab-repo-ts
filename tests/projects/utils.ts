@@ -1,3 +1,4 @@
+/* eslint max-lines: 0 */
 import * as group from "../../src/group";
 import * as project from "../../src/project";
 import * as provider from "../../src/provider";
@@ -231,5 +232,42 @@ test("default project in nested group", (currTest) => {
             subgroup.fakeGroupName.
             projects.fakeProjectName.name,
         /fakeprojectname-[A-Za-z0-9]{5}/u
+    );
+});
+
+test("project with supported provider with badges", (currTest) => {
+    const fakeProjects: project.ProjectsPulumiInfo = {
+        "fakeProjectName": {
+            "badges": {
+                "fakeBadgeName": {
+                    // Left empty as it should be handled by utils
+                    "imageUrl": "https://fakeLinkUrl.tld/image.png",
+                    "linkUrl": "https://fakeLinkUrl.tld",
+                    "project": ""
+                }
+            },
+            "desc": PROJECT_DESC,
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]]
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    project.initProject(
+        providers,
+        fakeProjects
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            projects.fakeProjectName.name,
+        /fakeprojectname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            projects.fakeProjectName.
+            badges.fakeBadgeName.urn
     );
 });

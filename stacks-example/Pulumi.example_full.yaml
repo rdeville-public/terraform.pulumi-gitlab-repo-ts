@@ -193,3 +193,7 @@ config:
       providers:
         - framagit.org
         - gitlab.com
+      badges:
+        badgeName:
+          imageUrl: TODO
+          linkUrl: TODO

@@ -96,6 +96,7 @@ function computeProjectData (
     }
     return {
         "args": {
+            "badges": projectInfo.badges ?? {},
             "projectConfig": {
                 ...computeProjectConfig(
                     provider.name,
