@@ -89,7 +89,9 @@ export function getValue (
     parent: string,
     data: ProtectedData
 ): pulumi.Output<string> | string {
-    if (typeof data === "string") {
+    if (typeof data === "undefined") {
+        return "";
+    } else if (typeof data === "string") {
         return data;
     } else if (data.cmd) {
         return pulumi.secret(getCmdValue(data.cmd));
