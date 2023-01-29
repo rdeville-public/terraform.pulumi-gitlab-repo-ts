@@ -51,3 +51,13 @@ config:
       # List of provider where to create the group, must be among `gitProvider` key
       providers:
         - provider_name.tld
+  # Set of repos de deploy within the group architecture
+  git-repo:project:
+    my_group:
+      my-repo:
+        desc: My repo description
+        logo: ./img/repos/programs/my-repo.png
+    # Repo without subgroup will be attached to user profile
+    my-repo:
+      desc: My repo description
+      logo: ./img/repos/programs/my-repo.png

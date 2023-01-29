@@ -14,6 +14,7 @@ export interface GroupInfo {
     logo?: string;
     groups?: GroupsPulumiInfo;
     labels?: GroupLabelsPulumiConfig;
+    badges?: GroupBadgesPulumiConfig;
 }
 
 export interface GroupsPulumiInfo {
@@ -36,11 +37,16 @@ export interface GroupLabelsPulumiConfig {
     [key: string]: GroupLabelsArgs;
 }
 
+export interface GroupBadgesPulumiConfig {
+    [key: string]: GroupBadgesArgs;
+}
+
 // Type
 // eslint warnings below won't be raised once other provider will be supported
 export type GroupSupportedObject = gitlabGroup.GitlabGroup;
 export type GroupArgs = gitlab.GroupArgs;
 export type GroupLabelsArgs = gitlab.GroupLabelArgs;
+export type GroupBadgesArgs = gitlab.GroupBadgeArgs;
 
 // Enum
 export enum GroupType {

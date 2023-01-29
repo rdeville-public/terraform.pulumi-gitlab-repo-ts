@@ -90,6 +90,7 @@ function computeGroupData (
     }
     return {
         "args": {
+            "badges": groupInfo.badges ?? {},
             "groupConfig": {
                 ...computeGroupConfig(
                     provider.name,

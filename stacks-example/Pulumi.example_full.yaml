@@ -122,12 +122,20 @@ config:
         fakeLabel:
           color: "#000000"
           description: Fake Description
+      badges:
+        badgeName:
+          imageUrl: TODO
+          linkUrl: TODO
       groups:
         my_sub_group:
           desc: Description of my SubGroup
         labels:
           AnotherFakeLabel:
             color: "#000000"
+        badges:
+          AnotherBadgeName:
+            imageUrl: TODO
+            linkUrl: TODO
   git-repo:projects:
     my_group:
       my_sub_group:

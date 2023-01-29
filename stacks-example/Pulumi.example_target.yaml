@@ -357,6 +357,19 @@ config:
           color: "#000000"
           # The description of the label.
           description: TODO
+      badges:
+        # The name of the badge in the pulumi stack
+        badgeName:
+          # The image url which will be presented on group overview.
+          imageUrl: TODO
+          # The url linked with the badge.
+          linkUrl: TODO
+        # The name of the badge in the pulumi stack
+        AnotherBadgeName:
+          # The image url which will be presented on group overview.
+          imageUrl: TODO
+          # The url linked with the badge.
+          linkUrl: TODO
       # variables:
       #   # The name of the variable.
       #   variableKey:
@@ -417,19 +430,6 @@ config:
       #     # The token expires at midnight UTC on that date.
       #     # The date must be in the format YYYY-MM-DD. Default is never.
       #     expiresAt:
-      # badges:
-      #   # The name of the badge in the pulumi stack
-      #   badgeName:
-      #     # The image url which will be presented on group overview.
-      #     imageUrl: TODO
-      #     # The url linked with the badge.
-      #     linkUrl: TODO
-      #   # The name of the badge in the pulumi stack
-      #   AnotherBadgeName:
-      #     # The image url which will be presented on group overview.
-      #     imageUrl: TODO
-      #     # The url linked with the badge.
-      #     linkUrl: TODO
       # Set of subgroups of the main group with the same structure of a group
     another_group:
       desc: My Private Repository
