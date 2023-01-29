@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## [v0.8.0](https://github.com/rdeville-public/git-repo/compare/0.7.0...0.8.0) (2023-01-29)
+
+### Minor
+
+  * ✨ Add gitlab project badge support [`dacb1ef`](https://github.com/rdeville-public/git-repo/commit/dacb1ef)
+  * ✨ Add support for Gitlab project badges (#55) (Issues:[`#55`](https://github.com/rdeville-public/git-repo/issues/55)[`#54`](https://github.com/rdeville-public/git-repo/issues/54))[`b754ec5`](https://github.com/rdeville-public/git-repo/commit/b754ec5)
+  * ✨ Add gitlab project hook support [`10d4312`](https://github.com/rdeville-public/git-repo/commit/10d4312)
+  * ✨ Add gitlab project variables support [`0fafcf1`](https://github.com/rdeville-public/git-repo/commit/0fafcf1)
+  * ✨ Add gitlab project accesstoken support [`6cfee7c`](https://github.com/rdeville-public/git-repo/commit/6cfee7c)
+
+### Others
+
+  * 🔀 ✨ Add Gitlab project hook support (#56) (Issues:[`#56`](https://github.com/rdeville-public/git-repo/issues/56)[`#52`](https://github.com/rdeville-public/git-repo/issues/52))[`5c91309`](https://github.com/rdeville-public/git-repo/commit/5c91309)
+  * 🔀 ✨ Add Gitlab project variables support (#57) (Issues:[`#57`](https://github.com/rdeville-public/git-repo/issues/57)[`#51`](https://github.com/rdeville-public/git-repo/issues/51))[`2c380da`](https://github.com/rdeville-public/git-repo/commit/2c380da)
+  * 🔀 ✨ Add Gitlab project accessToken support (#58) (Issues:[`#58`](https://github.com/rdeville-public/git-repo/issues/58)[`#53`](https://github.com/rdeville-public/git-repo/issues/53))[`80e4b04`](https://github.com/rdeville-public/git-repo/commit/80e4b04)
+  * 🔀 ✨ Add Gitlab Project sub-resources support (#59) (Issues:[`#59`](https://github.com/rdeville-public/git-repo/issues/59)[`#51`](https://github.com/rdeville-public/git-repo/issues/51)[`#52`](https://github.com/rdeville-public/git-repo/issues/52)[`#53`](https://github.com/rdeville-public/git-repo/issues/53)[`#54`](https://github.com/rdeville-public/git-repo/issues/54))[`4fc6ec7`](https://github.com/rdeville-public/git-repo/commit/4fc6ec7)
+  * 📝 Update stack-example with project badges support [`0a6dd80`](https://github.com/rdeville-public/git-repo/commit/0a6dd80)
+  * 📝 Update stack example with hook support [`1f13702`](https://github.com/rdeville-public/git-repo/commit/1f13702)
+  * 📝 Update stack example with project variable support [`6434637`](https://github.com/rdeville-public/git-repo/commit/6434637)
+  * 📝 Update stack example with gitlab project accesstoken support [`3c6ad10`](https://github.com/rdeville-public/git-repo/commit/3c6ad10)
+  * ✅ Add gitlab project badges test [`193fe78`](https://github.com/rdeville-public/git-repo/commit/193fe78)
+  * ✅ Add gitlab project hooks test [`85ca6d4`](https://github.com/rdeville-public/git-repo/commit/85ca6d4)
+  * ✅ Add gitlab project variables test [`acf89ef`](https://github.com/rdeville-public/git-repo/commit/acf89ef)
+  * ✅ Add gitlab project accesstoken test [`f1c9223`](https://github.com/rdeville-public/git-repo/commit/f1c9223)
+
 ## [v0.7.0](https://github.com/rdeville-public/git-repo/compare/0.6.0...0.7.0) (2023-01-29)
 
 ### Minor
