@@ -1,6 +1,7 @@
 import * as group from "../group";
 import * as pulumi from "@pulumi/pulumi";
 import type {
+    ArgsDict,
     GroupArgs,
     GroupData,
     GroupInfo,
@@ -100,7 +101,8 @@ function computeGroupData (
                 ...data,
                 "name": groupName
             } as GroupArgs,
-            "labels": groupInfo.labels ?? {}
+            "hooks": groupInfo.hooks ?? {} as ArgsDict,
+            "labels": groupInfo.labels ?? {} as ArgsDict,
         },
         "opts": {
             "parent": parentGroup?.group ?? provider,

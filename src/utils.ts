@@ -2,7 +2,7 @@ import * as process from "process";
 import * as pulumi from "@pulumi/pulumi";
 import {spawnSync} from "child_process";
 
-type ProtectedData = string | {[key: string]: string};
+export type ProtectedData = string | {[key: string]: string};
 
 export const ID_SIZE = 5;
 const INCREMENT = 1;

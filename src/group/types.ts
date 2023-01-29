@@ -13,8 +13,14 @@ export interface GroupInfo {
     providers?: string[];
     logo?: string;
     groups?: GroupsPulumiInfo;
-    labels?: GroupLabelsPulumiConfig;
-    badges?: GroupBadgesPulumiConfig;
+    labels?: ArgsDict;
+    badges?: ArgsDict;
+    hooks?: ArgsDict;
+}
+
+export interface ArgsDict {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
 }
 
 export interface GroupsPulumiInfo {
@@ -41,12 +47,17 @@ export interface GroupBadgesPulumiConfig {
     [key: string]: GroupBadgesArgs;
 }
 
+export interface GroupHooksPulumiConfig {
+    [key: string]: GroupHooksArgs;
+}
+
 // Type
 // eslint warnings below won't be raised once other provider will be supported
 export type GroupSupportedObject = gitlabGroup.GitlabGroup;
 export type GroupArgs = gitlab.GroupArgs;
 export type GroupLabelsArgs = gitlab.GroupLabelArgs;
 export type GroupBadgesArgs = gitlab.GroupBadgeArgs;
+export type GroupHooksArgs = gitlab.GroupHookArgs;
 
 // Enum
 export enum GroupType {

@@ -3,10 +3,12 @@ import type * as project from "../project";
 import * as pulumi from "@pulumi/pulumi";
 import * as utils from "../utils";
 import type {
-    GroupArgs,
-    GroupBadgesPulumiConfig,
-    GroupLabelsPulumiConfig
+    ArgsDict,
+    GroupArgs
 } from "./types";
+import type {
+    ProtectedData
+} from "../utils";
 
 interface IGitlabGroupLabels {
     [key: string]: gitlab.GroupLabel;
@@ -16,11 +18,16 @@ interface IGitlabGroupBadges {
     [key: string]: gitlab.GroupBadge;
 }
 
+interface IGitlabGroupHooks {
+    [key: string]: gitlab.GroupHook;
+}
+
 
 export interface IGitlabGroupArgs {
     groupConfig: GroupArgs;
-    labels?: GroupLabelsPulumiConfig;
-    badges?: GroupBadgesPulumiConfig;
+    labels?: ArgsDict;
+    badges?: ArgsDict;
+    hooks?: ArgsDict;
 }
 
 export interface IGitlabSubGroup {
@@ -34,13 +41,8 @@ export interface IGitlabGroup {
     projects: project.ProjectsDict;
     labels: IGitlabGroupLabels;
     badges: IGitlabGroupBadges;
-    /*
-     * accessTokens: gitlab.GroupAccessToken[];
-     * hooks: gitlab.GroupHook[];
-     * variables: gitlab.GroupVariable[];
-     */
+    hooks: IGitlabGroupHooks;
 }
-
 
 /**
  * Pulumi custom ComponentResource which deploy a gitlab groups and associated
@@ -64,13 +66,8 @@ export class GitlabGroup extends pulumi.ComponentResource
 
     public badges: IGitlabGroupBadges = {};
 
-    /*
-     * public accessTokens: gitlab.GroupAccessToken[] = [];
-     * public badges: gitlab.GroupBadge[] = [];
-     * public hooks: gitlab.GroupHook[] = [];
-     * public label: gitlab.GroupLabel[] = [];
-     * public variables: gitlab.GroupVariable[] = [];
-     */
+    public hooks: IGitlabGroupHooks = {};
+
 
     /**
      * Constructor of the ComponentResource GitlabGroup
@@ -97,6 +94,7 @@ export class GitlabGroup extends pulumi.ComponentResource
         );
         this.addLabels(args);
         this.addBadges(args);
+        this.addHooks(args);
         this.registerOutputs();
     }
 
@@ -114,7 +112,7 @@ export class GitlabGroup extends pulumi.ComponentResource
                     {
                         ...args.labels[iLabel],
                         "group": this.group.id
-                    },
+                    } as gitlab.GroupLabelArgs,
                     {
                         "parent": this.group
                     }
@@ -138,7 +136,91 @@ export class GitlabGroup extends pulumi.ComponentResource
                     {
                         ...args.badges[iBadge],
                         "group": this.group.id
-                    },
+                    } as gitlab.GroupBadgeArgs,
+                    {
+                        "parent": this.group
+                    }
+                );
+            }
+        }
+    }
+
+    /**
+     * Add hooks to the object and create parent relationship
+     *
+     * @param {IGitlabGroupArgs} args - This pulumi object arguments
+     */
+    private addHooks (args: IGitlabGroupArgs): void {
+        for (const iHook in args.hooks) {
+            if ("url" in args.hooks[iHook]) {
+                const hookName = `${utils.slugify(iHook)}-${utils.genId()}`;
+                this.hooks[iHook] = new gitlab.GroupHook(
+                    hookName,
+                    {
+                        ...args.hooks[iHook],
+                        "group": this.group.id,
+                        "token": utils.getValue(
+                            // eslint-disable-next-line max-len
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                            "token", args.hooks[iHook].token as ProtectedData
+                        )
+                    } as gitlab.GroupHookArgs,
+                    {
+                        "parent": this.group
+                    }
+                );
+            }
+        }
+    }
+
+    /**
+     * Add variables to the object and create parent relationship
+     *
+     * @param {IGitlabGroupArgs} args - This pulumi object arguments
+     */
+    private addVariables (args: IGitlabGroupArgs): void {
+        for (const iVariable in args.variables) {
+            if ("value" in args.variables[iVariable]) {
+                const variableName =
+                    `${utils.slugify(iVariable)}-${utils.genId()}`;
+                this.variables[iVariable] = new gitlab.GroupVariable(
+                    variableName,
+                    {
+                        ...args.variables[iVariable],
+                        "group": this.group.id,
+                        "key": iVariable,
+                        "value": utils.getValue(
+                            "value",
+                            // eslint-disable-next-line max-len
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                            args.variables[iVariable].value as ProtectedData
+                        )
+                    } as gitlab.GroupVariableArgs,
+                    {
+                        "parent": this.group
+                    }
+                );
+            }
+        }
+    }
+
+
+    /**
+     * Add accessTokens to the object and create parent relationship
+     *
+     * @param {IGitlabGroupArgs} args - This pulumi object arguments
+     */
+    private addAccessTokens (args: IGitlabGroupArgs): void {
+        for (const iAccessToken in args.accessTokens) {
+            if ("scopes" in args.accessTokens[iAccessToken]) {
+                const accessTokenName =
+                    `${utils.slugify(iAccessToken)}-${utils.genId()}`;
+                this.accessTokens[iAccessToken] = new gitlab.GroupAccessToken(
+                    accessTokenName,
+                    {
+                        ...args.accessTokens[iAccessToken],
+                        "group": this.group.id
+                    } as gitlab.GroupAccessTokenArgs,
                     {
                         "parent": this.group
                     }
