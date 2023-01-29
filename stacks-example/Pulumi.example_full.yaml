@@ -27,8 +27,116 @@ config:
         subgroupCreationLevel: owner
         twoFactorGracePeriod: 48
         visibilityLevel: public
+  git-repo:projectConfigs:
+    gitlab:
+      default:
+        allowMergeOnSkippedPipeline: false
+        analyticsAccessLevel: private
+        archiveOnDestroy: true
+        archived: false
+        autoCancelPendingPipelines: enabled
+        autoDevopsEnabled: false
+        autocloseReferencedIssues: true
+        buildGitStrategy: clone
+        buildTimeout: 3600
+        buildsAccessLevel: enabled
+        ciForwardDeploymentEnabled: true
+        containerExpirationPolicy:
+          cadence: 7d
+          enabled: true
+        containerRegistryAccessLevel: disabled
+        defaultBranch: main
+        emailsDisabled: false
+        forkingAccessLevel: enabled
+        initializeWithReadme: false
+        issuesAccessLevel: enabled
+        # (PREMIUM)
+        # issuesTemplate: null
+        lfsEnabled: false
+        mergeCommitTemplate: |-
+          🔀 %{source_branch} into %{target_branch}
+
+          %{title}
+
+          %{description}
+
+          %{issues}
+          See MR %{url}
+
+          %{co_authored_by}
+          %{reviewed_by}
+          %{approved_by}
+          %{merged_by}
+        mergePipelinesEnabled: true
+        mergeRequestsAccessLevel: enabled
+        # (PREMIUM)
+        mergeRequestsTemplate: null
+        mergeTrainsEnabled: true
+        onlyAllowMergeIfAllDiscussionsAreResolved: true
+        onlyAllowMergeIfPipelineSucceeds: true
+        operationsAccessLevel: disabled
+        packagesEnabled: false
+        pagesAccessLevel: disabled
+        pipelinesEnabled: enabled
+        printingMergeRequestLinkEnabled: true
+        publicBuilds: true
+        # (PREMIUM)
+        # pushRules: |-
+        #   commit_message_regex: null
+        #   commit_message_negative_regex: null
+        #   branch_name_regex: "(feature|hotfix|bugfix)"
+        #   deny_delete_tag: true
+        #     prevent_secrets: false
+        #     author_email_regex: ""
+        #     file_name_regex: ""
+        #     max_file_size: 5
+        #     commit_committer_check: false,
+        #   reject_unsigned_commits: true
+        removeSourceBranchAfterMerge: true
+        repositoryAccessLevel: enabled
+        requestAccessEnabled: true
+        requirementsAccessLevel: enabled
+        resolveOutdatedDiffDiscussions: false
+        securityAndComplianceAccessLevel: private
+        sharedRunnersEnabled: true
+        skipWaitForDefaultBranchProtection: false
+        snippetsAccessLevel: disabled
+        squashCommitTemplate: |-
+          %{title}
+
+          %{description}
+
+          %{issues}
+          See MR %{url}
+
+          %{co_authored_by}
+        squashOption: default_off
+        visibilityLevel: public
+        wikiAccessLevel: disabled
   git-repo:groups:
     my_group:
       desc: My Test group description
       providers:
         - provider_name.tld
+      labels:
+        fakeLabel:
+          color: "#000000"
+          description: Fake Description
+      groups:
+        my_sub_group:
+          desc: Description of my SubGroup
+        labels:
+          AnotherFakeLabel:
+            color: "#000000"
+  git-repo:projects:
+    my_group:
+      my_sub_group:
+        my_project:
+          desc: Pulumi test project
+      my_project:
+        desc: Pulumi test project
+    my_project:
+      desc: Pulumi test project
+      providers:
+        - framagit.org
+        - gitlab.com
