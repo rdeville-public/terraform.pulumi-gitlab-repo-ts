@@ -20,5 +20,5 @@ test("Create basic group", (currTest) => {
         opts
     );
 
-    currTest.snapshot(gitlabGroup.group.name);
+    currTest.is(gitlabGroup.name, FAKE_NAME);
 });
