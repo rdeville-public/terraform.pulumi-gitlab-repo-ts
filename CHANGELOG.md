@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## [v0.4.0](https://github.com/rdeville-public/git-repo/compare/0.3.1...0.4.0) (2023-01-29)
+
+### Minor
+
+  * ✨ Restore property name for gitlab group [`2854458`](https://github.com/rdeville-public/git-repo/commit/2854458)
+  * ✨ Add support for gitlab project [`dedd4ae`](https://github.com/rdeville-public/git-repo/commit/dedd4ae)
+
+### Others
+
+  * 🔀 ✨ Add support for Gitlab Project (#40) (Issues:[`#40`](https://github.com/rdeville-public/git-repo/issues/40)[`#36`](https://github.com/rdeville-public/git-repo/issues/36))[`3e2bc6c`](https://github.com/rdeville-public/git-repo/commit/3e2bc6c)
+  * 🔥 Remove now useless snapshot [`c0f9a9b`](https://github.com/rdeville-public/git-repo/commit/c0f9a9b)
+  * ✅ Update group test to avoid snapshots [`199ba4e`](https://github.com/rdeville-public/git-repo/commit/199ba4e)
+  * ✅ Add project testing suite [`5d8219d`](https://github.com/rdeville-public/git-repo/commit/5d8219d)
+  * 🚨 Update eslint and cspell configuration [`439e060`](https://github.com/rdeville-public/git-repo/commit/439e060)
+
 ## [v0.3.1](https://github.com/rdeville-public/git-repo/compare/0.3.0...0.3.1) (2023-01-28)
 
 ### Patch
