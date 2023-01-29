@@ -5,20 +5,29 @@ import type {
     ArgsDict,
     ProjectArgs
 } from "./types";
+import type {
+    ProtectedData
+} from "../utils";
 
 interface IGitlabProjectBadges {
     [key: string]: gitlab.ProjectBadge;
 }
 
+interface IGitlabProjectHooks {
+    [key: string]: gitlab.ProjectHook;
+}
+
 export interface IGitlabProjectArgs {
     projectConfig: ProjectArgs;
     badges?: ArgsDict;
+    hooks?: ArgsDict;
 }
 
 export interface IGitlabProject {
     name: string;
     project: gitlab.Project;
     badges: IGitlabProjectBadges;
+    hooks: IGitlabProjectHooks;
 }
 
 
@@ -37,6 +46,8 @@ export class GitlabProject extends pulumi.ComponentResource
     public project: gitlab.Project;
 
     public badges: IGitlabProjectBadges = {};
+
+    public hooks: IGitlabProjectHooks = {};
 
     /*
      * public accessTokens: gitlab.ProjectAccessToken[];
@@ -70,6 +81,7 @@ export class GitlabProject extends pulumi.ComponentResource
             }
         );
         this.addBadges(args);
+        this.addHooks(args);
         this.registerOutputs();
     }
 
@@ -96,5 +108,32 @@ export class GitlabProject extends pulumi.ComponentResource
         }
     }
 
+    /**
+     * Add hooks to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     */
+    private addHooks (args: IGitlabProjectArgs): void {
+        for (const iHook in args.hooks) {
+            if ("url" in args.hooks[iHook]) {
+                const hookName = `${utils.slugify(iHook)}-${utils.genId()}`;
+                this.hooks[iHook] = new gitlab.ProjectHook(
+                    hookName,
+                    {
+                        ...args.hooks[iHook],
+                        "project": this.project.id,
+                        "token": utils.getValue(
+                            // eslint-disable-next-line max-len
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                            "token", args.hooks[iHook].token as ProtectedData
+                        )
+                    } as gitlab.ProjectHookArgs,
+                    {
+                        "parent": this.project
+                    }
+                );
+            }
+        }
+    }
 
 }
