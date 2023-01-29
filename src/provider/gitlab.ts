@@ -1,11 +1,13 @@
 import * as gitlab from "@pulumi/gitlab";
 import type * as group from "../group";
+import type * as project from "../project";
 import * as pulumi from "@pulumi/pulumi";
 
 export interface IGitlabProvider {
     name: string;
     provider: gitlab.Provider;
     groups: group.GroupsDict;
+    projects: project.ProjectsDict;
 }
 
 
@@ -26,6 +28,8 @@ export class GitlabProvider extends pulumi.ComponentResource
     public provider: gitlab.Provider;
 
     public groups: group.GroupsDict = {};
+
+    public projects: project.ProjectsDict = {};
 
     /**
      * Constructor of the ComponentResource GitlabProvider

@@ -1,4 +1,5 @@
 import * as gitlab from "@pulumi/gitlab";
+import type * as project from "../project";
 import * as pulumi from "@pulumi/pulumi";
 import type {
     GroupArgs
@@ -13,8 +14,10 @@ export interface IGitlabSubGroup {
 }
 
 export interface IGitlabGroup {
+    name: string;
     group: gitlab.Group;
     subgroup: IGitlabSubGroup;
+    projects: project.ProjectsDict;
     /*
      * accessTokens: gitlab.GroupAccessToken[];
      * badges: gitlab.GroupBadge[];
@@ -35,9 +38,13 @@ export interface IGitlabGroup {
 export class GitlabGroup extends pulumi.ComponentResource
     implements IGitlabGroup {
 
+    public name: string;
+
     public group: gitlab.Group;
 
     public subgroup: IGitlabSubGroup = {};
+
+    public projects: project.ProjectsDict = {};
 
     /*
      * public accessTokens: gitlab.GroupAccessToken[] = [];
@@ -61,6 +68,7 @@ export class GitlabGroup extends pulumi.ComponentResource
         opts?: pulumi.ComponentResourceOptions
     ) {
         super("git-repo:gitlab-group", name, args, opts);
+        this.name = name;
         this.group = new gitlab.Group(
             name,
             args.groupConfig,

@@ -33,6 +33,7 @@
       "error",
       "declaration"
     ],
+    "guard-for-in": "off",
     "lines-around-comment": "off",
     "max-params": [
       "error",

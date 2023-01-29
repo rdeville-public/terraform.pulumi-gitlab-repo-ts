@@ -83,9 +83,10 @@ test("group with supported provider without group args", (currTest) => {
         fakeGroups
     );
 
-    currTest.snapshot(
+    currTest.regex(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[0]].groups.fakeGroupName.group.name
+        providers[PROVIDER_NAME[0]].groups.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
     );
 });
 
@@ -111,9 +112,10 @@ test("group with supported provider with default group args", (currTest) => {
         fakeGroupConfigs
     );
 
-    currTest.snapshot(
+    currTest.regex(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[0]].groups.fakeGroupName.group.name
+        providers[PROVIDER_NAME[0]].groups.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
     );
 });
 
@@ -140,13 +142,15 @@ test("group with supported provider mirror groups args", (currTest) => {
         fakeGroupConfigs
     );
 
-    currTest.snapshot(
+    currTest.regex(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[0]].groups.fakeGroupName.group.name
+        providers[PROVIDER_NAME[0]].groups.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
     );
-    currTest.snapshot(
+    currTest.regex(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[1]].groups.fakeGroupName.group.name
+        providers[PROVIDER_NAME[1]].groups.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
     );
 });
 
@@ -180,14 +184,16 @@ test("group with supported provider with subgroup", (currTest) => {
         fakeGroupConfigs
     );
 
-    currTest.snapshot(
+    currTest.regex(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[0]].groups.fakeGroupName.group.name
+        providers[PROVIDER_NAME[0]].groups.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
     );
-    currTest.snapshot(
+    currTest.regex(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].
             groups.fakeGroupName.
-            subgroup.fakeGroupName.group.name
+            subgroup.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
     );
 });
