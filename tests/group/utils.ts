@@ -305,3 +305,36 @@ test("group with supported provider with hooks", (currTest) => {
             hooks.fakeHookName.urn
     );
 });
+
+test("group with supported provider with variables", (currTest) => {
+    const fakeGroups: group.GroupsPulumiInfo = {
+        "fakeGroupName": {
+            "desc": GROUP_DESC,
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]],
+            "variables": {
+                "fakeVariableName": {
+                    "value": "fakeValue"
+                }
+            }
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    group.initGroup(
+        providers,
+        fakeGroups
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].groups.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            groups.fakeGroupName.
+            variables.fakeVariableName.urn
+    );
+});
