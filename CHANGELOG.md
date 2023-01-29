@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## [v0.6.0](https://github.com/rdeville-public/git-repo/compare/0.5.0...0.6.0) (2023-01-29)
+
+### Minor
+
+  * ✨ Add support for gitlab group badges [`2c8f6db`](https://github.com/rdeville-public/git-repo/commit/2c8f6db)
+
+### Others
+
+  * 🔀 📝 Update stack example accordingly to release (#43) (Issues:[`#43`](https://github.com/rdeville-public/git-repo/issues/43))[`14c0441`](https://github.com/rdeville-public/git-repo/commit/14c0441)
+  * 🔀 ✨ Add support for Gitlab Group Badges (#45) (Issues:[`#45`](https://github.com/rdeville-public/git-repo/issues/45)[`#44`](https://github.com/rdeville-public/git-repo/issues/44))[`2093fd2`](https://github.com/rdeville-public/git-repo/commit/2093fd2)
+  * 📝 Update stack example accordingly to release [`2d3a288`](https://github.com/rdeville-public/git-repo/commit/2d3a288)
+  * 📝 Update stack example with use of badges [`6c80a85`](https://github.com/rdeville-public/git-repo/commit/6c80a85)
+  * ✅ Add test for gitlab group badges [`9ade103`](https://github.com/rdeville-public/git-repo/commit/9ade103)
+
 ## [v0.5.0](https://github.com/rdeville-public/git-repo/compare/0.4.0...0.5.0) (2023-01-29)
 
 ### Minor
