@@ -1,29 +1,30 @@
 import * as gitlab from "@pulumi/gitlab";
 import * as pulumi from "@pulumi/pulumi";
+import * as utils from "../utils";
 import type {
+    ArgsDict,
     ProjectArgs
 } from "./types";
 
+interface IGitlabProjectBadges {
+    [key: string]: gitlab.ProjectBadge;
+}
+
 export interface IGitlabProjectArgs {
     projectConfig: ProjectArgs;
+    badges?: ArgsDict;
 }
 
 export interface IGitlabProject {
     name: string;
     project: gitlab.Project;
-    /*
-     * accessTokens: gitlab.ProjectAccessToken[];
-     * badges: gitlab.ProjectBadge[];
-     * hooks: gitlab.ProjectHook[];
-     * mirror: gitlab.ProjectMirror[];
-     * variables: gitlab.ProjectVariable[];
-     */
+    badges: IGitlabProjectBadges;
 }
 
 
 /**
  * Pulumi custom ComponentResource which deploy a gitlab projects and associated
- * resources such as labels, hooks, etc.
+ * resources such as badges, hooks, etc.
  *
  * @augments pulumi.ComponentResource
  * @implements {IGitlabProject} IGitlabProject
@@ -34,6 +35,8 @@ export class GitlabProject extends pulumi.ComponentResource
     public name: string;
 
     public project: gitlab.Project;
+
+    public badges: IGitlabProjectBadges = {};
 
     /*
      * public accessTokens: gitlab.ProjectAccessToken[];
@@ -66,7 +69,32 @@ export class GitlabProject extends pulumi.ComponentResource
                 "parent": this
             }
         );
+        this.addBadges(args);
         this.registerOutputs();
     }
+
+    /**
+     * Add badges to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     */
+    private addBadges (args: IGitlabProjectArgs): void {
+        for (const iBadge in args.badges) {
+            if ("linkUrl" in args.badges[iBadge]) {
+                const badgeName = `${utils.slugify(iBadge)}-${utils.genId()}`;
+                this.badges[iBadge] = new gitlab.ProjectBadge(
+                    badgeName,
+                    {
+                        ...args.badges[iBadge],
+                        "project": this.project.id
+                    } as gitlab.ProjectBadgeArgs,
+                    {
+                        "parent": this.project
+                    }
+                );
+            }
+        }
+    }
+
 
 }
