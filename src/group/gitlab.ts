@@ -4,6 +4,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utils from "../utils";
 import type {
     GroupArgs,
+    GroupBadgesPulumiConfig,
     GroupLabelsPulumiConfig
 } from "./types";
 
@@ -11,9 +12,15 @@ interface IGitlabGroupLabels {
     [key: string]: gitlab.GroupLabel;
 }
 
+interface IGitlabGroupBadges {
+    [key: string]: gitlab.GroupBadge;
+}
+
+
 export interface IGitlabGroupArgs {
     groupConfig: GroupArgs;
     labels?: GroupLabelsPulumiConfig;
+    badges?: GroupBadgesPulumiConfig;
 }
 
 export interface IGitlabSubGroup {
@@ -26,9 +33,9 @@ export interface IGitlabGroup {
     subgroup: IGitlabSubGroup;
     projects: project.ProjectsDict;
     labels: IGitlabGroupLabels;
+    badges: IGitlabGroupBadges;
     /*
      * accessTokens: gitlab.GroupAccessToken[];
-     * badges: gitlab.GroupBadge[];
      * hooks: gitlab.GroupHook[];
      * variables: gitlab.GroupVariable[];
      */
@@ -55,6 +62,8 @@ export class GitlabGroup extends pulumi.ComponentResource
 
     public labels: IGitlabGroupLabels = {};
 
+    public badges: IGitlabGroupBadges = {};
+
     /*
      * public accessTokens: gitlab.GroupAccessToken[] = [];
      * public badges: gitlab.GroupBadge[] = [];
@@ -67,7 +76,7 @@ export class GitlabGroup extends pulumi.ComponentResource
      * Constructor of the ComponentResource GitlabGroup
      *
      * @param {string} name - Name of the group
-     * @param {GroupArgs} args - Gitlab group arguments
+     * @param {IGitlabGroupArgs} args - This pulumi object arguments
      * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      *      options
      */
@@ -87,13 +96,14 @@ export class GitlabGroup extends pulumi.ComponentResource
             }
         );
         this.addLabels(args);
+        this.addBadges(args);
         this.registerOutputs();
     }
 
     /**
      * Add labels to the object and create parent relationship
      *
-     * @param {IGitlabGroupArgs} args - [TODO:description]
+     * @param {IGitlabGroupArgs} args - This pulumi object arguments
      */
     private addLabels (args: IGitlabGroupArgs): void {
         for (const iLabel in args.labels) {
@@ -103,6 +113,30 @@ export class GitlabGroup extends pulumi.ComponentResource
                     labelName,
                     {
                         ...args.labels[iLabel],
+                        "group": this.group.id
+                    },
+                    {
+                        "parent": this.group
+                    }
+                );
+            }
+        }
+    }
+
+
+    /**
+     * Add badges to the object and create parent relationship
+     *
+     * @param {IGitlabGroupArgs} args - This pulumi object arguments
+     */
+    private addBadges (args: IGitlabGroupArgs): void {
+        for (const iBadge in args.badges) {
+            if ("linkUrl" in args.badges[iBadge]) {
+                const badgeName = `${utils.slugify(iBadge)}-${utils.genId()}`;
+                this.badges[iBadge] = new gitlab.GroupBadge(
+                    badgeName,
+                    {
+                        ...args.badges[iBadge],
                         "group": this.group.id
                     },
                     {
