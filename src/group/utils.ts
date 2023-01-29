@@ -1,82 +1,78 @@
-import * as group from "../group";
+import type * as gitlab from "@pulumi/gitlab";
 import * as pulumi from "@pulumi/pulumi";
 import type {
     ArgsDict,
-    GroupArgs,
     GroupData,
     GroupInfo,
     GroupPulumiConfig,
-    GroupSupportedObject,
-    GroupsPulumiConfig,
     GroupsPulumiInfo
 } from "./types";
 import type {
-    ProviderSupportedObject,
+    GitlabProvider,
     ProvidersDict
 } from "../provider";
 import {
     genId,
     slugify
 } from "../utils";
+import {
+    GitlabGroup
+} from "./index";
 
 /**
  * Compute group configuration depending on the type of group
  *
  * @param {string} providerName - Name of the gitProvider
- * @param {string} providerType - Type of the gitProvider
- * @param {GroupsPulumiConfig} groupsConfig - Group configuration from the stack
+ * @param {GroupPulumiConfig} groupConfig - Group configuration from the stack
  * @param {string} [groupType] - Type of the group (default: "default")
- * @returns {GroupArgs} Set of group args corresponding to group configuration
+ * @returns {gitlab.GroupArgs} Set of group args corresponding to group
+ *      configuration
  */
 function computeGroupConfig (
     providerName: string,
-    providerType: string,
-    groupsConfig?: GroupsPulumiConfig,
+    groupConfig?: GroupPulumiConfig,
     groupType = "default"
-): GroupArgs {
-    if (groupsConfig) {
+): gitlab.GroupArgs {
+    if (groupConfig) {
         const config: pulumi.Config = new pulumi.Config();
 
-        const providerGroupConfigs: GroupPulumiConfig =
-            groupsConfig[providerType];
-
         if (
-            typeof providerGroupConfigs !== "undefined" &&
-            "default" in providerGroupConfigs
+            typeof groupConfig !== "undefined" &&
+            "default" in groupConfig
         ) {
             if (providerName === config.require("mainProvider")) {
-                return providerGroupConfigs.default as GroupArgs;
+                return groupConfig.default as gitlab.GroupArgs;
             }
             return {
-                ...providerGroupConfigs.default,
-                ...providerGroupConfigs[groupType]
-            } as GroupArgs;
+                ...groupConfig.default,
+                ...groupConfig[groupType]
+            } as gitlab.GroupArgs;
         }
     }
 
-    return {} as GroupArgs;
+    return {} as gitlab.GroupArgs;
 }
 
 /**
  * Compute data, i.e. args and opts for the group
  *
- * @param {ProviderSupportedObject} provider - Provider object
+ * @param {GitlabProvider} provider - Provider object
  * @param {GroupInfo} groupInfo - Info of the group
  * @param {string} groupName - Name of the group
- * @param {GroupsPulumiConfig} [groupsConfig] - Possible group configurations
- * @param {GroupSupportedObject} [parentGroup] - Pulumi group object depending
+ * @param {GroupPulumiConfig} [groupsConfig] - Possible group configurations
+ * @param {GitlabGroup} [parentGroup] - Pulumi group object depending
  *      on provider
  * @returns {GroupData} Object with args and data for Pulumi Group object
  */
 function computeGroupData (
-    provider: ProviderSupportedObject,
+    provider: GitlabProvider,
     // Will be used later when other type of group resources will be supported
     groupInfo: GroupInfo,
     groupName: string,
-    groupsConfig?: GroupsPulumiConfig,
-    parentGroup?: GroupSupportedObject
+    groupsConfig?: GroupPulumiConfig,
+    parentGroup?: GitlabGroup
 ): GroupData {
-    let data: GroupArgs = {
+    let data: gitlab.GroupArgs = {
         "path": slugify(groupName)
     };
 
@@ -87,7 +83,7 @@ function computeGroupData (
         data = {
             ...data,
             parentId
-        } as GroupArgs;
+        } as gitlab.GroupArgs;
     }
     return {
         "args": {
@@ -96,12 +92,11 @@ function computeGroupData (
             "groupConfig": {
                 ...computeGroupConfig(
                     provider.name,
-                    provider.providerType,
                     groupsConfig
                 ),
                 ...data,
                 "name": groupName
-            } as GroupArgs,
+            } as gitlab.GroupArgs,
             "hooks": groupInfo.hooks ?? {} as ArgsDict,
             "labels": groupInfo.labels ?? {} as ArgsDict,
             "variables": groupInfo.variables ?? {} as ArgsDict
@@ -116,26 +111,28 @@ function computeGroupData (
 /**
  * Create provider supported group
  *
- * @param {ProviderSupportedObject} provider - Provider object
+ * @param {GitlabProvider} provider - Provider object
  * @param {string} groupName - Name of the group
  * @param {GroupInfo} groupInfo - Info of the group
- * @param {GroupsPulumiConfig} [groupsConfig] - Possible group configurations
- * @param {GroupSupportedObject} [parentGroup] - Pulumi parent group
- * @returns {GroupSupportedObject} Pulumi group object depending on provider
+ * @param {GroupPulumiConfig} [groupsConfig] - Possible group configurations
+ * @param {GitlabGroup} [parentGroup] - Pulumi parent group
+ * @returns {GitlabGroup} Pulumi group object depending on provider
  */
 function createGroup (
-    provider: ProviderSupportedObject,
+    provider: GitlabProvider,
     groupName: string,
     groupInfo: GroupInfo,
-    groupsConfig?: GroupsPulumiConfig,
-    parentGroup?: GroupSupportedObject
-): GroupSupportedObject {
+    groupsConfig?: GroupPulumiConfig,
+    parentGroup?: GitlabGroup
+): GitlabGroup {
     const data = computeGroupData(
         provider, groupInfo, groupName, groupsConfig, parentGroup
     );
     const groupNameSlug = slugify(`${groupName}-${genId()}`);
-    const currGroup = group.groupFactory(
-        provider.providerType, groupNameSlug, data
+    const currGroup = new GitlabGroup(
+        groupNameSlug,
+        data.args,
+        data.opts
     );
 
     if (parentGroup) {
@@ -152,15 +149,15 @@ function createGroup (
  * @param {ProvidersDict} providers - Set of providers
  * @param {string} groupName - Name of the group
  * @param {GroupInfo} groupInfo - Information of the group (such as desc, etc.)
- * @param {GroupsPulumiConfig} groupsConfig - groupConfigs set in the stack
- * @param {GroupSupportedObject} [parentGroup] - Group object to define subgroup
+ * @param {GroupPulumiConfig} groupsConfig - groupConfigs set in the stack
+ * @param {GitlabGroup} [parentGroup] - Group object to define subgroup
  */
 function processGroups (
     providers: ProvidersDict,
     groupName: string,
     groupInfo: GroupInfo,
-    groupsConfig?: GroupsPulumiConfig,
-    parentGroup?: GroupSupportedObject
+    groupsConfig?: GroupPulumiConfig,
+    parentGroup?: GitlabGroup
 ): void {
     if (parentGroup) {
         for (const iProvider in providers) {
@@ -209,16 +206,16 @@ function processGroups (
  * @param {ProvidersDict} providers - Set of providers
  * @param {GroupsPulumiInfo | undefined} groupsInfo - groups entry set in the
  *      stack
- * @param {GroupsPulumiConfig} groupsConfig - groupConfigs set in the stack
- * @param {GroupSupportedObject} parentGroup - Group parent if group is a
+ * @param {GroupPulumiConfig} groupsConfig - groupConfigs set in the stack
+ * @param {GitlabGroup} parentGroup - Group parent if group is a
  *      subgroup
  * @param {string[]} [parentProviders] - List of provider used for parent Group
  */
 export function initGroup (
     providers: ProvidersDict,
     groupsInfo: GroupsPulumiInfo | undefined,
-    groupsConfig?: GroupsPulumiConfig,
-    parentGroup?: GroupSupportedObject,
+    groupsConfig?: GroupPulumiConfig,
+    parentGroup?: GitlabGroup,
     parentProviders?: string[]
 ): void {
     for (const iGroup in groupsInfo) {

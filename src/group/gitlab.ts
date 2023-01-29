@@ -3,8 +3,7 @@ import type * as project from "../project";
 import * as pulumi from "@pulumi/pulumi";
 import * as utils from "../utils";
 import type {
-    ArgsDict,
-    GroupArgs
+    ArgsDict
 } from "./types";
 import type {
     ProtectedData
@@ -31,7 +30,7 @@ interface IGitlabGroupAccessToken {
 }
 
 export interface IGitlabGroupArgs {
-    groupConfig: GroupArgs;
+    groupConfig: gitlab.GroupArgs;
     labels?: ArgsDict;
     badges?: ArgsDict;
     hooks?: ArgsDict;

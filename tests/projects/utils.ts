@@ -103,10 +103,8 @@ test(
             }
         };
 
-        const fakeProjectConfigs: project.ProjectsPulumiConfig = {
-            "gitlab": {
-                "default": {}
-            }
+        const fakeProjectConfigs: project.ProjectPulumiConfig = {
+            "default": {}
         };
 
         const providers = provider.initProvider(PROVIDER);
@@ -134,11 +132,9 @@ test("project with supported provider mirror projects args", (currTest) => {
         }
     };
 
-    const fakeProjectConfigs: project.ProjectsPulumiConfig = {
-        "gitlab": {
-            "default": {},
-            "mirror": {}
-        }
+    const fakeProjectConfigs: project.ProjectPulumiConfig = {
+        "default": {},
+        "mirror": {}
     };
 
     const providers = provider.initProvider(PROVIDER);

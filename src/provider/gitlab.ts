@@ -10,7 +10,6 @@ export interface IGitlabProvider {
     projects: project.ProjectsDict;
 }
 
-
 /**
  * Pulumi custom ComponentResource which deploy a gitlab provider and its
  * associated API client.
@@ -20,8 +19,6 @@ export interface IGitlabProvider {
  */
 export class GitlabProvider extends pulumi.ComponentResource
     implements IGitlabProvider {
-
-    public readonly providerType = "gitlab";
 
     public name = "";
 
