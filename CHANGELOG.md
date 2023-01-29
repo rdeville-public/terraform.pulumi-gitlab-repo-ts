@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## [v0.9.0](https://github.com/rdeville-public/git-repo/compare/0.8.0...0.9.0) (2023-01-29)
+
+### Minor
+
+  * ✨ Add github provider support [`aa25833`](https://github.com/rdeville-public/git-repo/commit/aa25833)
+
+### Patch
+
+  * ➕ Add @pulumi/github as dependency [`a886e15`](https://github.com/rdeville-public/git-repo/commit/a886e15)
+
+### Others
+
+  * 🔀 ✨ Add Github provider support (#61) (Issues:[`#61`](https://github.com/rdeville-public/git-repo/issues/61)[`#60`](https://github.com/rdeville-public/git-repo/issues/60))[`0b06cb5`](https://github.com/rdeville-public/git-repo/commit/0b06cb5)
+  * ✅ Add github provider tests [`09ccbbe`](https://github.com/rdeville-public/git-repo/commit/09ccbbe)
+
 ## [v0.8.0](https://github.com/rdeville-public/git-repo/compare/0.7.0...0.8.0) (2023-01-29)
 
 ### Minor
