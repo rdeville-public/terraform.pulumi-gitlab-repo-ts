@@ -16,7 +16,7 @@ config:
       token:
         cmd: cmd to get github token api
   git-repo:mainProvider: framagit.org
-  git-repo:repo_config:
+  git-repo:projectConfigs:
     gitlab:
       default:
         # Set to true if you want to treat skipped pipelines as if they finished
@@ -334,17 +334,32 @@ config:
         - framagit.org
         - gitlab.com # will be a mirror of group at framagit.org
         - github.com # will be a mirror of group at framagit.org
-      # labels:
-      #     # The color of the label given in 6-digit hex notation with leading
-      #     # '#' sign (e.g. #FFAABB) or one of the CSS color names.
-      #   - color: "#000000"
-      #     # The description of the label.
-      #     description: TODO
-      #     # The name of the label.
-      #     name: TODO
+      groups:
+        # Name of a subgroup
+        # Any subgroup will automatically use parent group provider
+        # Depending on your provider, subgroup may also share resources such as
+        # labels, variables, etc.
+        my_sub_group:
+          desc: My Subgroup Description
+          logo: ./img/another/path.png
+      labels:
+        # The name of the label.
+        labelName:
+          # The color of the label given in 6-digit hex notation with leading
+          # '#' sign (e.g. #FFAABB) or one of the CSS color names.
+          color: "#000000"
+          # The description of the label.
+          description: TODO
+        # The name of the label.
+        AnotherLabelName:
+          # The color of the label given in 6-digit hex notation with leading
+          # '#' sign (e.g. #FFAABB) or one of the CSS color names.
+          color: "#000000"
+          # The description of the label.
+          description: TODO
       # variables:
-      #     # The name of the variable.
-      #   - key: TODO
+      #   # The name of the variable.
+      #   variableKey:
       #     # The environment scope of the variable. Defaults to all environment (*).
       #     # Note that in Community Editions of Gitlab, values other than * will
       #     # cause inconsistent plans.
@@ -360,9 +375,38 @@ config:
       #     # The type of a variable. Valid values are: env_var, file.
       #     # Default is env_var.
       #     variableType: env_var
-      # access_token:
-      #     # The name of the group access token.
-      #   - name: TODO
+      #   # The name of the variable.
+      #   AnotherVariableKey:
+      #     # The environment scope of the variable. Defaults to all environment (*).
+      #     # Note that in Community Editions of Gitlab, values other than * will
+      #     # cause inconsistent plans.
+      #     environmentScope: "*"
+      #     # If set to true, the value of the variable will be hidden in job logs.
+      #     # The value must meet the masking requirements. Defaults to false.
+      #     masked: true
+      #     # If set to true, the variable will be passed only to pipelines
+      #     # running on protected branches and tags. Defaults to false.
+      #     protected: true
+      #     # The value of the variable.
+      #     value: TODO
+      #     # The type of a variable. Valid values are: env_var, file.
+      #     # Default is env_var.
+      #     variableType: env_var
+      # accessToken:
+      #   # The name of the group access token.
+      #   accesTokenName:
+      #     # The scope for the group access token. It determines the actions
+      #     # which can be performed when authenticating with this token.
+      #     # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
+      #     scopes: []
+      #     # The access level for the group access token.
+      #     # Valid values are: guest, reporter, developer, maintainer, owner.
+      #     accessLevel: owner
+      #     # The token expires at midnight UTC on that date.
+      #     # The date must be in the format YYYY-MM-DD. Default is never.
+      #     expiresAt:
+      #   # The name of the group access token.
+      #   AnotherAccesTokenName:
       #     # The scope for the group access token. It determines the actions
       #     # which can be performed when authenticating with this token.
       #     # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
@@ -374,15 +418,19 @@ config:
       #     # The date must be in the format YYYY-MM-DD. Default is never.
       #     expiresAt:
       # badges:
+      #   # The name of the badge in the pulumi stack
+      #   badgeName:
       #     # The image url which will be presented on group overview.
-      #   - imageUrl: TODO
+      #     imageUrl: TODO
+      #     # The url linked with the badge.
+      #     linkUrl: TODO
+      #   # The name of the badge in the pulumi stack
+      #   AnotherBadgeName:
+      #     # The image url which will be presented on group overview.
+      #     imageUrl: TODO
       #     # The url linked with the badge.
       #     linkUrl: TODO
       # Set of subgroups of the main group with the same structure of a group
-      groups:
-        programs:
-          desc: My Programs and Scripts
-          logo: ./img/namespace/programs.png
     another_group:
       desc: My Private Repository
       logo: ./img/namespace/rdeville.private.png
@@ -390,9 +438,97 @@ config:
       fork:
         framagit.org: rdeville.public
   # Set of repos de deploy within the group architecture
-  git-repo:repos:
+  git-repo:project:
     my_group:
       programs:
         my-repo:
           desc: My repo description
           logo: ./img/repos/programs/my-repo.png
+      # labels:
+      #   # The name of the label.
+      #   labelName:
+      #     # The color of the label given in 6-digit hex notation with leading
+      #     # '#' sign (e.g. #FFAABB) or one of the CSS color names.
+      #     color: "#000000"
+      #     # The description of the label.
+      #     description: TODO
+      #   # The name of the label.
+      #   AnotherLabelName:
+      #     # The color of the label given in 6-digit hex notation with leading
+      #     # '#' sign (e.g. #FFAABB) or one of the CSS color names.
+      #     color: "#000000"
+      #     # The description of the label.
+      #     description: TODO
+      # variables:
+      #   # The name of the variable.
+      #   variableKey:
+      #     # The environment scope of the variable. Defaults to all environment (*).
+      #     # Note that in Community Editions of Gitlab, values other than * will
+      #     # cause inconsistent plans.
+      #     environmentScope: "*"
+      #     # If set to true, the value of the variable will be hidden in job logs.
+      #     # The value must meet the masking requirements. Defaults to false.
+      #     masked: true
+      #     # If set to true, the variable will be passed only to pipelines
+      #     # running on protected branches and tags. Defaults to false.
+      #     protected: true
+      #     # The value of the variable.
+      #     value: TODO
+      #     # The type of a variable. Valid values are: env_var, file.
+      #     # Default is env_var.
+      #     variableType: env_var
+      #   # The name of the variable.
+      #   AnotherVariableKey:
+      #     # The environment scope of the variable. Defaults to all environment (*).
+      #     # Note that in Community Editions of Gitlab, values other than * will
+      #     # cause inconsistent plans.
+      #     environmentScope: "*"
+      #     # If set to true, the value of the variable will be hidden in job logs.
+      #     # The value must meet the masking requirements. Defaults to false.
+      #     masked: true
+      #     # If set to true, the variable will be passed only to pipelines
+      #     # running on protected branches and tags. Defaults to false.
+      #     protected: true
+      #     # The value of the variable.
+      #     value: TODO
+      #     # The type of a variable. Valid values are: env_var, file.
+      #     # Default is env_var.
+      #     variableType: env_var
+      # accessToken:
+      #   # The name of the group access token.
+      #   accesTokenName:
+      #     # The scope for the group access token. It determines the actions
+      #     # which can be performed when authenticating with this token.
+      #     # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
+      #     scopes: []
+      #     # The access level for the group access token.
+      #     # Valid values are: guest, reporter, developer, maintainer, owner.
+      #     accessLevel: owner
+      #     # The token expires at midnight UTC on that date.
+      #     # The date must be in the format YYYY-MM-DD. Default is never.
+      #     expiresAt:
+      #   # The name of the group access token.
+      #   AnotherAccesTokenName:
+      #     # The scope for the group access token. It determines the actions
+      #     # which can be performed when authenticating with this token.
+      #     # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
+      #     scopes: []
+      #     # The access level for the group access token.
+      #     # Valid values are: guest, reporter, developer, maintainer, owner.
+      #     accessLevel: owner
+      #     # The token expires at midnight UTC on that date.
+      #     # The date must be in the format YYYY-MM-DD. Default is never.
+      #     expiresAt:
+      # badges:
+      #   # The name of the badge in the pulumi stack
+      #   badgeName:
+      #     # The image url which will be presented on group overview.
+      #     imageUrl: TODO
+      #     # The url linked with the badge.
+      #     linkUrl: TODO
+      #   # The name of the badge in the pulumi stack
+      #   AnotherBadgeName:
+      #     # The image url which will be presented on group overview.
+      #     imageUrl: TODO
+      #     # The url linked with the badge.
+      #     linkUrl: TODO

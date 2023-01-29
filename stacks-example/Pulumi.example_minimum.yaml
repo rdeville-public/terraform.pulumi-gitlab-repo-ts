@@ -17,3 +17,18 @@ config:
       providers:
         - provider_name.tld
         - another_provider_name
+      groups:
+        my_sub_group:
+          desc: My Test group descrpition
+  git-repo:projects:
+    my_group:
+      my_project:
+        desc: My Test group in a first level group descrpition
+      my_sub_group:
+        my_project:
+          desc: My Test group in a nested group descrpition
+    my_project:
+      desc: My Test group descrpition
+    providers:
+      - provider_name.tld
+      - another_provider_name
