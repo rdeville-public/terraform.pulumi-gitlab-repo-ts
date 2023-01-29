@@ -91,6 +91,7 @@ function computeGroupData (
     }
     return {
         "args": {
+            "accessTokens": groupInfo.accessTokens ?? {} as ArgsDict,
             "badges": groupInfo.badges ?? {},
             "groupConfig": {
                 ...computeGroupConfig(
