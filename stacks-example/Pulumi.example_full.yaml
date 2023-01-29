@@ -215,3 +215,10 @@ config:
           anotherVariableKey:
             value:
               env: SHELL
+      accessTokens:
+        accesTokenName:
+          scopes:
+            - read_repository
+        AnotherAccesTokenName:
+          scopes:
+            - read_registry

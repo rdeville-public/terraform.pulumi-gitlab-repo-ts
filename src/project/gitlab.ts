@@ -21,11 +21,16 @@ interface IGitlabProjectVariables {
     [key: string]: gitlab.ProjectVariable;
 }
 
+interface IGitlabProjectAccessToken {
+    [key: string]: gitlab.ProjectAccessToken;
+}
+
 export interface IGitlabProjectArgs {
     projectConfig: ProjectArgs;
     badges?: ArgsDict;
     hooks?: ArgsDict;
     variables?: ArgsDict;
+    accessTokens?: ArgsDict;
 }
 
 export interface IGitlabProject {
@@ -34,6 +39,7 @@ export interface IGitlabProject {
     badges: IGitlabProjectBadges;
     hooks: IGitlabProjectHooks;
     variables: IGitlabProjectVariables;
+    accessTokens: IGitlabProjectAccessToken;
 }
 
 
@@ -57,13 +63,7 @@ export class GitlabProject extends pulumi.ComponentResource
 
     public variables: IGitlabProjectVariables = {};
 
-    /*
-     * public accessTokens: gitlab.ProjectAccessToken[];
-     * public badges: gitlab.ProjectBadge[];
-     * public hooks: gitlab.ProjectHook[];
-     * public mirror: gitlab.ProjectMirror[];
-     * public variables: gitlab.ProjectVariable[];
-     */
+    public accessTokens: IGitlabProjectAccessToken = {};
 
     /**
      * Constructor of the ComponentResource GitlabProject
@@ -91,6 +91,7 @@ export class GitlabProject extends pulumi.ComponentResource
         this.addBadges(args);
         this.addHooks(args);
         this.addVariables(args);
+        this.addAccessTokens(args);
         this.registerOutputs();
     }
 
@@ -168,6 +169,30 @@ export class GitlabProject extends pulumi.ComponentResource
                             args.variables[iVariable].value as ProtectedData
                         )
                     } as gitlab.ProjectVariableArgs,
+                    {
+                        "parent": this.project
+                    }
+                );
+            }
+        }
+    }
+
+    /**
+     * Add accessTokens to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     */
+    private addAccessTokens (args: IGitlabProjectArgs): void {
+        for (const iAccessToken in args.accessTokens) {
+            if ("scopes" in args.accessTokens[iAccessToken]) {
+                const accessTokenName =
+                    `${utils.slugify(iAccessToken)}-${utils.genId()}`;
+                this.accessTokens[iAccessToken] = new gitlab.ProjectAccessToken(
+                    accessTokenName,
+                    {
+                        ...args.accessTokens[iAccessToken],
+                        "project": this.project.id
+                    } as gitlab.ProjectAccessTokenArgs,
                     {
                         "parent": this.project
                     }

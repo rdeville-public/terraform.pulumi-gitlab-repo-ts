@@ -97,6 +97,7 @@ function computeProjectData (
     }
     return {
         "args": {
+            "accessTokens": projectInfo.accessTokens ?? {} as ArgsDict,
             "badges": projectInfo.badges ?? {} as ArgsDict,
             "hooks": projectInfo.hooks ?? {} as ArgsDict,
             "projectConfig": {
