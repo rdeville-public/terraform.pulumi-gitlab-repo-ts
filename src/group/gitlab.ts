@@ -22,12 +22,16 @@ interface IGitlabGroupHooks {
     [key: string]: gitlab.GroupHook;
 }
 
+interface IGitlabGroupVariable {
+    [key: string]: gitlab.GroupVariable;
+}
 
 export interface IGitlabGroupArgs {
     groupConfig: GroupArgs;
     labels?: ArgsDict;
     badges?: ArgsDict;
     hooks?: ArgsDict;
+    variables?: ArgsDict;
 }
 
 export interface IGitlabSubGroup {
@@ -42,6 +46,7 @@ export interface IGitlabGroup {
     labels: IGitlabGroupLabels;
     badges: IGitlabGroupBadges;
     hooks: IGitlabGroupHooks;
+    variables: IGitlabGroupVariable;
 }
 
 /**
@@ -68,6 +73,7 @@ export class GitlabGroup extends pulumi.ComponentResource
 
     public hooks: IGitlabGroupHooks = {};
 
+    public variables: IGitlabGroupVariable = {};
 
     /**
      * Constructor of the ComponentResource GitlabGroup
@@ -95,6 +101,7 @@ export class GitlabGroup extends pulumi.ComponentResource
         this.addLabels(args);
         this.addBadges(args);
         this.addHooks(args);
+        this.addVariables(args);
         this.registerOutputs();
     }
 

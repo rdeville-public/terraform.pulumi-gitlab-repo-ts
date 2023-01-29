@@ -16,6 +16,7 @@ export interface GroupInfo {
     labels?: ArgsDict;
     badges?: ArgsDict;
     hooks?: ArgsDict;
+    variables?: ArgsDict;
 }
 
 export interface ArgsDict {
@@ -51,6 +52,9 @@ export interface GroupHooksPulumiConfig {
     [key: string]: GroupHooksArgs;
 }
 
+export interface GroupVariablesPulumiConfig {
+    [key: string]: GroupVariablesArgs;
+}
 // Type
 // eslint warnings below won't be raised once other provider will be supported
 export type GroupSupportedObject = gitlabGroup.GitlabGroup;
@@ -58,6 +62,7 @@ export type GroupArgs = gitlab.GroupArgs;
 export type GroupLabelsArgs = gitlab.GroupLabelArgs;
 export type GroupBadgesArgs = gitlab.GroupBadgeArgs;
 export type GroupHooksArgs = gitlab.GroupHookArgs;
+export type GroupVariablesArgs = gitlab.GroupVariableArgs;
 
 // Enum
 export enum GroupType {

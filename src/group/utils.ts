@@ -103,6 +103,7 @@ function computeGroupData (
             } as GroupArgs,
             "hooks": groupInfo.hooks ?? {} as ArgsDict,
             "labels": groupInfo.labels ?? {} as ArgsDict,
+            "variables": groupInfo.variables ?? {} as ArgsDict
         },
         "opts": {
             "parent": parentGroup?.group ?? provider,
