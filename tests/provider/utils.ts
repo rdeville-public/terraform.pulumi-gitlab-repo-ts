@@ -12,7 +12,7 @@ test("not supported git provider initialization", (currTest) => {
         "fakeName": {
             "baseUrl": FAKE_BASEURL,
             "token": FAKE_TOKEN,
-            "type": "github"
+            "type": "fakeProvider"
         }
     };
     const initProvider = utils.initProvider(data);

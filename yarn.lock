@@ -855,6 +855,13 @@
     "@pnpm/network.ca-file" "^1.0.1"
     config-chain "^1.1.11"
 
+"@pulumi/github@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@pulumi/github/-/github-5.3.0.tgz#6f0746e04988216c5242b7d7a25bf01dbd241351"
+  integrity sha512-TBkgq1Lr5w0v7s3J04qHnOO8OK1swzYqN79PDUdbYva8oyu0MzMB5QOKBszXj4znih2aSlXNDUnSMLLlkAdteQ==
+  dependencies:
+    "@pulumi/pulumi" "^3.0.0"
+
 "@pulumi/gitlab@^4.9.0":
   version "4.9.0"
   resolved "https://registry.yarnpkg.com/@pulumi/gitlab/-/gitlab-4.9.0.tgz#94240fcb6a1a9f4cb690fe65390e49e954a7084d"
