@@ -526,41 +526,41 @@ config:
         my-repo:
           desc: My repo description
           logo: ./img/repos/programs/my-repo.png
-      # variables:
-      #   # The name of the variable.
-      #   variableKey:
-      #     # The environment scope of the variable. Defaults to all environment (*).
-      #     # Note that in Community Editions of Gitlab, values other than * will
-      #     # cause inconsistent plans.
-      #     environmentScope: "*"
-      #     # If set to true, the value of the variable will be hidden in job logs.
-      #     # The value must meet the masking requirements. Defaults to false.
-      #     masked: true
-      #     # If set to true, the variable will be passed only to pipelines
-      #     # running on protected branches and tags. Defaults to false.
-      #     protected: true
-      #     # The value of the variable.
-      #     value: TODO
-      #     # The type of a variable. Valid values are: env_var, file.
-      #     # Default is env_var.
-      #     variableType: env_var
-      #   # The name of the variable.
-      #   AnotherVariableKey:
-      #     # The environment scope of the variable. Defaults to all environment (*).
-      #     # Note that in Community Editions of Gitlab, values other than * will
-      #     # cause inconsistent plans.
-      #     environmentScope: "*"
-      #     # If set to true, the value of the variable will be hidden in job logs.
-      #     # The value must meet the masking requirements. Defaults to false.
-      #     masked: true
-      #     # If set to true, the variable will be passed only to pipelines
-      #     # running on protected branches and tags. Defaults to false.
-      #     protected: true
-      #     # The value of the variable.
-      #     value: TODO
-      #     # The type of a variable. Valid values are: env_var, file.
-      #     # Default is env_var.
-      #     variableType: env_var
+      variables:
+        # The name of the variable.
+        variableKey:
+          # The environment scope of the variable. Defaults to all environment (*).
+          # Note that in Community Editions of Gitlab, values other than * will
+          # cause inconsistent plans.
+          environmentScope: "*"
+          # If set to true, the value of the variable will be hidden in job logs.
+          # The value must meet the masking requirements. Defaults to false.
+          masked: true
+          # If set to true, the variable will be passed only to pipelines
+          # running on protected branches and tags. Defaults to false.
+          protected: true
+          # The value of the variable.
+          value: TODO
+          # The type of a variable. Valid values are: env_var, file.
+          # Default is env_var.
+          variableType: env_var
+        # The name of the variable.
+        AnotherVariableKey:
+          # The environment scope of the variable. Defaults to all environment (*).
+          # Note that in Community Editions of Gitlab, values other than * will
+          # cause inconsistent plans.
+          environmentScope: "*"
+          # If set to true, the value of the variable will be hidden in job logs.
+          # The value must meet the masking requirements. Defaults to false.
+          masked: true
+          # If set to true, the variable will be passed only to pipelines
+          # running on protected branches and tags. Defaults to false.
+          protected: true
+          # The value of the variable.
+          value: TODO
+          # The type of a variable. Valid values are: env_var, file.
+          # Default is env_var.
+          variableType: env_var
       # accessTokens:
       #   # The name of the group access token.
       #   accesTokenName:
