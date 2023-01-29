@@ -4,7 +4,7 @@ import type * as pulumi from "@pulumi/pulumi";
 
 // Interface
 export interface ProjectData {
-    args?: gitlabProject.IGitlabProjectArgs | undefined;
+    args: gitlabProject.IGitlabProjectArgs;
     opts: pulumi.CustomResourceOptions;
 }
 
@@ -28,41 +28,28 @@ export interface ProjectsPulumiInfo {
 }
 
 export interface ProjectsDict {
-    [key: string]: ProjectSupportedObject;
+    [key: string]: gitlabProject.GitlabProject;
 }
 
 export interface ProjectPulumiConfig {
     [key: string]: pulumi.Inputs | object;
 }
 
-export interface ProjectsPulumiConfig {
-    [key: string]: ProjectPulumiConfig;
-}
-
 export interface ProjectBadgesPulumiConfig {
-    [key: string]: ProjectBadgesArgs;
+    [key: string]: gitlab.ProjectBadgeArgs;
 }
 
 export interface ProjectHooksPulumiConfig {
-    [key: string]: ProjectHooksArgs;
+    [key: string]: gitlab.ProjectHookArgs;
 }
 
 export interface ProjectVariablesPulumiConfig {
-    [key: string]: ProjectVariablesArgs;
+    [key: string]: gitlab.ProjectVariableArgs;
 }
 
 export interface ProjectAccessTokensPulumiConfig {
-    [key: string]: ProjectAccessTokensArgs;
+    [key: string]: gitlab.ProjectAccessTokenArgs;
 }
-
-// Type
-// eslint warnings below won't be raised once other provider will be supported
-export type ProjectSupportedObject = gitlabProject.GitlabProject;
-export type ProjectArgs = gitlab.ProjectArgs;
-export type ProjectBadgesArgs = gitlab.ProjectBadgeArgs;
-export type ProjectHooksArgs = gitlab.ProjectHookArgs;
-export type ProjectVariablesArgs = gitlab.ProjectVariableArgs;
-export type ProjectAccessTokensArgs = gitlab.ProjectAccessTokenArgs;
 
 // Enum
 export enum ProjectType {

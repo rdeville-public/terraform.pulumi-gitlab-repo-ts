@@ -3,17 +3,17 @@ import * as project from "./project";
 import * as provider from "./provider";
 import * as pulumi from "@pulumi/pulumi";
 import type {
-    GroupsPulumiConfig,
+    GroupPulumiConfig,
     GroupsPulumiInfo
 } from "./group";
 import type {
-    ProjectsPulumiConfig,
+    ProjectPulumiConfig,
     ProjectsPulumiInfo
 } from "./project";
 import type {
     ProvidersDict,
     ProvidersPulumiConfig
-} from "./provider/types";
+} from "./provider";
 
 /**
  * Function to deploy of every resources.
@@ -30,13 +30,13 @@ function deploy (): ProvidersDict {
     group.initGroup(
         providers,
         config.requireObject<GroupsPulumiInfo>("groups"),
-        config.getObject<GroupsPulumiConfig>("groupConfigs")
+        config.getObject<GroupPulumiConfig>("groupConfigs")
     );
 
     project.initProject(
         providers,
         config.requireObject<ProjectsPulumiInfo>("projects"),
-        config.getObject<ProjectsPulumiConfig>("projectConfigs")
+        config.getObject<ProjectPulumiConfig>("projectConfigs")
     );
 
     return providers;

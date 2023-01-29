@@ -1,27 +1,23 @@
-import * as log from "../log";
-import * as provider from "../provider";
 import * as utils from "../utils";
 import type {
     ProviderConfig,
     ProviderData,
-    ProviderSupportedObject,
     ProvidersDict,
     ProvidersPulumiConfig
-} from "./types";
-import {ProviderSupportedType} from "./types";
-
+} from "./index";
+import {GitlabProvider} from "./index";
 
 /**
  * Create pulumi git provider corresponding to gitProvider in the stack
  *
  * @param {string} providerName - Name of the provider
  * @param {ProviderConfig} currProvider - configuration of the provider
- * @returns {ProviderSupportedObject} Pulumi provider object
+ * @returns {GitlabProvider} Pulumi provider object
  */
 function createProvider (
     providerName: string,
     currProvider: ProviderConfig
-): ProviderSupportedObject {
+): GitlabProvider {
     const token = utils.getValue(providerName, currProvider.token);
     const data: ProviderData = {
         "args": {
@@ -32,10 +28,10 @@ function createProvider (
             "aliases": [{"name": providerName}]
         }
     };
-    return provider.providerFactory(
-        currProvider.type,
+    return new GitlabProvider(
         providerName,
-        data
+        data.args,
+        data.opts
     );
 }
 
@@ -52,17 +48,10 @@ export function initProvider (
     const providers: ProvidersDict = {};
 
     for (const iProvider in providerConfig) {
-        if (providerConfig[iProvider].type in ProviderSupportedType) {
-            providers[iProvider] = createProvider(
-                iProvider,
-                providerConfig[iProvider]
-            );
-        } else {
-            log.warn(
-                "Provider type is not supported at all: " +
-                `${providerConfig[iProvider].type}`
-            );
-        }
+        providers[iProvider] = createProvider(
+            iProvider,
+            providerConfig[iProvider]
+        );
     }
     return providers;
 }

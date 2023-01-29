@@ -4,7 +4,7 @@ import type * as pulumi from "@pulumi/pulumi";
 
 // Interface
 export interface GroupData {
-    args?: gitlabGroup.IGitlabGroupArgs | undefined;
+    args: gitlabGroup.IGitlabGroupArgs;
     opts: pulumi.CustomResourceOptions;
 }
 
@@ -30,46 +30,32 @@ export interface GroupsPulumiInfo {
 }
 
 export interface GroupsDict {
-    [key: string]: GroupSupportedObject;
+    [key: string]: gitlabGroup.GitlabGroup;
 }
 
 export interface GroupPulumiConfig {
     [key: string]: pulumi.Inputs | object;
 }
 
-export interface GroupsPulumiConfig {
-    [key: string]: GroupPulumiConfig;
-}
-
 export interface GroupLabelsPulumiConfig {
-    [key: string]: GroupLabelsArgs;
+    [key: string]: gitlab.GroupLabelArgs;
 }
 
 export interface GroupBadgesPulumiConfig {
-    [key: string]: GroupBadgesArgs;
+    [key: string]: gitlab.GroupBadgeArgs;
 }
 
 export interface GroupHooksPulumiConfig {
-    [key: string]: GroupHooksArgs;
+    [key: string]: gitlab.GroupHookArgs;
 }
 
 export interface GroupVariablesPulumiConfig {
-    [key: string]: GroupVariablesArgs;
+    [key: string]: gitlab.GroupVariableArgs;
 }
 
 export interface GroupAccessTokensPulumiConfig {
-    [key: string]: GroupAccessTokensArgs;
+    [key: string]: gitlab.GroupAccessTokenArgs;
 }
-
-// Type
-// eslint warnings below won't be raised once other provider will be supported
-export type GroupSupportedObject = gitlabGroup.GitlabGroup;
-export type GroupArgs = gitlab.GroupArgs;
-export type GroupLabelsArgs = gitlab.GroupLabelArgs;
-export type GroupBadgesArgs = gitlab.GroupBadgeArgs;
-export type GroupHooksArgs = gitlab.GroupHookArgs;
-export type GroupVariablesArgs = gitlab.GroupVariableArgs;
-export type GroupAccessTokensArgs = gitlab.GroupAccessTokenArgs;
 
 // Enum
 export enum GroupType {

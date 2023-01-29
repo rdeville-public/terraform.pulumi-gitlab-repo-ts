@@ -1,87 +1,85 @@
-import * as project from "../project";
+import type * as gitlab from "@pulumi/gitlab";
 import * as pulumi from "@pulumi/pulumi";
 import type {
     ArgsDict,
-    ProjectArgs,
     ProjectData,
     ProjectInfo,
     ProjectPulumiConfig,
-    ProjectsPulumiConfig,
     ProjectsPulumiInfo
 } from "./types";
 import type {
-    ProviderSupportedObject,
+    GitlabProvider,
     ProvidersDict
 } from "../provider";
 import {
     genId,
     slugify
 } from "../utils";
-
 import type {
-    GroupSupportedObject
+    GitlabGroup
 } from "../group";
+import {
+    GitlabProject
+} from "./index";
 
 /**
  * Compute project configuration depending on the type of project
  *
  * @param {string} providerName - Name of the gitProvider
- * @param {string} providerType - Type of the gitProvider
- * @param {ProjectsPulumiConfig} projectsConfig - Project configuration from the
+ * @param {ProjectPulumiConfig} projectsConfig - Project configuration from the
  *      stack
  * @param {string} [projectType] - Type of the project (default: "default")
- * @returns {ProjectArgs} Set of project args corresponding to project
+ * @returns {gitlab.ProjectArgs} Set of project args corresponding to project
  *      configuration
  */
 function computeProjectConfig (
     providerName: string,
-    providerType: string,
-    projectsConfig?: ProjectsPulumiConfig,
+    projectsConfig?: ProjectPulumiConfig,
     projectType = "default"
-): ProjectArgs {
+): gitlab.ProjectArgs {
     if (projectsConfig) {
         const config: pulumi.Config = new pulumi.Config();
 
         const providerProjectConfigs: ProjectPulumiConfig =
-            projectsConfig[providerType];
+            projectsConfig;
 
         if (
             typeof providerProjectConfigs !== "undefined" &&
             "default" in providerProjectConfigs
         ) {
             if (providerName === config.require("mainProvider")) {
-                return providerProjectConfigs.default as ProjectArgs;
+                return providerProjectConfigs.default as gitlab.ProjectArgs;
             }
             return {
                 ...providerProjectConfigs.default,
                 ...providerProjectConfigs[projectType]
-            } as ProjectArgs;
+            } as gitlab.ProjectArgs;
         }
     }
-    return {} as ProjectArgs;
+    return {} as gitlab.ProjectArgs;
 }
 
 /**
  * Compute data, i.e. args and opts for the project
  *
- * @param {ProviderSupportedObject} provider - Provider object
+ * @param {GitlabProvider} provider - Provider object
  * @param {ProjectInfo} projectInfo - Information of the project (such as desc,
  *      etc.)
  * @param {string} projectName - Name of the project
- * @param {ProjectsPulumiConfig} [projectsConfig] - projectConfigs set in the
- * @param {GroupSupportedObject} [parentGroup] - Group object that define parent
+ * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
+ * @param {GitlabGroup} [parentGroup] - Group object that define parent
  *      resources
  * @returns {ProjectData} Object with args and data for Pulumi Group object
  */
 function computeProjectData (
-    provider: ProviderSupportedObject,
+    provider: GitlabProvider,
     // Will be used later when other type of group resources will be supported
     projectInfo: ProjectInfo,
     projectName: string,
-    projectsConfig?: ProjectsPulumiConfig,
-    parentGroup?: GroupSupportedObject
+    projectsConfig?: ProjectPulumiConfig,
+    parentGroup?: GitlabGroup
 ): ProjectData {
-    let data: ProjectArgs = {
+    let data: gitlab.ProjectArgs = {
         "path": slugify(projectName)
     };
 
@@ -93,7 +91,7 @@ function computeProjectData (
         data = {
             ...data,
             "namespaceId": parentId
-        } as ProjectArgs;
+        } as gitlab.ProjectArgs;
     }
     return {
         "args": {
@@ -103,12 +101,11 @@ function computeProjectData (
             "projectConfig": {
                 ...computeProjectConfig(
                     provider.name,
-                    provider.providerType,
                     projectsConfig
                 ),
                 ...data,
                 "name": projectName
-            } as ProjectArgs,
+            } as gitlab.ProjectArgs,
             "variables": projectInfo.variables ?? {} as ArgsDict
         },
         "opts": {
@@ -121,20 +118,20 @@ function computeProjectData (
 /**
  * Create provider supported project
  *
- * @param {ProviderSupportedObject} provider - Provider object
+ * @param {GitlabProvider} provider - Provider object
  * @param {string} projectName - Name of the project
  * @param {ProjectInfo} projectInfo - Information of the project (such as desc,
  *      etc.)
- * @param {ProjectsPulumiConfig} [projectsConfig] - projectConfigs set in the
- * @param {GroupSupportedObject} [parentGroup] - Group object that define parent
+ * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
+ * @param {GitlabGroup} [parentGroup] - Group object that define parent
  *      resources
  */
 function createProject (
-    provider: ProviderSupportedObject,
+    provider: GitlabProvider,
     projectName: string,
     projectInfo: ProjectInfo,
-    projectsConfig?: ProjectsPulumiConfig,
-    parentGroup?: GroupSupportedObject
+    projectsConfig?: ProjectPulumiConfig,
+    parentGroup?: GitlabGroup
 ): void {
     const data = computeProjectData(
         provider,
@@ -145,8 +142,10 @@ function createProject (
     );
 
     const projectNameSlug = slugify(`${projectName}-${genId()}`);
-    const currProject = project.projectFactory(
-        provider.providerType, projectNameSlug, data
+    const currProject = new GitlabProject(
+        projectNameSlug,
+        data.args,
+        data.opts
     );
 
     if (parentGroup) {
@@ -163,8 +162,8 @@ function createProject (
  * @param {string} projectName - Name of the project
  * @param {ProjectInfo} projectInfo - Information of the project (such as desc,
  *      etc.)
- * @param {ProjectsPulumiConfig} [projectsConfig] - projectConfigs set in the
- * @param {GroupSupportedObject} [parentGroup] - Group object that define parent
+ * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
+ * @param {GitlabGroup} [parentGroup] - Group object that define parent
  *      resources
  * @param {string} [parentProvider] - Name of the provider of the parents
  *      resources
@@ -173,8 +172,8 @@ function processProjects (
     providers: ProvidersDict,
     projectName: string,
     projectInfo: ProjectInfo,
-    projectsConfig?: ProjectsPulumiConfig,
-    parentGroup?: GroupSupportedObject,
+    projectsConfig?: ProjectPulumiConfig,
+    parentGroup?: GitlabGroup,
     parentProvider?: string
 ): void {
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -209,17 +208,17 @@ function processProjects (
  *
  * @param {ProvidersDict} providers - Set of providers
  * @param {ProjectsPulumiInfo} projectsInfo - projects entry set in the stack
- * @param {ProjectsPulumiConfig} [projectsConfig] - projectConfigs set in the
+ * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
  *      stack
- * @param {GroupSupportedObject} parentGroup - Group parent of a project
+ * @param {GitlabGroup} parentGroup - Group parent of a project
  * @param {string} [parentProvider] - Name of the provider of the parents
  *      resources
  */
 export function initProject (
     providers: ProvidersDict,
     projectsInfo: ProjectsPulumiInfo,
-    projectsConfig?: ProjectsPulumiConfig,
-    parentGroup?: GroupSupportedObject,
+    projectsConfig?: ProjectPulumiConfig,
+    parentGroup?: GitlabGroup,
     parentProvider?: string
 ): void {
     for (const iProject in projectsInfo) {

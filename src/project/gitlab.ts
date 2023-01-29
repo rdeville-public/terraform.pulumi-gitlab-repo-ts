@@ -2,8 +2,7 @@ import * as gitlab from "@pulumi/gitlab";
 import * as pulumi from "@pulumi/pulumi";
 import * as utils from "../utils";
 import type {
-    ArgsDict,
-    ProjectArgs
+    ArgsDict
 } from "./types";
 import type {
     ProtectedData
@@ -26,7 +25,7 @@ interface IGitlabProjectAccessToken {
 }
 
 export interface IGitlabProjectArgs {
-    projectConfig: ProjectArgs;
+    projectConfig: gitlab.ProjectArgs;
     badges?: ArgsDict;
     hooks?: ArgsDict;
     variables?: ArgsDict;
@@ -69,7 +68,7 @@ export class GitlabProject extends pulumi.ComponentResource
      * Constructor of the ComponentResource GitlabProject
      *
      * @param {string} name - Name of the project
-     * @param {ProjectArgs} args - Gitlab project arguments
+     * @param {gitlab.ProjectArgs} args - Gitlab project arguments
      * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      *      options
      */
