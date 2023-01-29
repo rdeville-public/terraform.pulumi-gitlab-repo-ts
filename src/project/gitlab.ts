@@ -17,10 +17,15 @@ interface IGitlabProjectHooks {
     [key: string]: gitlab.ProjectHook;
 }
 
+interface IGitlabProjectVariables {
+    [key: string]: gitlab.ProjectVariable;
+}
+
 export interface IGitlabProjectArgs {
     projectConfig: ProjectArgs;
     badges?: ArgsDict;
     hooks?: ArgsDict;
+    variables?: ArgsDict;
 }
 
 export interface IGitlabProject {
@@ -28,6 +33,7 @@ export interface IGitlabProject {
     project: gitlab.Project;
     badges: IGitlabProjectBadges;
     hooks: IGitlabProjectHooks;
+    variables: IGitlabProjectVariables;
 }
 
 
@@ -48,6 +54,8 @@ export class GitlabProject extends pulumi.ComponentResource
     public badges: IGitlabProjectBadges = {};
 
     public hooks: IGitlabProjectHooks = {};
+
+    public variables: IGitlabProjectVariables = {};
 
     /*
      * public accessTokens: gitlab.ProjectAccessToken[];
@@ -82,6 +90,7 @@ export class GitlabProject extends pulumi.ComponentResource
         );
         this.addBadges(args);
         this.addHooks(args);
+        this.addVariables(args);
         this.registerOutputs();
     }
 
@@ -128,6 +137,37 @@ export class GitlabProject extends pulumi.ComponentResource
                             "token", args.hooks[iHook].token as ProtectedData
                         )
                     } as gitlab.ProjectHookArgs,
+                    {
+                        "parent": this.project
+                    }
+                );
+            }
+        }
+    }
+
+    /**
+     * Add variables to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     */
+    private addVariables (args: IGitlabProjectArgs): void {
+        for (const iVariable in args.variables) {
+            if ("value" in args.variables[iVariable]) {
+                const variableName =
+                    `${utils.slugify(iVariable)}-${utils.genId()}`;
+                this.variables[iVariable] = new gitlab.ProjectVariable(
+                    variableName,
+                    {
+                        ...args.variables[iVariable],
+                        "key": iVariable,
+                        "project": this.project.id,
+                        "value": utils.getValue(
+                            "value",
+                            // eslint-disable-next-line max-len
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                            args.variables[iVariable].value as ProtectedData
+                        )
+                    } as gitlab.ProjectVariableArgs,
                     {
                         "parent": this.project
                     }

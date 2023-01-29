@@ -14,6 +14,7 @@ export interface ProjectInfo {
     logo?: string;
     badges?: ArgsDict;
     hooks?: ArgsDict;
+    variables?: ArgsDict;
 }
 
 export interface ArgsDict {
@@ -45,12 +46,17 @@ export interface ProjectHooksPulumiConfig {
     [key: string]: ProjectHooksArgs;
 }
 
+export interface ProjectVariablesPulumiConfig {
+    [key: string]: ProjectVariablesArgs;
+}
+
 // Type
 // eslint warnings below won't be raised once other provider will be supported
 export type ProjectSupportedObject = gitlabProject.GitlabProject;
 export type ProjectArgs = gitlab.ProjectArgs;
 export type ProjectBadgesArgs = gitlab.ProjectBadgeArgs;
 export type ProjectHooksArgs = gitlab.ProjectHookArgs;
+export type ProjectVariablesArgs = gitlab.ProjectVariableArgs;
 
 // Enum
 export enum ProjectType {

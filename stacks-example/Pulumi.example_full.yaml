@@ -208,3 +208,10 @@ config:
           url: TODO
           token:
             env: SHELL
+        variables:
+          variableKey:
+            value:
+              cmd: echo "FOO"
+          anotherVariableKey:
+            value:
+              env: SHELL
