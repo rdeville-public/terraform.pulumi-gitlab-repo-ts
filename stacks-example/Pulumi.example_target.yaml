@@ -526,21 +526,6 @@ config:
         my-repo:
           desc: My repo description
           logo: ./img/repos/programs/my-repo.png
-      # labels:
-      #   # The name of the label.
-      #   labelName:
-      #     # The color of the label given in 6-digit hex notation with leading
-      #     # '#' sign (e.g. #FFAABB) or one of the CSS color names.
-      #     color: "#000000"
-      #     # The description of the label.
-      #     description: TODO
-      #   # The name of the label.
-      #   AnotherLabelName:
-      #     # The color of the label given in 6-digit hex notation with leading
-      #     # '#' sign (e.g. #FFAABB) or one of the CSS color names.
-      #     color: "#000000"
-      #     # The description of the label.
-      #     description: TODO
       # variables:
       #   # The name of the variable.
       #   variableKey:
@@ -601,16 +586,16 @@ config:
       #     # The token expires at midnight UTC on that date.
       #     # The date must be in the format YYYY-MM-DD. Default is never.
       #     expiresAt:
-      # badges:
-      #   # The name of the badge in the pulumi stack
-      #   badgeName:
-      #     # The image url which will be presented on group overview.
-      #     imageUrl: TODO
-      #     # The url linked with the badge.
-      #     linkUrl: TODO
-      #   # The name of the badge in the pulumi stack
-      #   AnotherBadgeName:
-      #     # The image url which will be presented on group overview.
-      #     imageUrl: TODO
-      #     # The url linked with the badge.
-      #     linkUrl: TODO
+      badges:
+        # The name of the badge in the pulumi stack
+        badgeName:
+          # The image url which will be presented on group overview.
+          imageUrl: TODO
+          # The url linked with the badge.
+          linkUrl: TODO
+        # The name of the badge in the pulumi stack
+        AnotherBadgeName:
+          # The image url which will be presented on group overview.
+          imageUrl: TODO
+          # The url linked with the badge.
+          linkUrl: TODO
