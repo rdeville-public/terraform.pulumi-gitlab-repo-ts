@@ -12,6 +12,15 @@ export interface ProjectInfo {
     providers?: string[];
     desc?: string;
     logo?: string;
+    badges?: ArgsDict;
+    hooks?: ArgsDict;
+    variables?: ArgsDict;
+    accessTokens?: ArgsDict;
+}
+
+export interface ArgsDict {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
 }
 
 export interface ProjectsPulumiInfo {
@@ -30,10 +39,30 @@ export interface ProjectsPulumiConfig {
     [key: string]: ProjectPulumiConfig;
 }
 
+export interface ProjectBadgesPulumiConfig {
+    [key: string]: ProjectBadgesArgs;
+}
+
+export interface ProjectHooksPulumiConfig {
+    [key: string]: ProjectHooksArgs;
+}
+
+export interface ProjectVariablesPulumiConfig {
+    [key: string]: ProjectVariablesArgs;
+}
+
+export interface ProjectAccessTokensPulumiConfig {
+    [key: string]: ProjectAccessTokensArgs;
+}
+
 // Type
 // eslint warnings below won't be raised once other provider will be supported
 export type ProjectSupportedObject = gitlabProject.GitlabProject;
 export type ProjectArgs = gitlab.ProjectArgs;
+export type ProjectBadgesArgs = gitlab.ProjectBadgeArgs;
+export type ProjectHooksArgs = gitlab.ProjectHookArgs;
+export type ProjectVariablesArgs = gitlab.ProjectVariableArgs;
+export type ProjectAccessTokensArgs = gitlab.ProjectAccessTokenArgs;
 
 // Enum
 export enum ProjectType {

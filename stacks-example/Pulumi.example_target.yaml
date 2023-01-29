@@ -526,91 +526,151 @@ config:
         my-repo:
           desc: My repo description
           logo: ./img/repos/programs/my-repo.png
-      # labels:
-      #   # The name of the label.
-      #   labelName:
-      #     # The color of the label given in 6-digit hex notation with leading
-      #     # '#' sign (e.g. #FFAABB) or one of the CSS color names.
-      #     color: "#000000"
-      #     # The description of the label.
-      #     description: TODO
-      #   # The name of the label.
-      #   AnotherLabelName:
-      #     # The color of the label given in 6-digit hex notation with leading
-      #     # '#' sign (e.g. #FFAABB) or one of the CSS color names.
-      #     color: "#000000"
-      #     # The description of the label.
-      #     description: TODO
-      # variables:
-      #   # The name of the variable.
-      #   variableKey:
-      #     # The environment scope of the variable. Defaults to all environment (*).
-      #     # Note that in Community Editions of Gitlab, values other than * will
-      #     # cause inconsistent plans.
-      #     environmentScope: "*"
-      #     # If set to true, the value of the variable will be hidden in job logs.
-      #     # The value must meet the masking requirements. Defaults to false.
-      #     masked: true
-      #     # If set to true, the variable will be passed only to pipelines
-      #     # running on protected branches and tags. Defaults to false.
-      #     protected: true
-      #     # The value of the variable.
-      #     value: TODO
-      #     # The type of a variable. Valid values are: env_var, file.
-      #     # Default is env_var.
-      #     variableType: env_var
-      #   # The name of the variable.
-      #   AnotherVariableKey:
-      #     # The environment scope of the variable. Defaults to all environment (*).
-      #     # Note that in Community Editions of Gitlab, values other than * will
-      #     # cause inconsistent plans.
-      #     environmentScope: "*"
-      #     # If set to true, the value of the variable will be hidden in job logs.
-      #     # The value must meet the masking requirements. Defaults to false.
-      #     masked: true
-      #     # If set to true, the variable will be passed only to pipelines
-      #     # running on protected branches and tags. Defaults to false.
-      #     protected: true
-      #     # The value of the variable.
-      #     value: TODO
-      #     # The type of a variable. Valid values are: env_var, file.
-      #     # Default is env_var.
-      #     variableType: env_var
-      # accessTokens:
-      #   # The name of the group access token.
-      #   accesTokenName:
-      #     # The scope for the group access token. It determines the actions
-      #     # which can be performed when authenticating with this token.
-      #     # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
-      #     scopes: []
-      #     # The access level for the group access token.
-      #     # Valid values are: guest, reporter, developer, maintainer, owner.
-      #     accessLevel: owner
-      #     # The token expires at midnight UTC on that date.
-      #     # The date must be in the format YYYY-MM-DD. Default is never.
-      #     expiresAt:
-      #   # The name of the group access token.
-      #   AnotherAccesTokenName:
-      #     # The scope for the group access token. It determines the actions
-      #     # which can be performed when authenticating with this token.
-      #     # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
-      #     scopes: []
-      #     # The access level for the group access token.
-      #     # Valid values are: guest, reporter, developer, maintainer, owner.
-      #     accessLevel: owner
-      #     # The token expires at midnight UTC on that date.
-      #     # The date must be in the format YYYY-MM-DD. Default is never.
-      #     expiresAt:
-      # badges:
-      #   # The name of the badge in the pulumi stack
-      #   badgeName:
-      #     # The image url which will be presented on group overview.
-      #     imageUrl: TODO
-      #     # The url linked with the badge.
-      #     linkUrl: TODO
-      #   # The name of the badge in the pulumi stack
-      #   AnotherBadgeName:
-      #     # The image url which will be presented on group overview.
-      #     imageUrl: TODO
-      #     # The url linked with the badge.
-      #     linkUrl: TODO
+      variables:
+        # The name of the variable.
+        variableKey:
+          # The environment scope of the variable. Defaults to all environment (*).
+          # Note that in Community Editions of Gitlab, values other than * will
+          # cause inconsistent plans.
+          environmentScope: "*"
+          # If set to true, the value of the variable will be hidden in job logs.
+          # The value must meet the masking requirements. Defaults to false.
+          masked: true
+          # If set to true, the variable will be passed only to pipelines
+          # running on protected branches and tags. Defaults to false.
+          protected: true
+          # The value of the variable.
+          value: TODO
+          # The type of a variable. Valid values are: env_var, file.
+          # Default is env_var.
+          variableType: env_var
+        # The name of the variable.
+        AnotherVariableKey:
+          # The environment scope of the variable. Defaults to all environment (*).
+          # Note that in Community Editions of Gitlab, values other than * will
+          # cause inconsistent plans.
+          environmentScope: "*"
+          # If set to true, the value of the variable will be hidden in job logs.
+          # The value must meet the masking requirements. Defaults to false.
+          masked: true
+          # If set to true, the variable will be passed only to pipelines
+          # running on protected branches and tags. Defaults to false.
+          protected: true
+          # The value of the variable.
+          value: TODO
+          # The type of a variable. Valid values are: env_var, file.
+          # Default is env_var.
+          variableType: env_var
+      accessTokens:
+        # The name of the group access token.
+        accesTokenName:
+          # The scope for the group access token. It determines the actions
+          # which can be performed when authenticating with this token.
+          # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
+          scopes: []
+          # The access level for the group access token.
+          # Valid values are: guest, reporter, developer, maintainer, owner.
+          accessLevel: owner
+          # The token expires at midnight UTC on that date.
+          # The date must be in the format YYYY-MM-DD. Default is never.
+          expiresAt:
+        # The name of the group access token.
+        AnotherAccesTokenName:
+          # The scope for the group access token. It determines the actions
+          # which can be performed when authenticating with this token.
+          # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
+          scopes: []
+          # The access level for the group access token.
+          # Valid values are: guest, reporter, developer, maintainer, owner.
+          accessLevel: owner
+          # The token expires at midnight UTC on that date.
+          # The date must be in the format YYYY-MM-DD. Default is never.
+          expiresAt:
+      badges:
+        # The name of the badge in the pulumi stack
+        badgeName:
+          # The image url which will be presented on group overview.
+          imageUrl: TODO
+          # The url linked with the badge.
+          linkUrl: TODO
+        # The name of the badge in the pulumi stack
+        AnotherBadgeName:
+          # The image url which will be presented on group overview.
+          imageUrl: TODO
+          # The url linked with the badge.
+          linkUrl: TODO
+      hooks:
+        hookName:
+          # REQUIRED
+          # The url of the hook to invoke.
+          url: TODO
+          # Invoke the hook for confidential issues events.
+          confidentialIssuesEvents: false
+          # Invoke the hook for confidential notes events.
+          confidentialNoteEvents: false
+          # Invoke the hook for deployment events.
+          deploymentEvents: false
+          # Enable ssl verification when invoking the hook.
+          enableSslVerification: false
+          # Invoke the hook for issues events.
+          issuesEvents: false
+          # Invoke the hook for job events.
+          jobEvents: false
+          # Invoke the hook for merge requests.
+          mergeRequestsEvents: false
+          # Invoke the hook for notes events.
+          noteEvents: false
+          # Invoke the hook for pipeline events.
+          pipelineEvents: false
+          # Invoke the hook for push events.
+          pushEvents: false
+          # Invoke the hook for push events on matching branches only.
+          pushEventsBranchFilter: main
+          # Invoke the hook for releases events.
+          releasesEvents: false
+          # Invoke the hook for subgroup events.
+          subgroupEvents: false
+          # Invoke the hook for tag push events.
+          tagPushEvents: false
+          # A token to present when invoking the hook. The token is not available for imported resources.
+          token:
+            cmd: echo "TODO"
+          # Invoke the hook for wiki page events.
+          wikiPageEvents: false
+        anotherHookName:
+          # REQUIRED
+          # The url of the hook to invoke.
+          url: TODO
+          # Invoke the hook for confidential issues events.
+          confidentialIssuesEvents: false
+          # Invoke the hook for confidential notes events.
+          confidentialNoteEvents: false
+          # Invoke the hook for deployment events.
+          deploymentEvents: false
+          # Enable ssl verification when invoking the hook.
+          enableSslVerification: false
+          # Invoke the hook for issues events.
+          issuesEvents: false
+          # Invoke the hook for job events.
+          jobEvents: false
+          # Invoke the hook for merge requests.
+          mergeRequestsEvents: false
+          # Invoke the hook for notes events.
+          noteEvents: false
+          # Invoke the hook for pipeline events.
+          pipelineEvents: false
+          # Invoke the hook for push events.
+          pushEvents: false
+          # Invoke the hook for push events on matching branches only.
+          pushEventsBranchFilter: main
+          # Invoke the hook for releases events.
+          releasesEvents: false
+          # Invoke the hook for subgroup events.
+          subgroupEvents: false
+          # Invoke the hook for tag push events.
+          tagPushEvents: false
+          # A token to present when invoking the hook. The token is not available for imported resources.
+          token:
+            env: SHELL
+          # Invoke the hook for wiki page events.
+          wikiPageEvents: false

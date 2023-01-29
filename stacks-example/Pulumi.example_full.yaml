@@ -193,3 +193,32 @@ config:
       providers:
         - framagit.org
         - gitlab.com
+      badges:
+        badgeName:
+          imageUrl: TODO
+          linkUrl: TODO
+      hooks:
+        hookName:
+          # REQUIRED
+          # The url of the hook to invoke.
+          url: TODO
+          token:
+            env: SHELL
+        anotherHookName:
+          url: TODO
+          token:
+            env: SHELL
+        variables:
+          variableKey:
+            value:
+              cmd: echo "FOO"
+          anotherVariableKey:
+            value:
+              env: SHELL
+      accessTokens:
+        accesTokenName:
+          scopes:
+            - read_repository
+        AnotherAccesTokenName:
+          scopes:
+            - read_registry
