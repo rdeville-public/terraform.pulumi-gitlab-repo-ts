@@ -107,7 +107,8 @@ function computeProjectData (
                 ),
                 ...data,
                 "name": projectName
-            } as ProjectArgs
+            } as ProjectArgs,
+            "variables": projectInfo.variables ?? {} as ArgsDict
         },
         "opts": {
             "parent": parentGroup?.group ?? provider,
