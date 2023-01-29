@@ -1,3 +1,4 @@
+/* eslint max-lines: 0 */
 import * as group from "../../src/group";
 import * as provider from "../../src/provider";
 import test from "ava";
@@ -267,5 +268,106 @@ test("group with supported provider with badges", (currTest) => {
         providers[PROVIDER_NAME[0]].
             groups.fakeGroupName.
             badges.fakeBadgeName.urn
+    );
+});
+
+
+test("group with supported provider with hooks", (currTest) => {
+    const fakeGroups: group.GroupsPulumiInfo = {
+        "fakeGroupName": {
+            "desc": GROUP_DESC,
+            "hooks": {
+                "fakeHookName": {
+                    "group": "",
+                    "url": "https://fakeLinkUrl.tld/image.png"
+                }
+            },
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]]
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    group.initGroup(
+        providers,
+        fakeGroups
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].groups.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            groups.fakeGroupName.
+            hooks.fakeHookName.urn
+    );
+});
+
+test("group with supported provider with variables", (currTest) => {
+    const fakeGroups: group.GroupsPulumiInfo = {
+        "fakeGroupName": {
+            "desc": GROUP_DESC,
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]],
+            "variables": {
+                "fakeVariableName": {
+                    "value": "fakeValue"
+                }
+            }
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    group.initGroup(
+        providers,
+        fakeGroups
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].groups.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            groups.fakeGroupName.
+            variables.fakeVariableName.urn
+    );
+});
+
+test("group with supported provider with accessTokens", (currTest) => {
+    const fakeGroups: group.GroupsPulumiInfo = {
+        "fakeGroupName": {
+            "accessTokens": {
+                "fakeAccessTokenName": {
+                    "scopes": ["read_repository"]
+                }
+            },
+            "desc": GROUP_DESC,
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]]
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    group.initGroup(
+        providers,
+        fakeGroups
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].groups.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            groups.fakeGroupName.
+            accessTokens.fakeAccessTokenName.urn
     );
 });

@@ -2,7 +2,7 @@ import * as process from "process";
 import * as pulumi from "@pulumi/pulumi";
 import {spawnSync} from "child_process";
 
-type ProtectedData = string | {[key: string]: string};
+export type ProtectedData = string | {[key: string]: string};
 
 export const ID_SIZE = 5;
 const INCREMENT = 1;
@@ -89,7 +89,9 @@ export function getValue (
     parent: string,
     data: ProtectedData
 ): pulumi.Output<string> | string {
-    if (typeof data === "string") {
+    if (typeof data === "undefined") {
+        return "";
+    } else if (typeof data === "string") {
         return data;
     } else if (data.cmd) {
         return pulumi.secret(getCmdValue(data.cmd));

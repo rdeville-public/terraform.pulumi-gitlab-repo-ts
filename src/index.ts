@@ -15,14 +15,10 @@ import type {
     ProvidersPulumiConfig
 } from "./provider/types";
 
-interface Output {
-    providers: ProvidersDict;
-}
-
 /**
  * Function to deploy of every resources.
  *
- * @returns {Output} Output of pulumi deployed resources
+ * @returns {ProvidersDict} Provider object with everything in it
  */
 function deploy (): ProvidersDict {
     const config: pulumi.Config = new pulumi.Config();
@@ -49,7 +45,7 @@ function deploy (): ProvidersDict {
 /**
  * Main function of the program
  *
- * @returns {Output} Output of pulumi deployed resources
+ * @returns {ProvidersDict} Provider object with everything in it
  */
 function main (): ProvidersDict {
     return deploy();

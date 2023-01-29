@@ -121,11 +121,33 @@ config:
       labels:
         fakeLabel:
           color: "#000000"
-          description: Fake Description
       badges:
         badgeName:
           imageUrl: TODO
           linkUrl: TODO
+      hooks:
+        hookName:
+          url: TODO
+          token:
+            cmd: echo "TODO"
+        anotherHookName:
+          url: TODO
+          token:
+            env: SHELL
+      variables:
+        variableKey:
+          value:
+            cmd: echo "FOO"
+        anotherVariableKey:
+          value:
+            env: SHELL
+      accessTokens:
+        accesTokenName:
+          scopes:
+            - read_repository
+        AnotherAccesTokenName:
+          scopes:
+            - read_registry
       groups:
         my_sub_group:
           desc: Description of my SubGroup
@@ -136,6 +158,29 @@ config:
           AnotherBadgeName:
             imageUrl: TODO
             linkUrl: TODO
+        hooks:
+          hookName:
+            url: TODO
+            token:
+              cmd: echo "TODO"
+          anotherHookName:
+            url: TODO
+            token:
+              env: SHELL
+        variables:
+          variableKey:
+            value:
+              cmd: echo "FOO"
+          anotherVariableKey:
+            value:
+              env: SHELL
+        accessTokens:
+          accesTokenName:
+            scopes:
+              - read_repository
+          AnotherAccesTokenName:
+            scopes:
+              - read_registry
   git-repo:projects:
     my_group:
       my_sub_group:
