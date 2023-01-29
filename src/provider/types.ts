@@ -1,4 +1,3 @@
-import type * as githubProvider from "./github";
 import type * as gitlab from "@pulumi/gitlab";
 import type * as gitlabProvider from "./gitlab";
 import type * as pulumi from "@pulumi/pulumi";
@@ -25,11 +24,9 @@ export interface ProvidersDict {
 
 // Type
 // eslint warning below will not be raised once other provider will be supported
-export type ProviderSupportedObject =
-    githubProvider.GithubProvider | gitlabProvider.GitlabProvider;
+export type ProviderSupportedObject = gitlabProvider.GitlabProvider;
 
 // Enum
 export enum ProviderSupportedType {
-    gitlab = "gitlab",
-    github = "github"
+    gitlab = "gitlab"
 }

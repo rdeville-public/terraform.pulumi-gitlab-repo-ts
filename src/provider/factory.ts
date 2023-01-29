@@ -2,7 +2,6 @@ import type {
     ProviderData,
     ProviderSupportedObject
 } from "./types";
-import {GithubProvider} from "./github";
 import {GitlabProvider} from "./gitlab";
 
 /**
@@ -23,8 +22,6 @@ export function providerFactory (
 ): ProviderSupportedObject {
     if (type === "gitlab") {
         return new GitlabProvider(name, data.args, data.opts);
-    } else if (type === "github") {
-        return new GithubProvider(name, data.args, data.opts);
     }
     throw new Error(`Git provider type not supported: "${type}"`);
 }
