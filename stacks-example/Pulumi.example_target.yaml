@@ -561,31 +561,31 @@ config:
           # The type of a variable. Valid values are: env_var, file.
           # Default is env_var.
           variableType: env_var
-      # accessTokens:
-      #   # The name of the group access token.
-      #   accesTokenName:
-      #     # The scope for the group access token. It determines the actions
-      #     # which can be performed when authenticating with this token.
-      #     # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
-      #     scopes: []
-      #     # The access level for the group access token.
-      #     # Valid values are: guest, reporter, developer, maintainer, owner.
-      #     accessLevel: owner
-      #     # The token expires at midnight UTC on that date.
-      #     # The date must be in the format YYYY-MM-DD. Default is never.
-      #     expiresAt:
-      #   # The name of the group access token.
-      #   AnotherAccesTokenName:
-      #     # The scope for the group access token. It determines the actions
-      #     # which can be performed when authenticating with this token.
-      #     # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
-      #     scopes: []
-      #     # The access level for the group access token.
-      #     # Valid values are: guest, reporter, developer, maintainer, owner.
-      #     accessLevel: owner
-      #     # The token expires at midnight UTC on that date.
-      #     # The date must be in the format YYYY-MM-DD. Default is never.
-      #     expiresAt:
+      accessTokens:
+        # The name of the group access token.
+        accesTokenName:
+          # The scope for the group access token. It determines the actions
+          # which can be performed when authenticating with this token.
+          # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
+          scopes: []
+          # The access level for the group access token.
+          # Valid values are: guest, reporter, developer, maintainer, owner.
+          accessLevel: owner
+          # The token expires at midnight UTC on that date.
+          # The date must be in the format YYYY-MM-DD. Default is never.
+          expiresAt:
+        # The name of the group access token.
+        AnotherAccesTokenName:
+          # The scope for the group access token. It determines the actions
+          # which can be performed when authenticating with this token.
+          # Valid values are: api, read_api, read_registry, write_registry, read_repository, write_repository.
+          scopes: []
+          # The access level for the group access token.
+          # Valid values are: guest, reporter, developer, maintainer, owner.
+          accessLevel: owner
+          # The token expires at midnight UTC on that date.
+          # The date must be in the format YYYY-MM-DD. Default is never.
+          expiresAt:
       badges:
         # The name of the badge in the pulumi stack
         badgeName:
