@@ -13,6 +13,7 @@ export interface GroupInfo {
     providers?: string[];
     logo?: string;
     groups?: GroupsPulumiInfo;
+    labels?: GroupLabelsPulumiConfig;
 }
 
 export interface GroupsPulumiInfo {
@@ -31,10 +32,15 @@ export interface GroupsPulumiConfig {
     [key: string]: GroupPulumiConfig;
 }
 
+export interface GroupLabelsPulumiConfig {
+    [key: string]: GroupLabelsArgs;
+}
+
 // Type
 // eslint warnings below won't be raised once other provider will be supported
 export type GroupSupportedObject = gitlabGroup.GitlabGroup;
 export type GroupArgs = gitlab.GroupArgs;
+export type GroupLabelsArgs = gitlab.GroupLabelArgs;
 
 // Enum
 export enum GroupType {

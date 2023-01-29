@@ -1,12 +1,19 @@
 import * as gitlab from "@pulumi/gitlab";
 import type * as project from "../project";
 import * as pulumi from "@pulumi/pulumi";
+import * as utils from "../utils";
 import type {
-    GroupArgs
+    GroupArgs,
+    GroupLabelsPulumiConfig
 } from "./types";
+
+interface IGitlabGroupLabels {
+    [key: string]: gitlab.GroupLabel;
+}
 
 export interface IGitlabGroupArgs {
     groupConfig: GroupArgs;
+    labels?: GroupLabelsPulumiConfig;
 }
 
 export interface IGitlabSubGroup {
@@ -18,11 +25,11 @@ export interface IGitlabGroup {
     group: gitlab.Group;
     subgroup: IGitlabSubGroup;
     projects: project.ProjectsDict;
+    labels: IGitlabGroupLabels;
     /*
      * accessTokens: gitlab.GroupAccessToken[];
      * badges: gitlab.GroupBadge[];
      * hooks: gitlab.GroupHook[];
-     * label: gitlab.GroupLabel[];
      * variables: gitlab.GroupVariable[];
      */
 }
@@ -45,6 +52,8 @@ export class GitlabGroup extends pulumi.ComponentResource
     public subgroup: IGitlabSubGroup = {};
 
     public projects: project.ProjectsDict = {};
+
+    public labels: IGitlabGroupLabels = {};
 
     /*
      * public accessTokens: gitlab.GroupAccessToken[] = [];
@@ -77,7 +86,31 @@ export class GitlabGroup extends pulumi.ComponentResource
                 "parent": this
             }
         );
+        this.addLabels(args);
         this.registerOutputs();
+    }
+
+    /**
+     * Add labels to the object and create parent relationship
+     *
+     * @param {IGitlabGroupArgs} args - [TODO:description]
+     */
+    private addLabels (args: IGitlabGroupArgs): void {
+        for (const iLabel in args.labels) {
+            if ("color" in args.labels[iLabel]) {
+                const labelName = `${utils.slugify(iLabel)}-${utils.genId()}`;
+                this.labels[iLabel] = new gitlab.GroupLabel(
+                    labelName,
+                    {
+                        ...args.labels[iLabel],
+                        "group": this.group.id
+                    },
+                    {
+                        "parent": this.group
+                    }
+                );
+            }
+        }
     }
 
 }
