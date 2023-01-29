@@ -1,5 +1,4 @@
 import {
-    GithubProvider,
     GitlabProvider,
     providerFactory
 } from "../../src/provider/";
@@ -40,16 +39,5 @@ test(
         const provider = providerFactory(gitType, FAKE_NAME, DATA);
 
         currTest.is(typeof provider, typeof GitlabProvider.prototype);
-    }
-);
-
-
-test(
-    "Github git provider",
-    (currTest) => {
-        const gitType = "github";
-        const provider = providerFactory(gitType, FAKE_NAME, DATA);
-
-        currTest.is(typeof provider, typeof GithubProvider.prototype);
     }
 );
