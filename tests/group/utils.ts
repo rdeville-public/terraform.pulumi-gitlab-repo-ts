@@ -9,7 +9,7 @@ const PROVIDER_TOKEN = "fakeToken";
 const PROVIDER_NAME = [
     "fakeGitlab1",
     "fakeGitlab2",
-    "fakeGithub"
+    "fakeGitlab3"
 ];
 const [MAIN_PROVIDER] = PROVIDER_NAME;
 
@@ -100,10 +100,8 @@ test("group with supported provider with default group args", (currTest) => {
         }
     };
 
-    const fakeGroupConfigs: group.GroupsPulumiConfig = {
-        "gitlab": {
-            "default": {}
-        }
+    const fakeGroupConfigs: group.GroupPulumiConfig = {
+        "default": {}
     };
 
     const providers = provider.initProvider(PROVIDER);
@@ -129,11 +127,9 @@ test("group with supported provider mirror groups args", (currTest) => {
         }
     };
 
-    const fakeGroupConfigs: group.GroupsPulumiConfig = {
-        "gitlab": {
-            "default": {},
-            "mirror": {}
-        }
+    const fakeGroupConfigs: group.GroupPulumiConfig = {
+        "default": {},
+        "mirror": {}
     };
 
     const providers = provider.initProvider(PROVIDER);
@@ -171,11 +167,9 @@ test("group with supported provider with subgroup", (currTest) => {
         }
     };
 
-    const fakeGroupConfigs: group.GroupsPulumiConfig = {
-        "gitlab": {
-            "default": {},
-            "mirror": {}
-        }
+    const fakeGroupConfigs: group.GroupPulumiConfig = {
+        "default": {},
+        "mirror": {}
     };
 
     const providers = provider.initProvider(PROVIDER);
