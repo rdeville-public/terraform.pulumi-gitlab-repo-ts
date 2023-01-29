@@ -13,6 +13,7 @@ export interface IGitlabSubGroup {
 }
 
 export interface IGitlabGroup {
+    name: string;
     group: gitlab.Group;
     subgroup: IGitlabSubGroup;
     /*
@@ -34,6 +35,8 @@ export interface IGitlabGroup {
  */
 export class GitlabGroup extends pulumi.ComponentResource
     implements IGitlabGroup {
+
+    public name: string;
 
     public group: gitlab.Group;
 
@@ -61,6 +64,7 @@ export class GitlabGroup extends pulumi.ComponentResource
         opts?: pulumi.ComponentResourceOptions
     ) {
         super("git-repo:gitlab-group", name, args, opts);
+        this.name = name;
         this.group = new gitlab.Group(
             name,
             args.groupConfig,
