@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## [v0.5.0](https://github.com/rdeville-public/git-repo/compare/0.4.0...0.5.0) (2023-01-29)
+
+### Minor
+
+  * ✨ Add gitlab group labels support [`6de7460`](https://github.com/rdeville-public/git-repo/commit/6de7460)
+
+### Others
+
+  * 🔀 ✨ Add support for Gitlab group labels (#42) (Issues:[`#42`](https://github.com/rdeville-public/git-repo/issues/42)[`#41`](https://github.com/rdeville-public/git-repo/issues/41))[`7519a5d`](https://github.com/rdeville-public/git-repo/commit/7519a5d)
+  * ✅ Add test for group label support [`160337c`](https://github.com/rdeville-public/git-repo/commit/160337c)
+
 ## [v0.4.0](https://github.com/rdeville-public/git-repo/compare/0.3.1...0.4.0) (2023-01-29)
 
 ### Minor
