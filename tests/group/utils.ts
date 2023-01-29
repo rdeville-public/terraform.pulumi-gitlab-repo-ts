@@ -338,3 +338,36 @@ test("group with supported provider with variables", (currTest) => {
             variables.fakeVariableName.urn
     );
 });
+
+test("group with supported provider with accessTokens", (currTest) => {
+    const fakeGroups: group.GroupsPulumiInfo = {
+        "fakeGroupName": {
+            "accessTokens": {
+                "fakeAccessTokenName": {
+                    "scopes": ["read_repository"]
+                }
+            },
+            "desc": GROUP_DESC,
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]]
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    group.initGroup(
+        providers,
+        fakeGroups
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].groups.fakeGroupName.name,
+        /fakegroupname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            groups.fakeGroupName.
+            accessTokens.fakeAccessTokenName.urn
+    );
+});
