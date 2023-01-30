@@ -89,6 +89,7 @@ function computeProjectArgs (
         "hooks": projectInfo.hooks ?? {} as ArgsDict,
         "labels": projectInfo.labels ?? {} as ArgsDict,
         "pipelineTriggers": projectInfo.pipelineTriggers ?? {} as ArgsDict,
+        "pipelinesSchedule": projectInfo.pipelinesSchedule ?? {} as ArgsDict,
         "projectConfig": {
             ...computeProjectConfig(
                 provider.name,

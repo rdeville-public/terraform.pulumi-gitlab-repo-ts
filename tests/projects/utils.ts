@@ -568,3 +568,51 @@ test("project with supported provider with pipelineTriggers", (currTest) => {
             pipelineTriggers.fakePipelineTriggerName.urn
     );
 });
+
+test(
+    "project with supported provider with scheduled pipelines and variables",
+    (currTest) => {
+        const fakeProjects: project.ProjectsPulumiInfo = {
+            "fakeProjectName": {
+                "desc": PROJECT_DESC,
+                "pipelinesSchedule": {
+                    "fakePipelineSchedule": {
+                        "cron": "0 12 */7 * *",
+                        "description": "Fake pipeline scheduled description",
+                        "ref": "main",
+                        "variables": {
+                            "fakeVariableKey": "fakeVariableValue"
+                        }
+                    }
+                },
+                // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+                "providers": [PROVIDER_NAME[0]]
+            }
+        };
+
+        const providers = provider.initProvider(PROVIDER);
+        project.initProject(
+            providers,
+            fakeProjects
+        );
+
+        currTest.regex(
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
+            /fakeprojectname-[A-Za-z0-9]{5}/u
+        );
+        currTest.snapshot(
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            providers[PROVIDER_NAME[0]].
+                projects.fakeProjectName.
+                pipelinesSchedule.fakePipelineSchedule.pipeline?.urn
+        );
+        currTest.snapshot(
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            providers[PROVIDER_NAME[0]].
+                projects.fakeProjectName.
+                pipelinesSchedule.fakePipelineSchedule.
+                variables?.fakeVariableKey.urn
+        );
+    }
+);

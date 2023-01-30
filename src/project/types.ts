@@ -21,6 +21,7 @@ export interface ProjectInfo {
     protectedTags?: ArgsDict;
     deployTokens?: ArgsDict;
     pipelineTriggers?: ArgsDict;
+    pipelinesSchedule?: ArgsDict;
 }
 
 export interface ArgsDict {
