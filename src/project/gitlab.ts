@@ -41,6 +41,10 @@ interface IGitlabProjectProtectTags {
     [key: string]: gitlab.TagProtection;
 }
 
+interface IGitlabProjectDeployTokens {
+    [key: string]: gitlab.DeployToken;
+}
+
 export interface IGitlabProjectArgs {
     projectConfig: gitlab.ProjectArgs;
     labels?: ArgsDict;
@@ -51,6 +55,7 @@ export interface IGitlabProjectArgs {
     branches?: ArgsDict;
     protectedBranches?: ArgsDict;
     protectedTags?: ArgsDict;
+    deployTokens?: ArgsDict;
 }
 
 export interface IGitlabProject {
@@ -64,6 +69,7 @@ export interface IGitlabProject {
     branches: IGitlabProjectBranches;
     protectedBranches: IGitlabProjectProtectBranches;
     protectedTags: IGitlabProjectProtectTags;
+    deployTokens: IGitlabProjectDeployTokens;
 }
 
 
@@ -96,6 +102,8 @@ export class GitlabProject extends pulumi.ComponentResource
     public protectedBranches: IGitlabProjectProtectBranches = {};
 
     public protectedTags: IGitlabProjectProtectTags = {};
+
+    public deployTokens: IGitlabProjectDeployTokens = {};
 
     /**
      * Constructor of the ComponentResource GitlabProject
@@ -138,6 +146,7 @@ export class GitlabProject extends pulumi.ComponentResource
         this.addBranches(args);
         this.addProtectedBranches(args);
         this.addProtectedTags(args);
+        this.addDeployTokens(args);
     }
 
     /**
@@ -335,6 +344,31 @@ export class GitlabProject extends pulumi.ComponentResource
                             "project": this.project.id,
                             "tag": protectedTagName
                         } as gitlab.TagProtectionArgs,
+                        {
+                            "parent": this.project
+                        }
+                    );
+            }
+        }
+    }
+
+    /**
+     * Add deployTokens to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     */
+    private addDeployTokens (args: IGitlabProjectArgs): void {
+        for (const iDeployToken in args.deployTokens) {
+            if ("scopes" in args.deployTokens[iDeployToken]) {
+                const deployTokenName =
+                    `${utils.slugify(iDeployToken)}-${utils.genId()}`;
+                this.deployTokens[iDeployToken] =
+                    new gitlab.DeployToken(
+                        deployTokenName,
+                        {
+                            ...args.deployTokens[iDeployToken],
+                            "project": this.project.id
+                        } as gitlab.DeployTokenArgs,
                         {
                             "parent": this.project
                         }
