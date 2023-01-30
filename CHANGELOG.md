@@ -1,5 +1,33 @@
 # CHANGELOG
 
+## [v0.11.0](https://github.com/rdeville-public/git-repo/compare/0.10.0...0.11.0) (2023-01-30)
+
+### Minor
+
+  * ✨ Add project branch support [`d6f74bd`](https://github.com/rdeville-public/git-repo/commit/d6f74bd)
+  * ✨ Add project branch support (#81) (Issues:[`#81`](https://github.com/rdeville-public/git-repo/issues/81)[`#73`](https://github.com/rdeville-public/git-repo/issues/73))[`255d9cb`](https://github.com/rdeville-public/git-repo/commit/255d9cb)
+  * ✨ Add project protected branch support [`ddb468f`](https://github.com/rdeville-public/git-repo/commit/ddb468f)
+  * ✨ Add project protected branch support (#82) (Issues:[`#82`](https://github.com/rdeville-public/git-repo/issues/82)[`#74`](https://github.com/rdeville-public/git-repo/issues/74))[`9151327`](https://github.com/rdeville-public/git-repo/commit/9151327)
+  * ✨ Add project tag protection support [`90f2009`](https://github.com/rdeville-public/git-repo/commit/90f2009)
+  * ✨ Add project protected tag (#83) (Issues:[`#83`](https://github.com/rdeville-public/git-repo/issues/83)[`#75`](https://github.com/rdeville-public/git-repo/issues/75))[`43d7ee5`](https://github.com/rdeville-public/git-repo/commit/43d7ee5)
+  * ✨ Add project deploy token support [`5cf09e1`](https://github.com/rdeville-public/git-repo/commit/5cf09e1)
+  * ✨ Add project deploy token support (#84) (Issues:[`#84`](https://github.com/rdeville-public/git-repo/issues/84)[`#76`](https://github.com/rdeville-public/git-repo/issues/76))[`bb5dd51`](https://github.com/rdeville-public/git-repo/commit/bb5dd51)
+  * ✨ Add project pipeline trigger support [`3a80de9`](https://github.com/rdeville-public/git-repo/commit/3a80de9)
+  * ✨ Add project pipeline trigger support (#85) (Issues:[`#85`](https://github.com/rdeville-public/git-repo/issues/85)[`#72`](https://github.com/rdeville-public/git-repo/issues/72))[`c3a5b7d`](https://github.com/rdeville-public/git-repo/commit/c3a5b7d)
+  * ✨ Add pipeline schedule with variable support [`5f2177f`](https://github.com/rdeville-public/git-repo/commit/5f2177f)
+  * ✨ Add project pipeline schedule with variable support (#86) (Issues:[`#86`](https://github.com/rdeville-public/git-repo/issues/86)[`#69`](https://github.com/rdeville-public/git-repo/issues/69)[`#71`](https://github.com/rdeville-public/git-repo/issues/71))[`689b75e`](https://github.com/rdeville-public/git-repo/commit/689b75e)
+  * ✨ Add multiple project related sub resources. (#87) (Issues:[`#87`](https://github.com/rdeville-public/git-repo/issues/87)[`#69`](https://github.com/rdeville-public/git-repo/issues/69)[`#71`](https://github.com/rdeville-public/git-repo/issues/71)[`#72`](https://github.com/rdeville-public/git-repo/issues/72)[`#73`](https://github.com/rdeville-public/git-repo/issues/73)[`#74`](https://github.com/rdeville-public/git-repo/issues/74)[`#75`](https://github.com/rdeville-public/git-repo/issues/75)[`#76`](https://github.com/rdeville-public/git-repo/issues/76))[`82390a1`](https://github.com/rdeville-public/git-repo/commit/82390a1)
+
+### Others
+
+  * ✅ Add project branch support test [`17e8f07`](https://github.com/rdeville-public/git-repo/commit/17e8f07)
+  * ✅ Add project protected branch support test [`f54cbcf`](https://github.com/rdeville-public/git-repo/commit/f54cbcf)
+  * ✅ Add project tag protection support tests [`594cfd0`](https://github.com/rdeville-public/git-repo/commit/594cfd0)
+  * ✅ Add project deploy token support [`7402c7c`](https://github.com/rdeville-public/git-repo/commit/7402c7c)
+  * ✅ Add project pipeline trigger support tests [`514563c`](https://github.com/rdeville-public/git-repo/commit/514563c)
+  * ✅ Add pipelines support test [`ce3edaa`](https://github.com/rdeville-public/git-repo/commit/ce3edaa)
+  * 🔨 Update eslint rc [`00f855e`](https://github.com/rdeville-public/git-repo/commit/00f855e)
+
 ## [v0.10.0](https://github.com/rdeville-public/git-repo/compare/0.9.0...0.10.0) (2023-01-30)
 
 ### Minor
