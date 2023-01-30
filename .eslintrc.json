@@ -35,6 +35,10 @@
     ],
     "guard-for-in": "off",
     "lines-around-comment": "off",
+    "max-statements": [
+      "error",
+      15
+    ],
     "max-params": [
       "error",
       6
