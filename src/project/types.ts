@@ -1,4 +1,3 @@
-import type * as gitlab from "@pulumi/gitlab";
 import type * as gitlabProject from "./gitlab";
 import type * as pulumi from "@pulumi/pulumi";
 
@@ -12,6 +11,7 @@ export interface ProjectInfo {
     providers?: string[];
     desc?: string;
     logo?: string;
+    labels?: ArgsDict;
     badges?: ArgsDict;
     hooks?: ArgsDict;
     variables?: ArgsDict;
@@ -33,22 +33,6 @@ export interface ProjectsDict {
 
 export interface ProjectPulumiConfig {
     [key: string]: pulumi.Inputs | object;
-}
-
-export interface ProjectBadgesPulumiConfig {
-    [key: string]: gitlab.ProjectBadgeArgs;
-}
-
-export interface ProjectHooksPulumiConfig {
-    [key: string]: gitlab.ProjectHookArgs;
-}
-
-export interface ProjectVariablesPulumiConfig {
-    [key: string]: gitlab.ProjectVariableArgs;
-}
-
-export interface ProjectAccessTokensPulumiConfig {
-    [key: string]: gitlab.ProjectAccessTokenArgs;
 }
 
 // Enum

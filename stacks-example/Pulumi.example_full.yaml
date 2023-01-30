@@ -193,6 +193,9 @@ config:
       providers:
         - framagit.org
         - gitlab.com
+      labels:
+        fakeLabel:
+          color: "#000000"
       badges:
         badgeName:
           imageUrl: TODO
