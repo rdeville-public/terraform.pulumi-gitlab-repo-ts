@@ -21,6 +21,9 @@ import type {
 import {
     GitlabProject
 } from "./index";
+import type {
+    IGitlabProjectArgs
+} from "./gitlab";
 
 /**
  * Compute project configuration depending on the type of project
@@ -60,24 +63,66 @@ function computeProjectConfig (
 }
 
 /**
+ * Compute GitlabProject arguments
+ *
+ * @param {GitlabProvider} provider - Provider object
+ * @param {ProjectInfo} projectInfo - Information of the project (such as desc,
+ *      etc.)
+ * @param {string} projectName - Name of the project
+ * @param {gitlab.ProjectArgs} data - Set of already partially computed
+ *      GitlabProject data (args and opts)
+ * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
+ * @returns {IGitlabProjectArgs} Set of compute GitlabProjectArgs
+ */
+function computeProjectArgs (
+    provider: GitlabProvider,
+    projectInfo: ProjectInfo,
+    projectName: string,
+    data: gitlab.ProjectArgs,
+    projectsConfig?: ProjectPulumiConfig
+): IGitlabProjectArgs {
+    return {
+        "accessTokens": projectInfo.accessTokens ?? {} as ArgsDict,
+        "badges": projectInfo.badges ?? {} as ArgsDict,
+        "branches": projectInfo.branches ?? {} as ArgsDict,
+        "deployTokens": projectInfo.deployTokens ?? {} as ArgsDict,
+        "hooks": projectInfo.hooks ?? {} as ArgsDict,
+        "labels": projectInfo.labels ?? {} as ArgsDict,
+        "pipelineTriggers": projectInfo.pipelineTriggers ?? {} as ArgsDict,
+        "projectConfig": {
+            ...computeProjectConfig(
+                provider.name,
+                projectsConfig
+            ),
+            ...data,
+            "name": projectName
+        } as gitlab.ProjectArgs,
+        "protectedBranches":
+            projectInfo.protectedBranches ?? {} as ArgsDict,
+        "protectedTags":
+            projectInfo.protectedTags ?? {} as ArgsDict,
+        "variables": projectInfo.variables ?? {} as ArgsDict
+    };
+}
+
+/**
  * Compute data, i.e. args and opts for the project
  *
  * @param {GitlabProvider} provider - Provider object
  * @param {ProjectInfo} projectInfo - Information of the project (such as desc,
  *      etc.)
  * @param {string} projectName - Name of the project
- * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
  * @param {GitlabGroup} [parentGroup] - Group object that define parent
  *      resources
+ * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
  * @returns {ProjectData} Object with args and data for Pulumi Group object
  */
 function computeProjectData (
     provider: GitlabProvider,
-    // Will be used later when other type of group resources will be supported
     projectInfo: ProjectInfo,
     projectName: string,
-    projectsConfig?: ProjectPulumiConfig,
-    parentGroup?: GitlabGroup
+    parentGroup?: GitlabGroup,
+    projectsConfig?: ProjectPulumiConfig
 ): ProjectData {
     let data: gitlab.ProjectArgs = {
         "path": slugify(projectName)
@@ -94,27 +139,13 @@ function computeProjectData (
         } as gitlab.ProjectArgs;
     }
     return {
-        "args": {
-            "accessTokens": projectInfo.accessTokens ?? {} as ArgsDict,
-            "badges": projectInfo.badges ?? {} as ArgsDict,
-            "branches": projectInfo.branches ?? {} as ArgsDict,
-            "deployTokens": projectInfo.deployTokens ?? {} as ArgsDict,
-            "hooks": projectInfo.hooks ?? {} as ArgsDict,
-            "labels": projectInfo.labels ?? {} as ArgsDict,
-            "projectConfig": {
-                ...computeProjectConfig(
-                    provider.name,
-                    projectsConfig
-                ),
-                ...data,
-                "name": projectName
-            } as gitlab.ProjectArgs,
-            "protectedBranches":
-                projectInfo.protectedBranches ?? {} as ArgsDict,
-            "protectedTags":
-                projectInfo.protectedTags ?? {} as ArgsDict,
-            "variables": projectInfo.variables ?? {} as ArgsDict
-        },
+        "args": computeProjectArgs(
+            provider,
+            projectInfo,
+            projectName,
+            data,
+            projectsConfig
+        ),
         "opts": {
             "parent": parentGroup?.group ?? provider,
             "provider": provider.provider
@@ -144,8 +175,8 @@ function createProject (
         provider,
         projectInfo,
         projectName,
-        projectsConfig,
-        parentGroup
+        parentGroup,
+        projectsConfig
     );
 
     const projectNameSlug = slugify(`${projectName}-${genId()}`);
