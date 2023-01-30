@@ -1,3 +1,4 @@
+/* eslint max-lines: 0 */
 import * as gitlab from "@pulumi/gitlab";
 import * as pulumi from "@pulumi/pulumi";
 import * as utils from "../utils";
@@ -32,6 +33,10 @@ interface IGitlabProjectBranches {
     [key: string]: gitlab.Branch;
 }
 
+interface IGitlabProjectProtectBranches {
+    [key: string]: gitlab.BranchProtection;
+}
+
 export interface IGitlabProjectArgs {
     projectConfig: gitlab.ProjectArgs;
     labels?: ArgsDict;
@@ -40,6 +45,7 @@ export interface IGitlabProjectArgs {
     variables?: ArgsDict;
     accessTokens?: ArgsDict;
     branches?: ArgsDict;
+    protectedBranches?: ArgsDict;
 }
 
 export interface IGitlabProject {
@@ -51,6 +57,7 @@ export interface IGitlabProject {
     variables: IGitlabProjectVariables;
     accessTokens: IGitlabProjectAccessToken;
     branches: IGitlabProjectBranches;
+    protectedBranches: IGitlabProjectProtectBranches;
 }
 
 
@@ -80,6 +87,8 @@ export class GitlabProject extends pulumi.ComponentResource
 
     public branches: IGitlabProjectBranches = {};
 
+    public protectedBranches: IGitlabProjectProtectBranches = {};
+
     /**
      * Constructor of the ComponentResource GitlabProject
      *
@@ -103,13 +112,23 @@ export class GitlabProject extends pulumi.ComponentResource
                 "parent": this
             }
         );
+        this.addProjectResources(args);
+        this.registerOutputs();
+    }
+
+    /**
+     * Process every possible project related resources.
+     *
+     * @param {IGitlabProjectArgs} args - [TODO:description]
+     */
+    private addProjectResources (args: IGitlabProjectArgs): void {
         this.addLabels(args);
         this.addBadges(args);
         this.addHooks(args);
         this.addVariables(args);
         this.addAccessTokens(args);
         this.addBranches(args);
-        this.registerOutputs();
+        this.addProtectedBranches(args);
     }
 
     /**
@@ -262,6 +281,30 @@ export class GitlabProject extends pulumi.ComponentResource
                     }
                 );
             }
+        }
+    }
+
+    /**
+     * Add protectedBranches to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     */
+    private addProtectedBranches (args: IGitlabProjectArgs): void {
+        for (const iProtectedBranch in args.protectedBranches) {
+            const protectedBranchName =
+                `${utils.slugify(iProtectedBranch)}-${utils.genId()}`;
+            this.protectedBranches[iProtectedBranch] =
+                new gitlab.BranchProtection(
+                    protectedBranchName,
+                    {
+                        ...args.protectedBranches[iProtectedBranch],
+                        "branch": protectedBranchName,
+                        "project": this.project.id
+                    } as gitlab.BranchProtectionArgs,
+                    {
+                        "parent": this.project
+                    }
+                );
         }
     }
 

@@ -17,6 +17,7 @@ export interface ProjectInfo {
     variables?: ArgsDict;
     accessTokens?: ArgsDict;
     branches?: ArgsDict;
+    protectedBranches?: ArgsDict;
 }
 
 export interface ArgsDict {
