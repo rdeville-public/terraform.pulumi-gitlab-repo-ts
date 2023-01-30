@@ -28,6 +28,10 @@ interface IGitlabProjectAccessToken {
     [key: string]: gitlab.ProjectAccessToken;
 }
 
+interface IGitlabProjectBranches {
+    [key: string]: gitlab.Branch;
+}
+
 export interface IGitlabProjectArgs {
     projectConfig: gitlab.ProjectArgs;
     labels?: ArgsDict;
@@ -35,6 +39,7 @@ export interface IGitlabProjectArgs {
     hooks?: ArgsDict;
     variables?: ArgsDict;
     accessTokens?: ArgsDict;
+    branches?: ArgsDict;
 }
 
 export interface IGitlabProject {
@@ -45,6 +50,7 @@ export interface IGitlabProject {
     hooks: IGitlabProjectHooks;
     variables: IGitlabProjectVariables;
     accessTokens: IGitlabProjectAccessToken;
+    branches: IGitlabProjectBranches;
 }
 
 
@@ -71,6 +77,8 @@ export class GitlabProject extends pulumi.ComponentResource
     public variables: IGitlabProjectVariables = {};
 
     public accessTokens: IGitlabProjectAccessToken = {};
+
+    public branches: IGitlabProjectBranches = {};
 
     /**
      * Constructor of the ComponentResource GitlabProject
@@ -100,6 +108,7 @@ export class GitlabProject extends pulumi.ComponentResource
         this.addHooks(args);
         this.addVariables(args);
         this.addAccessTokens(args);
+        this.addBranches(args);
         this.registerOutputs();
     }
 
@@ -224,6 +233,30 @@ export class GitlabProject extends pulumi.ComponentResource
                         ...args.accessTokens[iAccessToken],
                         "project": this.project.id
                     } as gitlab.ProjectAccessTokenArgs,
+                    {
+                        "parent": this.project
+                    }
+                );
+            }
+        }
+    }
+
+    /**
+     * Add branches to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     */
+    private addBranches (args: IGitlabProjectArgs): void {
+        for (const iBranch in args.branches) {
+            if ("ref" in args.branches[iBranch]) {
+                const branchName =
+                    `${utils.slugify(iBranch)}-${utils.genId()}`;
+                this.branches[iBranch] = new gitlab.Branch(
+                    branchName,
+                    {
+                        ...args.branches[iBranch],
+                        "project": this.project.id
+                    } as gitlab.BranchArgs,
                     {
                         "parent": this.project
                     }

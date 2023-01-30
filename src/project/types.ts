@@ -16,6 +16,7 @@ export interface ProjectInfo {
     hooks?: ArgsDict;
     variables?: ArgsDict;
     accessTokens?: ArgsDict;
+    branches?: ArgsDict;
 }
 
 export interface ArgsDict {
