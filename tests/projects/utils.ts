@@ -403,3 +403,216 @@ test("project with supported provider with accessTokens", (currTest) => {
             accessTokens.fakeAccessTokenName.urn
     );
 });
+
+
+test("project with supported provider with branches", (currTest) => {
+    const fakeProjects: project.ProjectsPulumiInfo = {
+        "fakeProjectName": {
+            "branches": {
+                "fakeBranchName": {
+                    "ref": "main"
+                }
+            },
+            "desc": PROJECT_DESC,
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]]
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    project.initProject(
+        providers,
+        fakeProjects
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
+        /fakeprojectname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            projects.fakeProjectName.
+            branches.fakeBranchName.urn
+    );
+});
+
+test("project with supported provider with protectedBranches", (currTest) => {
+    const fakeProjects: project.ProjectsPulumiInfo = {
+        "fakeProjectName": {
+            "desc": PROJECT_DESC,
+            "protectedBranches": {
+                "fakeBranchName": {}
+            },
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]]
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    project.initProject(
+        providers,
+        fakeProjects
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
+        /fakeprojectname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            projects.fakeProjectName.
+            protectedBranches.fakeBranchName.urn
+    );
+});
+
+test("project with supported provider with protectedTags", (currTest) => {
+    const fakeProjects: project.ProjectsPulumiInfo = {
+        "fakeProjectName": {
+            "desc": PROJECT_DESC,
+            "protectedTags": {
+                "fakeTagName": {
+                    "createAccessLevel": "maintainer"
+                }
+            },
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]]
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    project.initProject(
+        providers,
+        fakeProjects
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
+        /fakeprojectname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            projects.fakeProjectName.
+            protectedTags.fakeTagName.urn
+    );
+});
+
+test("project with supported provider with deployTokens", (currTest) => {
+    const fakeProjects: project.ProjectsPulumiInfo = {
+        "fakeProjectName": {
+            "deployTokens": {
+                "fakeDeployTokenName": {
+                    "scopes": ["read_repository"]
+                }
+            },
+            "desc": PROJECT_DESC,
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]]
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    project.initProject(
+        providers,
+        fakeProjects
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
+        /fakeprojectname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            projects.fakeProjectName.
+            deployTokens.fakeDeployTokenName.urn
+    );
+});
+
+
+test("project with supported provider with pipelineTriggers", (currTest) => {
+    const fakeProjects: project.ProjectsPulumiInfo = {
+        "fakeProjectName": {
+            "desc": PROJECT_DESC,
+            "pipelineTriggers": {
+                "fakePipelineTriggerName": {
+                    "description": "Fake pipeline trigger description"
+                }
+            },
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]]
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    project.initProject(
+        providers,
+        fakeProjects
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
+        /fakeprojectname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            projects.fakeProjectName.
+            pipelineTriggers.fakePipelineTriggerName.urn
+    );
+});
+
+test(
+    "project with supported provider with scheduled pipelines and variables",
+    (currTest) => {
+        const fakeProjects: project.ProjectsPulumiInfo = {
+            "fakeProjectName": {
+                "desc": PROJECT_DESC,
+                "pipelinesSchedule": {
+                    "fakePipelineSchedule": {
+                        "cron": "0 12 */7 * *",
+                        "description": "Fake pipeline scheduled description",
+                        "ref": "main",
+                        "variables": {
+                            "fakeVariableKey": "fakeVariableValue"
+                        }
+                    }
+                },
+                // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+                "providers": [PROVIDER_NAME[0]]
+            }
+        };
+
+        const providers = provider.initProvider(PROVIDER);
+        project.initProject(
+            providers,
+            fakeProjects
+        );
+
+        currTest.regex(
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
+            /fakeprojectname-[A-Za-z0-9]{5}/u
+        );
+        currTest.snapshot(
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            providers[PROVIDER_NAME[0]].
+                projects.fakeProjectName.
+                pipelinesSchedule.fakePipelineSchedule.pipeline?.urn
+        );
+        currTest.snapshot(
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            providers[PROVIDER_NAME[0]].
+                projects.fakeProjectName.
+                pipelinesSchedule.fakePipelineSchedule.
+                variables?.fakeVariableKey.urn
+        );
+    }
+);
