@@ -8,6 +8,10 @@ import type {
     ProtectedData
 } from "../utils";
 
+interface IGitlabProjectLabels {
+    [key: string]: gitlab.Label;
+}
+
 interface IGitlabProjectBadges {
     [key: string]: gitlab.ProjectBadge;
 }
@@ -26,6 +30,7 @@ interface IGitlabProjectAccessToken {
 
 export interface IGitlabProjectArgs {
     projectConfig: gitlab.ProjectArgs;
+    labels?: ArgsDict;
     badges?: ArgsDict;
     hooks?: ArgsDict;
     variables?: ArgsDict;
@@ -35,6 +40,7 @@ export interface IGitlabProjectArgs {
 export interface IGitlabProject {
     name: string;
     project: gitlab.Project;
+    labels: IGitlabProjectLabels;
     badges: IGitlabProjectBadges;
     hooks: IGitlabProjectHooks;
     variables: IGitlabProjectVariables;
@@ -55,6 +61,8 @@ export class GitlabProject extends pulumi.ComponentResource
     public name: string;
 
     public project: gitlab.Project;
+
+    public labels: IGitlabProjectLabels = {};
 
     public badges: IGitlabProjectBadges = {};
 
@@ -87,11 +95,35 @@ export class GitlabProject extends pulumi.ComponentResource
                 "parent": this
             }
         );
+        this.addLabels(args);
         this.addBadges(args);
         this.addHooks(args);
         this.addVariables(args);
         this.addAccessTokens(args);
         this.registerOutputs();
+    }
+
+    /**
+     * Add labels to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     */
+    private addLabels (args: IGitlabProjectArgs): void {
+        for (const iLabel in args.labels) {
+            if ("color" in args.labels[iLabel]) {
+                const labelName = `${utils.slugify(iLabel)}-${utils.genId()}`;
+                this.labels[iLabel] = new gitlab.Label(
+                    labelName,
+                    {
+                        ...args.labels[iLabel],
+                        "project": this.project.id
+                    } as gitlab.LabelArgs,
+                    {
+                        "parent": this.project
+                    }
+                );
+            }
+        }
     }
 
     /**
