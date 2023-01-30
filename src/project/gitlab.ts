@@ -49,6 +49,19 @@ interface IGitlabProjectPipelineTriggers {
     [key: string]: gitlab.PipelineTrigger;
 }
 
+interface IGitlabProjectPipelineScheduleVariables {
+    [key: string]: gitlab.PipelineScheduleVariable;
+}
+
+interface IGitlabProjectPipelineScheduled {
+    pipeline?: gitlab.PipelineSchedule;
+    variables?: IGitlabProjectPipelineScheduleVariables;
+}
+
+interface IGitlabProjectPipelinesSchedule {
+    [key: string]: IGitlabProjectPipelineScheduled;
+}
+
 export interface IGitlabProjectArgs {
     projectConfig: gitlab.ProjectArgs;
     labels?: ArgsDict;
@@ -61,6 +74,7 @@ export interface IGitlabProjectArgs {
     protectedTags?: ArgsDict;
     deployTokens?: ArgsDict;
     pipelineTriggers?: ArgsDict;
+    pipelinesSchedule?: ArgsDict;
 }
 
 export interface IGitlabProject {
@@ -76,8 +90,8 @@ export interface IGitlabProject {
     protectedTags: IGitlabProjectProtectTags;
     deployTokens: IGitlabProjectDeployTokens;
     pipelineTriggers: IGitlabProjectPipelineTriggers;
+    pipelinesSchedule: IGitlabProjectPipelinesSchedule;
 }
-
 
 /**
  * Pulumi custom ComponentResource which deploy a gitlab projects and associated
@@ -113,6 +127,8 @@ export class GitlabProject extends pulumi.ComponentResource
 
     public pipelineTriggers: IGitlabProjectPipelineTriggers = {};
 
+    public pipelinesSchedule: IGitlabProjectPipelinesSchedule = {};
+
     /**
      * Constructor of the ComponentResource GitlabProject
      *
@@ -136,34 +152,43 @@ export class GitlabProject extends pulumi.ComponentResource
                 "parent": this
             }
         );
-        this.addProjectResources(args);
+        this.addProjectResources(args, opts);
         this.registerOutputs();
     }
 
     /**
      * Process every possible project related resources.
      *
-     * @param {IGitlabProjectArgs} args - [TODO:description]
+     * @param {IGitlabProjectArgs} args - GitlabProject arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      */
-    private addProjectResources (args: IGitlabProjectArgs): void {
-        this.addLabels(args);
-        this.addBadges(args);
-        this.addHooks(args);
-        this.addVariables(args);
-        this.addAccessTokens(args);
-        this.addBranches(args);
-        this.addProtectedBranches(args);
-        this.addProtectedTags(args);
-        this.addDeployTokens(args);
-        this.addPipelineTriggers(args);
+    private addProjectResources (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
+        this.addLabels(args, opts);
+        this.addBadges(args, opts);
+        this.addHooks(args, opts);
+        this.addVariables(args, opts);
+        this.addAccessTokens(args, opts);
+        this.addBranches(args, opts);
+        this.addProtectedBranches(args, opts);
+        this.addProtectedTags(args, opts);
+        this.addDeployTokens(args, opts);
+        this.addPipelineTriggers(args, opts);
+        this.addPipelinesSchedule(args, opts);
     }
 
     /**
      * Add labels to the object and create parent relationship
      *
      * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      */
-    private addLabels (args: IGitlabProjectArgs): void {
+    private addLabels (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
         for (const iLabel in args.labels) {
             if ("color" in args.labels[iLabel]) {
                 const labelName = `${utils.slugify(iLabel)}-${utils.genId()}`;
@@ -174,6 +199,7 @@ export class GitlabProject extends pulumi.ComponentResource
                         "project": this.project.id
                     } as gitlab.LabelArgs,
                     {
+                        ...opts,
                         "parent": this.project
                     }
                 );
@@ -185,8 +211,12 @@ export class GitlabProject extends pulumi.ComponentResource
      * Add badges to the object and create parent relationship
      *
      * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      */
-    private addBadges (args: IGitlabProjectArgs): void {
+    private addBadges (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
         for (const iBadge in args.badges) {
             if ("linkUrl" in args.badges[iBadge]) {
                 const badgeName = `${utils.slugify(iBadge)}-${utils.genId()}`;
@@ -197,6 +227,7 @@ export class GitlabProject extends pulumi.ComponentResource
                         "project": this.project.id
                     } as gitlab.ProjectBadgeArgs,
                     {
+                        ...opts,
                         "parent": this.project
                     }
                 );
@@ -208,8 +239,12 @@ export class GitlabProject extends pulumi.ComponentResource
      * Add hooks to the object and create parent relationship
      *
      * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      */
-    private addHooks (args: IGitlabProjectArgs): void {
+    private addHooks (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
         for (const iHook in args.hooks) {
             if ("url" in args.hooks[iHook]) {
                 const hookName = `${utils.slugify(iHook)}-${utils.genId()}`;
@@ -225,6 +260,7 @@ export class GitlabProject extends pulumi.ComponentResource
                         )
                     } as gitlab.ProjectHookArgs,
                     {
+                        ...opts,
                         "parent": this.project
                     }
                 );
@@ -236,8 +272,12 @@ export class GitlabProject extends pulumi.ComponentResource
      * Add variables to the object and create parent relationship
      *
      * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      */
-    private addVariables (args: IGitlabProjectArgs): void {
+    private addVariables (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
         for (const iVariable in args.variables) {
             if ("value" in args.variables[iVariable]) {
                 const variableName =
@@ -256,6 +296,7 @@ export class GitlabProject extends pulumi.ComponentResource
                         )
                     } as gitlab.ProjectVariableArgs,
                     {
+                        ...opts,
                         "parent": this.project
                     }
                 );
@@ -267,8 +308,12 @@ export class GitlabProject extends pulumi.ComponentResource
      * Add accessTokens to the object and create parent relationship
      *
      * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      */
-    private addAccessTokens (args: IGitlabProjectArgs): void {
+    private addAccessTokens (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
         for (const iAccessToken in args.accessTokens) {
             if ("scopes" in args.accessTokens[iAccessToken]) {
                 const accessTokenName =
@@ -280,6 +325,7 @@ export class GitlabProject extends pulumi.ComponentResource
                         "project": this.project.id
                     } as gitlab.ProjectAccessTokenArgs,
                     {
+                        ...opts,
                         "parent": this.project
                     }
                 );
@@ -291,8 +337,12 @@ export class GitlabProject extends pulumi.ComponentResource
      * Add branches to the object and create parent relationship
      *
      * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      */
-    private addBranches (args: IGitlabProjectArgs): void {
+    private addBranches (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
         for (const iBranch in args.branches) {
             if ("ref" in args.branches[iBranch]) {
                 const branchName =
@@ -304,6 +354,7 @@ export class GitlabProject extends pulumi.ComponentResource
                         "project": this.project.id
                     } as gitlab.BranchArgs,
                     {
+                        ...opts,
                         "parent": this.project
                     }
                 );
@@ -315,8 +366,12 @@ export class GitlabProject extends pulumi.ComponentResource
      * Add protectedBranches to the object and create parent relationship
      *
      * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      */
-    private addProtectedBranches (args: IGitlabProjectArgs): void {
+    private addProtectedBranches (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
         for (const iProtectedBranch in args.protectedBranches) {
             const protectedBranchName =
                 `${utils.slugify(iProtectedBranch)}-${utils.genId()}`;
@@ -329,6 +384,7 @@ export class GitlabProject extends pulumi.ComponentResource
                         "project": this.project.id
                     } as gitlab.BranchProtectionArgs,
                     {
+                        ...opts,
                         "parent": this.project
                     }
                 );
@@ -339,8 +395,12 @@ export class GitlabProject extends pulumi.ComponentResource
      * Add protectedTags to the object and create parent relationship
      *
      * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      */
-    private addProtectedTags (args: IGitlabProjectArgs): void {
+    private addProtectedTags (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
         for (const iProtectedTag in args.protectedTags) {
             if ("createAccessLevel" in args.protectedTags[iProtectedTag]) {
                 const protectedTagName =
@@ -354,6 +414,7 @@ export class GitlabProject extends pulumi.ComponentResource
                             "tag": protectedTagName
                         } as gitlab.TagProtectionArgs,
                         {
+                            ...opts,
                             "parent": this.project
                         }
                     );
@@ -365,8 +426,12 @@ export class GitlabProject extends pulumi.ComponentResource
      * Add deployTokens to the object and create parent relationship
      *
      * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      */
-    private addDeployTokens (args: IGitlabProjectArgs): void {
+    private addDeployTokens (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
         for (const iDeployToken in args.deployTokens) {
             if ("scopes" in args.deployTokens[iDeployToken]) {
                 const deployTokenName =
@@ -379,6 +444,7 @@ export class GitlabProject extends pulumi.ComponentResource
                             "project": this.project.id
                         } as gitlab.DeployTokenArgs,
                         {
+                            ...opts,
                             "parent": this.project
                         }
                     );
@@ -390,21 +456,109 @@ export class GitlabProject extends pulumi.ComponentResource
      * Add pipelineTrigger to the object and create parent relationship
      *
      * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
      */
-    private addPipelineTriggers (args: IGitlabProjectArgs): void {
+    private addPipelineTriggers (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
         for (const iPipelineTrigger in args.pipelineTriggers) {
             if ("description" in args.pipelineTriggers[iPipelineTrigger]) {
-                const deployTokenName =
+                const pipelineTriggerName =
                     `${utils.slugify(iPipelineTrigger)}-${utils.genId()}`;
                 this.pipelineTriggers[iPipelineTrigger] =
                     new gitlab.PipelineTrigger(
-                        deployTokenName,
+                        pipelineTriggerName,
                         {
                             ...args.pipelineTriggers[iPipelineTrigger],
                             "project": this.project.id
                         } as gitlab.PipelineTriggerArgs,
                         {
+                            ...opts,
                             "parent": this.project
+                        }
+                    );
+            }
+        }
+    }
+
+    /**
+     * Add pipelineTrigger to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
+     */
+    private addPipelinesSchedule (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
+        for (const iPipelineSchedule in args.pipelinesSchedule) {
+            if ("cron" in args.pipelinesSchedule[iPipelineSchedule]) {
+                const pipelineScheduleName =
+                    `${utils.slugify(iPipelineSchedule)}-${utils.genId()}`;
+                this.pipelinesSchedule[iPipelineSchedule] = {};
+                this.pipelinesSchedule[iPipelineSchedule].pipeline =
+                    new gitlab.PipelineSchedule(
+                        pipelineScheduleName,
+                        {
+                            ...args.pipelinesSchedule[iPipelineSchedule],
+                            "project": this.project.id
+                        } as gitlab.PipelineScheduleArgs,
+                        {
+                            ...opts,
+                            "parent": this.project
+                        }
+                    );
+                this.addPipelineScheduledVariable(
+                    this.pipelinesSchedule[iPipelineSchedule],
+                    args.pipelinesSchedule[iPipelineSchedule] as
+                    IGitlabProjectPipelineScheduleVariables,
+                    opts
+                );
+            }
+        }
+    }
+
+    /**
+     * Add variables to a scheduled pipeline
+     *
+     * @param {IGitlabProjectPipelineScheduled} pipeline - Previously build
+     *      pipeline scheduled
+     * @param {IGitlabProjectPipelineScheduleVariables} args - Pulumi args for
+     *      pipeline scheduled variables
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
+     */
+    private addPipelineScheduledVariable (
+        pipeline: IGitlabProjectPipelineScheduled,
+        args: ArgsDict,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
+        for (const iVar in args.variables) {
+            if (pipeline.pipeline) {
+                const pipelineScheduleVariableName =
+                    `${utils.slugify(iVar)}-${utils.genId()}`;
+                const pipelineId: pulumi.Input<number> = pipeline.pipeline.id.
+                    apply(
+                        (id) => Number(id)
+                    );
+                if (!pipeline.variables) {
+                    pipeline.variables = {};
+                }
+
+                pipeline.variables[iVar] =
+                    new gitlab.PipelineScheduleVariable(
+                        pipelineScheduleVariableName,
+                        {
+                            "key": iVar,
+                            "pipelineScheduleId": pipelineId,
+                            "project": this.project.id,
+                            // eslint-disable-next-line max-len
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+                            "value": args.variables[iVar]
+                        } as gitlab.PipelineScheduleVariableArgs,
+                        {
+                            ...opts,
+                            "parent": pipeline.pipeline
                         }
                     );
             }
