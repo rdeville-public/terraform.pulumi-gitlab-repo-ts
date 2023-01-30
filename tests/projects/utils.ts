@@ -437,3 +437,34 @@ test("project with supported provider with branches", (currTest) => {
             branches.fakeBranchName.urn
     );
 });
+
+test("project with supported provider with protectedBranches", (currTest) => {
+    const fakeProjects: project.ProjectsPulumiInfo = {
+        "fakeProjectName": {
+            "desc": PROJECT_DESC,
+            "protectedBranches": {
+                "fakeBranchName": {}
+            },
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            "providers": [PROVIDER_NAME[0]]
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    project.initProject(
+        providers,
+        fakeProjects
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
+        /fakeprojectname-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            projects.fakeProjectName.
+            protectedBranches.fakeBranchName.urn
+    );
+});

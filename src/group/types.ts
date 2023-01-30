@@ -1,4 +1,3 @@
-import type * as gitlab from "@pulumi/gitlab";
 import type * as gitlabGroup from "./gitlab";
 import type * as pulumi from "@pulumi/pulumi";
 
@@ -18,6 +17,8 @@ export interface GroupInfo {
     hooks?: ArgsDict;
     variables?: ArgsDict;
     accessTokens?: ArgsDict;
+    branches?: ArgsDict;
+    protectedBranches?: ArgsDict;
 }
 
 export interface ArgsDict {
@@ -35,26 +36,6 @@ export interface GroupsDict {
 
 export interface GroupPulumiConfig {
     [key: string]: pulumi.Inputs | object;
-}
-
-export interface GroupLabelsPulumiConfig {
-    [key: string]: gitlab.GroupLabelArgs;
-}
-
-export interface GroupBadgesPulumiConfig {
-    [key: string]: gitlab.GroupBadgeArgs;
-}
-
-export interface GroupHooksPulumiConfig {
-    [key: string]: gitlab.GroupHookArgs;
-}
-
-export interface GroupVariablesPulumiConfig {
-    [key: string]: gitlab.GroupVariableArgs;
-}
-
-export interface GroupAccessTokensPulumiConfig {
-    [key: string]: gitlab.GroupAccessTokenArgs;
 }
 
 // Enum
