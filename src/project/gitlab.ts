@@ -45,6 +45,10 @@ interface IGitlabProjectDeployTokens {
     [key: string]: gitlab.DeployToken;
 }
 
+interface IGitlabProjectPipelineTriggers {
+    [key: string]: gitlab.PipelineTrigger;
+}
+
 export interface IGitlabProjectArgs {
     projectConfig: gitlab.ProjectArgs;
     labels?: ArgsDict;
@@ -56,6 +60,7 @@ export interface IGitlabProjectArgs {
     protectedBranches?: ArgsDict;
     protectedTags?: ArgsDict;
     deployTokens?: ArgsDict;
+    pipelineTriggers?: ArgsDict;
 }
 
 export interface IGitlabProject {
@@ -70,6 +75,7 @@ export interface IGitlabProject {
     protectedBranches: IGitlabProjectProtectBranches;
     protectedTags: IGitlabProjectProtectTags;
     deployTokens: IGitlabProjectDeployTokens;
+    pipelineTriggers: IGitlabProjectPipelineTriggers;
 }
 
 
@@ -104,6 +110,8 @@ export class GitlabProject extends pulumi.ComponentResource
     public protectedTags: IGitlabProjectProtectTags = {};
 
     public deployTokens: IGitlabProjectDeployTokens = {};
+
+    public pipelineTriggers: IGitlabProjectPipelineTriggers = {};
 
     /**
      * Constructor of the ComponentResource GitlabProject
@@ -147,6 +155,7 @@ export class GitlabProject extends pulumi.ComponentResource
         this.addProtectedBranches(args);
         this.addProtectedTags(args);
         this.addDeployTokens(args);
+        this.addPipelineTriggers(args);
     }
 
     /**
@@ -369,6 +378,31 @@ export class GitlabProject extends pulumi.ComponentResource
                             ...args.deployTokens[iDeployToken],
                             "project": this.project.id
                         } as gitlab.DeployTokenArgs,
+                        {
+                            "parent": this.project
+                        }
+                    );
+            }
+        }
+    }
+
+    /**
+     * Add pipelineTrigger to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     */
+    private addPipelineTriggers (args: IGitlabProjectArgs): void {
+        for (const iPipelineTrigger in args.pipelineTriggers) {
+            if ("description" in args.pipelineTriggers[iPipelineTrigger]) {
+                const deployTokenName =
+                    `${utils.slugify(iPipelineTrigger)}-${utils.genId()}`;
+                this.pipelineTriggers[iPipelineTrigger] =
+                    new gitlab.PipelineTrigger(
+                        deployTokenName,
+                        {
+                            ...args.pipelineTriggers[iPipelineTrigger],
+                            "project": this.project.id
+                        } as gitlab.PipelineTriggerArgs,
                         {
                             "parent": this.project
                         }
