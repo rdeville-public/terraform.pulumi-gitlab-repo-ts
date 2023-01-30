@@ -110,6 +110,8 @@ function computeProjectData (
             } as gitlab.ProjectArgs,
             "protectedBranches":
                 projectInfo.protectedBranches ?? {} as ArgsDict,
+            "protectedTags":
+                projectInfo.protectedTags ?? {} as ArgsDict,
             "variables": projectInfo.variables ?? {} as ArgsDict
         },
         "opts": {
