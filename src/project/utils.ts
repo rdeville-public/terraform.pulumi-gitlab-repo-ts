@@ -98,6 +98,7 @@ function computeProjectData (
             "accessTokens": projectInfo.accessTokens ?? {} as ArgsDict,
             "badges": projectInfo.badges ?? {} as ArgsDict,
             "branches": projectInfo.branches ?? {} as ArgsDict,
+            "deployTokens": projectInfo.deployTokens ?? {} as ArgsDict,
             "hooks": projectInfo.hooks ?? {} as ArgsDict,
             "labels": projectInfo.labels ?? {} as ArgsDict,
             "projectConfig": {

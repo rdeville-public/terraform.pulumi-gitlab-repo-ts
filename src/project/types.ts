@@ -19,6 +19,7 @@ export interface ProjectInfo {
     branches?: ArgsDict;
     protectedBranches?: ArgsDict;
     protectedTags?: ArgsDict;
+    deployTokens?: ArgsDict;
 }
 
 export interface ArgsDict {
