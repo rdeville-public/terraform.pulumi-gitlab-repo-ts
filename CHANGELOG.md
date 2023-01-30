@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## [v0.10.0](https://github.com/rdeville-public/git-repo/compare/0.9.0...0.10.0) (2023-01-30)
+
+### Minor
+
+  * ✨ Add gitlab project label support [`892d8b1`](https://github.com/rdeville-public/git-repo/commit/892d8b1)
+
+### Others
+
+  * 🔀 🔥 Drop Github support (#65) (Issues:[`#65`](https://github.com/rdeville-public/git-repo/issues/65)[`#63`](https://github.com/rdeville-public/git-repo/issues/63))[`533a41a`](https://github.com/rdeville-public/git-repo/commit/533a41a)
+  * 🔀 ♻️ Huge code refactorization due to Github support dropped (#66) (Issues:[`#66`](https://github.com/rdeville-public/git-repo/issues/66)[`#64`](https://github.com/rdeville-public/git-repo/issues/64))[`f5fefaa`](https://github.com/rdeville-public/git-repo/commit/f5fefaa)
+  * 🔀 ✨ Add Gitlab project label support (#70) (Issues:[`#70`](https://github.com/rdeville-public/git-repo/issues/70))[`910af04`](https://github.com/rdeville-public/git-repo/commit/910af04)
+  * 📝 Update stack example with project labels [`df057c4`](https://github.com/rdeville-public/git-repo/commit/df057c4)
+  * ✅ Add gitlab labels support tests [`42696d9`](https://github.com/rdeville-public/git-repo/commit/42696d9)
+  * ♻️ Refactor test due to github support dropped [`5dfd4b2`](https://github.com/rdeville-public/git-repo/commit/5dfd4b2)
+  * ♻️ Refactor src code due to github support dropped [`be40843`](https://github.com/rdeville-public/git-repo/commit/be40843)
+  * 🔥 Remove github related tests [`19cb519`](https://github.com/rdeville-public/git-repo/commit/19cb519)
+  * 🔥 Remove github related source code [`3e3d96a`](https://github.com/rdeville-public/git-repo/commit/3e3d96a)
+
 ## [v0.9.0](https://github.com/rdeville-public/git-repo/compare/0.8.0...0.9.0) (2023-01-29)
 
 ### Minor
