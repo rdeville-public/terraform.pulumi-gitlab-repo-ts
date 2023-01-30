@@ -37,6 +37,10 @@ interface IGitlabProjectProtectBranches {
     [key: string]: gitlab.BranchProtection;
 }
 
+interface IGitlabProjectProtectTags {
+    [key: string]: gitlab.TagProtection;
+}
+
 export interface IGitlabProjectArgs {
     projectConfig: gitlab.ProjectArgs;
     labels?: ArgsDict;
@@ -46,6 +50,7 @@ export interface IGitlabProjectArgs {
     accessTokens?: ArgsDict;
     branches?: ArgsDict;
     protectedBranches?: ArgsDict;
+    protectedTags?: ArgsDict;
 }
 
 export interface IGitlabProject {
@@ -58,6 +63,7 @@ export interface IGitlabProject {
     accessTokens: IGitlabProjectAccessToken;
     branches: IGitlabProjectBranches;
     protectedBranches: IGitlabProjectProtectBranches;
+    protectedTags: IGitlabProjectProtectTags;
 }
 
 
@@ -88,6 +94,8 @@ export class GitlabProject extends pulumi.ComponentResource
     public branches: IGitlabProjectBranches = {};
 
     public protectedBranches: IGitlabProjectProtectBranches = {};
+
+    public protectedTags: IGitlabProjectProtectTags = {};
 
     /**
      * Constructor of the ComponentResource GitlabProject
@@ -129,6 +137,7 @@ export class GitlabProject extends pulumi.ComponentResource
         this.addAccessTokens(args);
         this.addBranches(args);
         this.addProtectedBranches(args);
+        this.addProtectedTags(args);
     }
 
     /**
@@ -305,6 +314,32 @@ export class GitlabProject extends pulumi.ComponentResource
                         "parent": this.project
                     }
                 );
+        }
+    }
+
+    /**
+     * Add protectedTags to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     */
+    private addProtectedTags (args: IGitlabProjectArgs): void {
+        for (const iProtectedTag in args.protectedTags) {
+            if ("createAccessLevel" in args.protectedTags[iProtectedTag]) {
+                const protectedTagName =
+                    `${utils.slugify(iProtectedTag)}-${utils.genId()}`;
+                this.protectedTags[iProtectedTag] =
+                    new gitlab.TagProtection(
+                        protectedTagName,
+                        {
+                            ...args.protectedTags[iProtectedTag],
+                            "project": this.project.id,
+                            "tag": protectedTagName
+                        } as gitlab.TagProtectionArgs,
+                        {
+                            "parent": this.project
+                        }
+                    );
+            }
         }
     }
 

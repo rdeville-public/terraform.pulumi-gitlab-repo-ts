@@ -18,6 +18,7 @@ export interface ProjectInfo {
     accessTokens?: ArgsDict;
     branches?: ArgsDict;
     protectedBranches?: ArgsDict;
+    protectedTags?: ArgsDict;
 }
 
 export interface ArgsDict {
