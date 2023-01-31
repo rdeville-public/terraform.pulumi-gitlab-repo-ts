@@ -16,6 +16,7 @@ export interface UserInfo {
     providers: ArgsDict;
     sshKeys?: ArgsDict;
     gpgKeys?: ArgsDict;
+    accessTokens?: ArgsDict;
 }
 
 export interface UsersPulumiConfig {

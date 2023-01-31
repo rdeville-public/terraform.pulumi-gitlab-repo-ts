@@ -10,6 +10,7 @@ export interface IGitlabUser {
     userId: number;
     sshKeys: IGitlabUserSshKey;
     gpgKeys: IGitlabUserGpgKey;
+    accessTokens: IGitlabUserAccessToken;
 }
 
 export interface IGitlabUserArgs {
@@ -17,6 +18,7 @@ export interface IGitlabUserArgs {
     userId: number;
     sshKeys?: ArgsDict;
     gpgKeys?: ArgsDict;
+    accessTokens?: ArgsDict;
 }
 
 interface IGitlabUserSshKey {
@@ -27,6 +29,9 @@ interface IGitlabUserGpgKey {
     [key: string]: gitlab.UserGpgKey;
 }
 
+interface IGitlabUserAccessToken {
+    [key: string]: gitlab.PersonalAccessToken;
+}
 
 /**
  * Pulumi custom ComponentResource which deploy a gitlab provider and its
@@ -46,6 +51,8 @@ export class GitlabUser extends pulumi.ComponentResource
 
     public gpgKeys: IGitlabUserGpgKey = {};
 
+    public accessTokens: IGitlabUserAccessToken = {};
+
     /**
      * Constructor of the ComponentResource GitlabUser
      *
@@ -64,6 +71,7 @@ export class GitlabUser extends pulumi.ComponentResource
         this.userId = args.userId;
         this.addGpgKey(args, opts);
         this.addSshKey(args, opts);
+        this.addAccessToken(args, opts);
     }
 
     /**
@@ -119,6 +127,36 @@ export class GitlabUser extends pulumi.ComponentResource
                         "parent": this
                     }
                 );
+            }
+        }
+    }
+
+    /**
+     * Add Access Token to gitlab user
+     *
+     * @param {IGitlabUserArgs} args - GitlabUser arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
+     */
+    private addAccessToken (
+        args: IGitlabUserArgs,
+        opts?: pulumi.CustomResourceOptions
+    ): void {
+        for (const iAccessToken in args.accessTokens) {
+            if ("scopes" in args.accessTokens[iAccessToken]) {
+                const gpgKeyName =
+                    `${utils.slugify(iAccessToken)}-${utils.genId()}`;
+                this.accessTokens[iAccessToken] =
+                    new gitlab.PersonalAccessToken(
+                        gpgKeyName,
+                        {
+                            ...args.accessTokens[iAccessToken],
+                            "userId": this.userId
+                        } as gitlab.PersonalAccessTokenArgs,
+                        {
+                            ...opts,
+                            "parent": this
+                        }
+                    );
             }
         }
     }
