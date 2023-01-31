@@ -12,12 +12,11 @@ import type {
     ProvidersDict
 } from "../provider";
 import {
-    genId,
-    slugify
-} from "../utils";
-import {
     GitlabGroup
 } from "./index";
+import {
+    slugify
+} from "../utils";
 
 /**
  * Compute group configuration depending on the type of group
@@ -40,7 +39,7 @@ function computeGroupConfig (
             typeof groupConfig !== "undefined" &&
             "default" in groupConfig
         ) {
-            if (providerName === config.require("mainProvider")) {
+            if (providerName === slugify(config.require("mainProvider"))) {
                 return groupConfig.default as gitlab.GroupArgs;
             }
             return {
@@ -99,10 +98,11 @@ function computeGroupData (
             } as gitlab.GroupArgs,
             "hooks": groupInfo.hooks ?? {} as ArgsDict,
             "labels": groupInfo.labels ?? {} as ArgsDict,
+            "providerUrl": provider.url,
             "variables": groupInfo.variables ?? {} as ArgsDict
         },
         "opts": {
-            "parent": parentGroup?.group ?? provider,
+            "parent": parentGroup?.group ?? provider.provider,
             "provider": provider.provider
         }
     };
@@ -128,9 +128,8 @@ function createGroup (
     const data = computeGroupData(
         provider, groupInfo, groupName, groupsConfig, parentGroup
     );
-    const groupNameSlug = slugify(`${groupName}-${genId()}`);
     const currGroup = new GitlabGroup(
-        groupNameSlug,
+        `${slugify(groupName)}`,
         data.args,
         data.opts
     );
@@ -144,57 +143,62 @@ function createGroup (
 }
 
 /**
- * Process to the deployment of git groups for defined providers
+ * Process to the deployment of git group for defined providers
  *
  * @param {ProvidersDict} providers - Set of providers
  * @param {string} groupName - Name of the group
- * @param {GroupInfo} groupInfo - Information of the group (such as desc, etc.)
- * @param {GroupPulumiConfig} groupsConfig - groupConfigs set in the stack
- * @param {GitlabGroup} [parentGroup] - Group object to define subgroup
+ * @param {GroupInfo} groupInfo - Information of the group (such as desc,
+ *      etc.)
+ * @param {GroupPulumiConfig} [groupsConfig] - groupConfigs set in the
+ * @param {GitlabGroup} [parentGroup] - Group object that define parent
+ *      resources
+ * @param {string} [parentProvider] - Name of the provider of the parents
+ *      resources
  */
 function processGroups (
     providers: ProvidersDict,
     groupName: string,
     groupInfo: GroupInfo,
     groupsConfig?: GroupPulumiConfig,
-    parentGroup?: GitlabGroup
+    parentGroup?: GitlabGroup,
+    parentProvider?: string
 ): void {
-    if (parentGroup) {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (parentGroup && parentProvider) {
+        const currGroup = createGroup(
+            providers[parentProvider],
+            groupName,
+            groupInfo,
+            groupsConfig,
+            parentGroup
+        );
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        initGroup(
+            providers,
+            groupInfo.groups,
+            groupsConfig,
+            currGroup,
+            parentProvider
+        );
+    } else if (groupInfo.providers) {
         for (const iProvider in providers) {
-            // eslint-disable-next-line max-len
-            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-            if (groupInfo.providers?.includes(iProvider)) {
-                createGroup(
+            if (groupInfo.providers.includes(iProvider)) {
+                const currGroup = createGroup(
                     providers[iProvider],
                     groupName,
                     groupInfo,
                     groupsConfig,
-                    parentGroup
+                    providers[iProvider].groups[groupName]
                 );
-            }
-        }
-    } else {
-        for (const iProvider in providers) {
-            // eslint-disable-next-line max-len
-            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-            if (groupInfo.providers?.includes(iProvider)) {
-                createGroup(
-                    providers[iProvider],
-                    groupName,
-                    groupInfo,
-                    groupsConfig
+                // eslint-disable-next-line max-len
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                initGroup(
+                    providers,
+                    groupInfo.groups,
+                    groupsConfig,
+                    currGroup,
+                    iProvider
                 );
-                if (groupInfo.groups) {
-                    // eslint-disable-next-line max-len
-                    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                    initGroup(
-                        providers,
-                        groupInfo.groups,
-                        groupsConfig,
-                        providers[iProvider].groups[groupName],
-                        groupInfo.providers
-                    );
-                }
             }
         }
     }
@@ -204,31 +208,28 @@ function processGroups (
  * Initialize the processing of each groups defined in the stack
  *
  * @param {ProvidersDict} providers - Set of providers
- * @param {GroupsPulumiInfo | undefined} groupsInfo - groups entry set in the
- *      stack
- * @param {GroupPulumiConfig} groupsConfig - groupConfigs set in the stack
- * @param {GitlabGroup} parentGroup - Group parent if group is a
- *      subgroup
- * @param {string[]} [parentProviders] - List of provider used for parent Group
+ * @param {GroupsPulumiInfo} [groupsInfo] - groups entries set in the stack
+ * @param {GroupPulumiConfig} [groupsConfig] - groupsConfig set in the stack
+ * @param {GitlabGroup} [parentGroup] - Group parent of the group
+ * @param {string} [parentProvider] - Name of the provider of the parents
+ *      resources
  */
 export function initGroup (
     providers: ProvidersDict,
     groupsInfo?: GroupsPulumiInfo,
     groupsConfig?: GroupPulumiConfig,
     parentGroup?: GitlabGroup,
-    parentProviders?: string[]
+    parentProvider?: string
 ): void {
     for (const iGroup in groupsInfo) {
         if (groupsInfo[iGroup].desc) {
             processGroups(
                 providers,
                 iGroup,
-                {
-                    ...groupsInfo[iGroup],
-                    "providers": parentProviders ?? groupsInfo[iGroup].providers
-                },
+                groupsInfo[iGroup],
                 groupsConfig,
-                parentGroup
+                parentGroup,
+                parentProvider
             );
         }
     }

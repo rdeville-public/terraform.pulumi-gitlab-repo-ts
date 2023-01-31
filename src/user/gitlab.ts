@@ -66,7 +66,7 @@ export class GitlabUser extends pulumi.ComponentResource
         args: IGitlabUserArgs,
         opts?: pulumi.CustomResourceOptions
     ) {
-        super(`git-repo:gitlab-user:${name}`, name, args, opts);
+        super(`gitlab-repo:user:${name}`, name, args, opts);
         this.name = name;
         this.userId = args.userId;
         this.addGpgKey(args, opts);
@@ -86,7 +86,7 @@ export class GitlabUser extends pulumi.ComponentResource
     ): void {
         for (const iSshKey in args.sshKeys) {
             if ("key" in args.sshKeys[iSshKey]) {
-                const sshKeyName = `${utils.slugify(iSshKey)}-${utils.genId()}`;
+                const sshKeyName = `${utils.slugify(iSshKey)}`;
                 this.sshKeys[iSshKey] = new gitlab.UserSshKey(
                     sshKeyName,
                     {
@@ -115,7 +115,7 @@ export class GitlabUser extends pulumi.ComponentResource
     ): void {
         for (const iGpgKey in args.gpgKeys) {
             if ("key" in args.gpgKeys[iGpgKey]) {
-                const gpgKeyName = `${utils.slugify(iGpgKey)}-${utils.genId()}`;
+                const gpgKeyName = `${utils.slugify(iGpgKey)}`;
                 this.gpgKeys[iGpgKey] = new gitlab.UserGpgKey(
                     gpgKeyName,
                     {
@@ -144,7 +144,7 @@ export class GitlabUser extends pulumi.ComponentResource
         for (const iAccessToken in args.accessTokens) {
             if ("scopes" in args.accessTokens[iAccessToken]) {
                 const gpgKeyName =
-                    `${utils.slugify(iAccessToken)}-${utils.genId()}`;
+                    `${utils.slugify(iAccessToken)}`;
                 this.accessTokens[iAccessToken] =
                     new gitlab.PersonalAccessToken(
                         gpgKeyName,

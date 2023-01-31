@@ -22,6 +22,7 @@ export interface ProjectInfo {
     deployTokens?: ArgsDict;
     pipelineTriggers?: ArgsDict;
     pipelinesSchedule?: ArgsDict;
+    mirrors?: ArgsDict;
 }
 
 export interface ArgsDict {
