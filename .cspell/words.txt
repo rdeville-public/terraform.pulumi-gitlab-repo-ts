@@ -3,6 +3,7 @@ Deville
 fakegroupname
 fakename
 fakeprojectname
+fakeusername
 FAKEVALUE
 Framagit
 gitmoji
