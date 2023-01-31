@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## [v0.12.0](https://github.com/rdeville-public/git-repo/compare/0.11.0...0.12.0) (2023-01-31)
+
+### Minor
+
+  * ✨ Add gitlab user support [`48575f7`](https://github.com/rdeville-public/git-repo/commit/48575f7)
+  * ✨ Make project and group optionals [`af1472b`](https://github.com/rdeville-public/git-repo/commit/af1472b)
+
+### Others
+
+  * 🔀 ✨ Add Gitlab user support and make Groups and Project optionals (#88) (Issues:[`#88`](https://github.com/rdeville-public/git-repo/issues/88)[`#78`](https://github.com/rdeville-public/git-repo/issues/78)[`#79`](https://github.com/rdeville-public/git-repo/issues/79))[`8e6be5a`](https://github.com/rdeville-public/git-repo/commit/8e6be5a)
+  * ✅ Add user support tests [`96b93b5`](https://github.com/rdeville-public/git-repo/commit/96b93b5)
+  * 🚨 Fix cspell config [`e9dd762`](https://github.com/rdeville-public/git-repo/commit/e9dd762)
+
 ## [v0.11.0](https://github.com/rdeville-public/git-repo/compare/0.10.0...0.11.0) (2023-01-30)
 
 ### Minor
