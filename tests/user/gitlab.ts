@@ -11,18 +11,13 @@ const PROVIDER_NAME = {
 };
 const [MAIN_PROVIDER] = "fakeGitlab";
 
-const PROVIDER_DATA = {
-    "baseUrl": PROVIDER_BASE_URL,
-    "token": PROVIDER_TOKEN
-};
-const SUPPORTED_PROVIDER = {
-    "type": "gitlab"
-};
-
 const PROVIDER: provider.ProvidersPulumiConfig = {
     "fakeGitlab": {
-        ...PROVIDER_DATA,
-        ...SUPPORTED_PROVIDER
+        "config": {
+            "baseUrl": PROVIDER_BASE_URL,
+            "token": PROVIDER_TOKEN
+        },
+        "username": "fakeUserName"
     }
 };
 
@@ -49,8 +44,8 @@ test("user with supported provider without user args", (currTest) => {
         fakeUsers
     );
 
-    currTest.regex(
+    currTest.is(
         providers.fakeGitlab.users.fakeUserName.name,
-        /fakeusername-[A-Za-z0-9]{5}/u
+        "fakeusername"
     );
 });

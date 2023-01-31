@@ -5,40 +5,25 @@ import * as provider from "../../src/provider";
 import test from "ava";
 
 // FAKE PROVIDER CONFIG
-const PROVIDER_BASE_URL = "https://fake.gitlab.tld";
-const PROVIDER_TOKEN = "fakeToken";
+const PROVIDER_CONFIG = {
+    "config": {
+        "baseUrl": "https://fake.gitlab.tld",
+        "token": "fakeToken"
+    },
+    "username": "fakeUserName"
+};
+
 const PROVIDER_NAME = [
     "fakeGitlab1",
-    "fakeGitlab2",
-    "fakeGithub"
+    "fakeGitlab2"
 ];
 const [MAIN_PROVIDER] = PROVIDER_NAME;
 
-const PROVIDER_DATA = {
-    "baseUrl": PROVIDER_BASE_URL,
-    "token": PROVIDER_TOKEN
-};
-const SUPPORTED_PROVIDER = {
-    "type": "gitlab"
-};
-const UNSUPPORTED_PROVIDER = {
-    "type": "unsupported"
+const PROVIDER: provider.ProvidersPulumiConfig = {
+    "fakeGitlab1": PROVIDER_CONFIG,
+    "fakeGitlab2": PROVIDER_CONFIG
 };
 
-const PROVIDER: provider.ProvidersPulumiConfig = {
-    "fakeGitlab1": {
-        ...PROVIDER_DATA,
-        ...SUPPORTED_PROVIDER
-    },
-    "fakeGitlab2": {
-        ...PROVIDER_DATA,
-        ...SUPPORTED_PROVIDER
-    },
-    "fakeUnsupported": {
-        ...PROVIDER_DATA,
-        ...UNSUPPORTED_PROVIDER
-    }
-};
 
 const PROJECT_DESC = "Fake Project Description";
 
@@ -49,25 +34,6 @@ const ENV: {[key: string]: string} = {
 
 Object.entries(ENV).forEach(([key, val]) => {
     process.env[key] = val;
-});
-
-test("project with unsupported provider", (currTest) => {
-    const fakeProjects: project.ProjectsPulumiInfo = {
-        "fakeProjectName": {
-            "desc": PROJECT_DESC,
-            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-            "providers": [PROVIDER_NAME[2]]
-        }
-    };
-
-    const providers = provider.initProvider(PROVIDER);
-    project.initProject(
-        providers,
-        fakeProjects
-    );
-
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-    currTest.deepEqual(typeof providers[PROVIDER_NAME[2]], "undefined");
 });
 
 test("project with supported provider without project args", (currTest) => {
@@ -85,11 +51,11 @@ test("project with supported provider without project args", (currTest) => {
         fakeProjects
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].
             projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
 });
 
@@ -114,11 +80,11 @@ test(
             fakeProjectConfigs
         );
 
-        currTest.regex(
+        currTest.is(
             // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             providers[PROVIDER_NAME[0]].
                 projects.fakeProjectName.name,
-            /fakeprojectname-[A-Za-z0-9]{5}/u
+            "fakeprojectname"
         );
     }
 );
@@ -144,17 +110,17 @@ test("project with supported provider mirror projects args", (currTest) => {
         fakeProjectConfigs
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].
             projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[1]].
             projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
 });
 
@@ -180,12 +146,12 @@ test("default project in simple group", (currTest) => {
     group.initGroup(providers, fakeGroups);
     project.initProject(providers, fakeProjects);
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].
             groups.fakeGroupName.
             projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
 });
 
@@ -221,13 +187,13 @@ test("default project in nested group", (currTest) => {
     group.initGroup(providers, fakeGroups);
     project.initProject(providers, fakeProjects);
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].
             groups.fakeGroupName.
             subgroup.fakeGroupName.
             projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
 });
 
@@ -252,11 +218,11 @@ test("project with supported provider with labels", (currTest) => {
         fakeProjects
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].
             projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
     currTest.snapshot(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -290,11 +256,11 @@ test("project with supported provider with badges", (currTest) => {
         fakeProjects
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].
             projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
     currTest.snapshot(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -325,10 +291,10 @@ test("project with supported provider with hooks", (currTest) => {
         fakeProjects
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
     currTest.snapshot(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -358,10 +324,10 @@ test("project with supported provider with variables", (currTest) => {
         fakeProjects
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
     currTest.snapshot(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -391,10 +357,10 @@ test("project with supported provider with accessTokens", (currTest) => {
         fakeProjects
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
     currTest.snapshot(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -425,10 +391,10 @@ test("project with supported provider with branches", (currTest) => {
         fakeProjects
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
     currTest.snapshot(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -456,10 +422,10 @@ test("project with supported provider with protectedBranches", (currTest) => {
         fakeProjects
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
     currTest.snapshot(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -489,10 +455,10 @@ test("project with supported provider with protectedTags", (currTest) => {
         fakeProjects
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
     currTest.snapshot(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -522,10 +488,10 @@ test("project with supported provider with deployTokens", (currTest) => {
         fakeProjects
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
     currTest.snapshot(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -556,10 +522,10 @@ test("project with supported provider with pipelineTriggers", (currTest) => {
         fakeProjects
     );
 
-    currTest.regex(
+    currTest.is(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
-        /fakeprojectname-[A-Za-z0-9]{5}/u
+        "fakeprojectname"
     );
     currTest.snapshot(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -596,10 +562,10 @@ test(
             fakeProjects
         );
 
-        currTest.regex(
+        currTest.is(
             // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
-            /fakeprojectname-[A-Za-z0-9]{5}/u
+            "fakeprojectname"
         );
         currTest.snapshot(
             // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -613,6 +579,88 @@ test(
                 projects.fakeProjectName.
                 pipelinesSchedule.fakePipelineSchedule.
                 variables?.fakeVariableKey.urn
+        );
+    }
+);
+
+
+test(
+    "project with supported provider with mirrors",
+    (currTest) => {
+        const fakeProjects: project.ProjectsPulumiInfo = {
+            "fakeProjectName": {
+                "desc": PROJECT_DESC,
+                "mirrors": {
+                    "test": {
+                        "url": "https://username@password:mirror.domain.tld"
+                    }
+                },
+                // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+                "providers": [PROVIDER_NAME[0]]
+            }
+        };
+
+        const providers = provider.initProvider(PROVIDER);
+        project.initProject(
+            providers,
+            fakeProjects
+        );
+
+        currTest.is(
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
+            "fakeprojectname"
+        );
+        currTest.snapshot(
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            providers[PROVIDER_NAME[0]].
+                projects.fakeProjectName.
+                mirrors.test.urn
+        );
+    }
+);
+
+
+test(
+    "project with supported provider with mirrors added with addMirrors method",
+    (currTest) => {
+        const fakeProjects: project.ProjectsPulumiInfo = {
+            "fakeProjectName": {
+                "desc": PROJECT_DESC,
+                // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+                "providers": [PROVIDER_NAME[0]]
+            }
+        };
+
+        const providers = provider.initProvider(PROVIDER);
+        project.initProject(
+            providers,
+            fakeProjects
+        );
+
+        providers[MAIN_PROVIDER].projects.fakeProjectName.appendMirrors(
+            "fakeMirror",
+            {
+                "enabled": true,
+                "keepDivergentRefs": true,
+                "onlyProtectedBranches": true,
+                "project":
+                    // eslint-disable-next-line max-len
+                    providers[MAIN_PROVIDER].projects.fakeProjectName.project.id,
+                "url": "http://username@password:mirror.domain.tld"
+            }
+        );
+
+        currTest.is(
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            providers[PROVIDER_NAME[0]].projects.fakeProjectName.name,
+            "fakeprojectname"
+        );
+        currTest.snapshot(
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            providers[PROVIDER_NAME[0]].
+                projects.fakeProjectName.
+                mirrors.fakeMirror.urn
         );
     }
 );

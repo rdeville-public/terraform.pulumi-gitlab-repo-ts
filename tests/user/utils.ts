@@ -4,22 +4,15 @@ import * as user from "../../src/user";
 import test from "ava";
 
 // FAKE PROVIDER CONFIG
-const PROVIDER_BASE_URL = "https://fake.gitlab.tld";
-const PROVIDER_TOKEN = "fakeToken";
-const PROVIDER_NAME = ["fakeGitlab"];
-const [MAIN_PROVIDER] = PROVIDER_NAME;
+const MAIN_PROVIDER = "fakeGitlab";
 
-const PROVIDER_DATA = {
-    "baseUrl": PROVIDER_BASE_URL,
-    "token": PROVIDER_TOKEN
-};
-const SUPPORTED_PROVIDER = {
-    "type": "gitlab"
-};
 const PROVIDER: provider.ProvidersPulumiConfig = {
     "fakeGitlab": {
-        ...PROVIDER_DATA,
-        ...SUPPORTED_PROVIDER
+        "config": {
+            "baseUrl": "https://fake.gitlab.tld",
+            "token": "token"
+        },
+        "username": "fakeUserName"
     }
 };
 
@@ -47,10 +40,9 @@ test("user with supported provider without user args", (currTest) => {
         fakeUsers
     );
 
-    currTest.regex(
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[0]].users.fakeUserName.name,
-        /fakeusername-[A-Za-z0-9]{5}/u
+    currTest.is(
+        providers[MAIN_PROVIDER].users.fakeUserName.name,
+        "fakeusername"
     );
 });
 
@@ -74,14 +66,12 @@ test("user with supported provider with sshKey", (currTest) => {
         fakeUsers
     );
 
-    currTest.regex(
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[0]].users.fakeUserName.name,
-        /fakeusername-[A-Za-z0-9]{5}/u
+    currTest.is(
+        providers[MAIN_PROVIDER].users.fakeUserName.name,
+        "fakeusername"
     );
     currTest.snapshot(
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[0]].
+        providers[MAIN_PROVIDER].
             users.fakeUserName.
             sshKeys.sshKeyName.urn
     );
@@ -107,14 +97,12 @@ test("user with supported provider with gpgKey", (currTest) => {
         fakeUsers
     );
 
-    currTest.regex(
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[0]].users.fakeUserName.name,
-        /fakeusername-[A-Za-z0-9]{5}/u
+    currTest.is(
+        providers[MAIN_PROVIDER].users.fakeUserName.name,
+        "fakeusername"
     );
     currTest.snapshot(
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[0]].
+        providers[MAIN_PROVIDER].
             users.fakeUserName.
             gpgKeys.gpgKeyName.urn
     );
@@ -141,14 +129,12 @@ test("user with supported provider with accessToken", (currTest) => {
         fakeUsers
     );
 
-    currTest.regex(
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[0]].users.fakeUserName.name,
-        /fakeusername-[A-Za-z0-9]{5}/u
+    currTest.is(
+        providers[MAIN_PROVIDER].users.fakeUserName.name,
+        "fakeusername"
     );
     currTest.snapshot(
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        providers[PROVIDER_NAME[0]].
+        providers[MAIN_PROVIDER].
             users.fakeUserName.
             accessTokens.accessTokenName.urn
     );
