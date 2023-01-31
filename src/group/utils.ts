@@ -213,7 +213,7 @@ function processGroups (
  */
 export function initGroup (
     providers: ProvidersDict,
-    groupsInfo: GroupsPulumiInfo | undefined,
+    groupsInfo?: GroupsPulumiInfo,
     groupsConfig?: GroupPulumiConfig,
     parentGroup?: GitlabGroup,
     parentProviders?: string[]

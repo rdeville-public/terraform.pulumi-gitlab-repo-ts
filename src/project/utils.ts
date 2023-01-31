@@ -255,7 +255,7 @@ function processProjects (
  */
 export function initProject (
     providers: ProvidersDict,
-    projectsInfo: ProjectsPulumiInfo,
+    projectsInfo?: ProjectsPulumiInfo,
     projectsConfig?: ProjectPulumiConfig,
     parentGroup?: GitlabGroup,
     parentProvider?: string
