@@ -1,7 +1,7 @@
 {
   "name": "git-repo",
   "description": "A pulumi program to manage Git Repo accross multiple hosting services.",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "main": "src/index.ts",
   "engines": {
     "node": ">=16.0.0"

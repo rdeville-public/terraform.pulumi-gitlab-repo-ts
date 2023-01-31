@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## [v0.13.0](https://github.com/rdeville-public/git-repo/compare/0.12.0...0.13.0) (2023-01-31)
+
+### Minor
+
+  * ✨ Add user access token support [`67c4c1b`](https://github.com/rdeville-public/git-repo/commit/67c4c1b)
+
+### Others
+
+  * 🔀 ✨ Add Gitlab user access token support (#89) (Issues:[`#89`](https://github.com/rdeville-public/git-repo/issues/89)[`#77`](https://github.com/rdeville-public/git-repo/issues/77))[`d7c8b3e`](https://github.com/rdeville-public/git-repo/commit/d7c8b3e)
+  * ✅ Add user access token support tests [`8964b52`](https://github.com/rdeville-public/git-repo/commit/8964b52)
+
 ## [v0.12.0](https://github.com/rdeville-public/git-repo/compare/0.11.0...0.12.0) (2023-01-31)
 
 ### Minor
