@@ -119,3 +119,37 @@ test("user with supported provider with gpgKey", (currTest) => {
             gpgKeys.gpgKeyName.urn
     );
 });
+
+
+test("user with supported provider with accessToken", (currTest) => {
+    const fakeUsers: user.UsersPulumiInfo = {
+        "fakeUserName": {
+            "accessTokens": {
+                "accessTokenName": {
+                    "scopes": ["read_repository"]
+                }
+            },
+            "providers": {
+                "fakeGitlab": 0
+            }
+        }
+    };
+
+    const providers = provider.initProvider(PROVIDER);
+    user.initUser(
+        providers,
+        fakeUsers
+    );
+
+    currTest.regex(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].users.fakeUserName.name,
+        /fakeusername-[A-Za-z0-9]{5}/u
+    );
+    currTest.snapshot(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        providers[PROVIDER_NAME[0]].
+            users.fakeUserName.
+            accessTokens.accessTokenName.urn
+    );
+});

@@ -35,6 +35,7 @@ function computeUserData (
 ): UserData {
     return {
         "args": {
+            "accessTokens": userInfo.accessTokens ?? {} as ArgsDict,
             "gpgKeys": userInfo.gpgKeys ?? {} as ArgsDict,
             "sshKeys": userInfo.sshKeys ?? {} as ArgsDict,
             "userId": userInfo.providers[providerName] as number,
