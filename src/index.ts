@@ -33,13 +33,13 @@ function deploy (): ProvidersDict {
 
     group.initGroup(
         providers,
-        config.requireObject<GroupsPulumiInfo>("groups"),
+        config.getObject<GroupsPulumiInfo>("groups"),
         config.getObject<GroupPulumiConfig>("groupConfigs")
     );
 
     project.initProject(
         providers,
-        config.requireObject<ProjectsPulumiInfo>("projects"),
+        config.getObject<ProjectsPulumiInfo>("projects"),
         config.getObject<ProjectPulumiConfig>("projectConfigs")
     );
 
