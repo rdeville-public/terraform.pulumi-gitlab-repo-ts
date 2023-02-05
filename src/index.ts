@@ -124,7 +124,7 @@ function processMirroringGroups (
  */
 function processMirroringProviders (providers: ProvidersDict): void {
     const config: pulumi.Config = new pulumi.Config();
-    const mainProvider = providers[config.require("mainProvider")];
+    const mainProvider = providers[config.require("gitlabMainProvider")];
     for (const iProvider in providers) {
         if (iProvider !== mainProvider.name) {
             const mirrorProvider = providers[iProvider];
@@ -152,26 +152,26 @@ function deploy (): ProvidersDict {
     const config: pulumi.Config = new pulumi.Config();
 
     const providers = provider.initProvider(
-        config.requireObject<ProvidersPulumiConfig>("gitProvider")
+        config.requireObject<ProvidersPulumiConfig>("gitlabProviders")
     );
 
     group.initGroup(
         providers,
-        config.getObject<GroupsPulumiInfo>("groups"),
-        config.getObject<GroupPulumiConfig>("groupConfigs")
+        config.getObject<GroupsPulumiInfo>("gitlabGroups"),
+        config.getObject<GroupPulumiConfig>("gitlabGroupConfigs")
     );
 
     project.initProject(
         providers,
-        config.getObject<ProjectsPulumiInfo>("projects"),
-        config.getObject<ProjectPulumiConfig>("projectConfigs")
+        config.getObject<ProjectsPulumiInfo>("gitlabProjects"),
+        config.getObject<ProjectPulumiConfig>("gitlabProjectConfigs")
     );
 
     processMirroringProviders(providers);
 
     user.initUser(
         providers,
-        config.getObject<UsersPulumiInfo>("users")
+        config.getObject<UsersPulumiInfo>("gitlabUsers")
     );
 
     return providers;
