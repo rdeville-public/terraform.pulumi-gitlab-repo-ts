@@ -8,6 +8,13 @@ on:
       - "next"
       - "beta"
       - "alpha"
+  push:
+    branches:
+      - "main"
+      - "develop"
+      - "next"
+      - "beta"
+      - "alpha"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}

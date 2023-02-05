@@ -1,8 +1,13 @@
 name: Release
 on:
-  push:
+  workflow_run:
+    workflows:
+      - Build
+    types:
+      - completed
     branches:
       - "main"
+      - "develop"
       - "next"
       - "beta"
       - "alpha"
