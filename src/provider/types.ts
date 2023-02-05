@@ -7,18 +7,28 @@ import type {
 
 // Interface
 export interface ProviderData {
-    args: gitlab.ProviderArgs;
+    args: ProviderConfigArgs;
     opts: pulumi.CustomResourceOptions;
 }
 
+export interface ProviderConfigArgs {
+    username: string;
+    url?: URL;
+    config: gitlab.ProviderArgs;
+}
+
 export interface ProviderConfig {
-    baseUrl: string;
-    type: string;
+    baseUrl?: string;
     token: ProtectedData;
 }
 
+export interface ProviderPulumiConfig {
+    username: string;
+    config: ProviderConfig;
+}
+
 export interface ProvidersPulumiConfig {
-    [key: string]: ProviderConfig;
+    [key: string]: ProviderPulumiConfig;
 }
 
 export interface ProvidersDict {

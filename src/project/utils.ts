@@ -1,3 +1,4 @@
+/* eslint max-lines: 0 */
 import type * as gitlab from "@pulumi/gitlab";
 import * as pulumi from "@pulumi/pulumi";
 import type {
@@ -8,14 +9,6 @@ import type {
     ProjectsPulumiInfo
 } from "./types";
 import type {
-    GitlabProvider,
-    ProvidersDict
-} from "../provider";
-import {
-    genId,
-    slugify
-} from "../utils";
-import type {
     GitlabGroup
 } from "../group";
 import {
@@ -24,6 +17,23 @@ import {
 import type {
     IGitlabProjectArgs
 } from "./gitlab";
+import type {
+    ProvidersDict
+} from "../provider";
+import {
+    slugify
+} from "../utils";
+
+interface IProviderStruct {
+    name: string;
+    providers: ProvidersDict;
+}
+
+
+interface IProjectStruct {
+    info: ProjectInfo;
+    name: string;
+}
 
 /**
  * Compute project configuration depending on the type of project
@@ -62,71 +72,111 @@ function computeProjectConfig (
     return {} as gitlab.ProjectArgs;
 }
 
+
 /**
- * Compute GitlabProject arguments
+ * [TODO:description]
  *
- * @param {GitlabProvider} provider - Provider object
+ * @param {string} providerName - [TODO:description]
+ * @param {IGitlabProjectArgs} data - [TODO:description]
+ */
+function computeProjectMirror (
+    providerName: string,
+    data: IGitlabProjectArgs
+): void {
+    const config: pulumi.Config = new pulumi.Config();
+    if (providerName !== config.require("mainProvider")) {
+        // AccessToken should be initialized earlier
+        if (data.accessTokens) {
+            data.accessTokens[config.require("mainProvider")] = {
+                "scopes": ["write_repository"]
+            };
+        }
+    }
+}
+
+/**
+ *
+ * @param {string} providerName - Name of the provider to use
  * @param {ProjectInfo} projectInfo - Information of the project (such as desc,
  *      etc.)
  * @param {string} projectName - Name of the project
+ */
+
+/**
+ * Compute GitlabProject arguments
+ *
+ * @param {IProviderStruct} provider - Provider information object with name
+ *      and providers pulumi resource dictionary
+ * @param {IProjectStruct} project - Project information object with name
+ *      and project info from the stack
  * @param {gitlab.ProjectArgs} data - Set of already partially computed
  *      GitlabProject data (args and opts)
  * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
+ * @param {string[]} [parent] - List of parent resource name
  * @returns {IGitlabProjectArgs} Set of compute GitlabProjectArgs
  */
 function computeProjectArgs (
-    provider: GitlabProvider,
-    projectInfo: ProjectInfo,
-    projectName: string,
+    provider: IProviderStruct,
+    project: IProjectStruct,
     data: gitlab.ProjectArgs,
-    projectsConfig?: ProjectPulumiConfig
+    projectsConfig?: ProjectPulumiConfig,
+    parent?: string[]
 ): IGitlabProjectArgs {
-    return {
-        "accessTokens": projectInfo.accessTokens ?? {} as ArgsDict,
-        "badges": projectInfo.badges ?? {} as ArgsDict,
-        "branches": projectInfo.branches ?? {} as ArgsDict,
-        "deployTokens": projectInfo.deployTokens ?? {} as ArgsDict,
-        "hooks": projectInfo.hooks ?? {} as ArgsDict,
-        "labels": projectInfo.labels ?? {} as ArgsDict,
-        "pipelineTriggers": projectInfo.pipelineTriggers ?? {} as ArgsDict,
-        "pipelinesSchedule": projectInfo.pipelinesSchedule ?? {} as ArgsDict,
+    const projectData: IGitlabProjectArgs = {
+        "accessTokens": project.info.accessTokens ?? {} as ArgsDict,
+        "badges": project.info.badges ?? {} as ArgsDict,
+        "branches": project.info.branches ?? {} as ArgsDict,
+        "deployTokens": project.info.deployTokens ?? {} as ArgsDict,
+        "hooks": project.info.hooks ?? {} as ArgsDict,
+        "labels": project.info.labels ?? {} as ArgsDict,
+        "mirrors": project.info.mirrors ?? {} as ArgsDict,
+        "parent": parent ?? [],
+        "pipelineTriggers":
+            project.info.pipelineTriggers ?? {} as ArgsDict,
+        "pipelinesSchedule":
+            project.info.pipelinesSchedule ?? {} as ArgsDict,
         "projectConfig": {
             ...computeProjectConfig(
                 provider.name,
                 projectsConfig
             ),
             ...data,
-            "name": projectName
+            "name": project.name
         } as gitlab.ProjectArgs,
         "protectedBranches":
-            projectInfo.protectedBranches ?? {} as ArgsDict,
+            project.info.protectedBranches ?? {} as ArgsDict,
         "protectedTags":
-            projectInfo.protectedTags ?? {} as ArgsDict,
-        "variables": projectInfo.variables ?? {} as ArgsDict
+            project.info.protectedTags ?? {} as ArgsDict,
+        "provider": provider.providers[provider.name],
+        "providers": provider.providers,
+        "variables": project.info.variables ?? {} as ArgsDict
     };
+    computeProjectMirror(provider.name, projectData);
+    return projectData;
 }
 
 /**
  * Compute data, i.e. args and opts for the project
  *
- * @param {GitlabProvider} provider - Provider object
- * @param {ProjectInfo} projectInfo - Information of the project (such as desc,
- *      etc.)
- * @param {string} projectName - Name of the project
+ * @param {IProviderStruct} provider - Provider information object with name
+ *      and providers pulumi resource dictionary
+ * @param {IProjectStruct} project - Project information object with name
+ *      and project info from the stack
  * @param {GitlabGroup} [parentGroup] - Group object that define parent
  *      resources
  * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
- * @returns {ProjectData} Object with args and data for Pulumi Group object
+ * @param {string[]} [parent] - List of parent resource name
+ * @returns {IGitlabProjectArgs} Set of compute GitlabProjectArgs
  */
 function computeProjectData (
-    provider: GitlabProvider,
-    projectInfo: ProjectInfo,
-    projectName: string,
+    provider: IProviderStruct,
+    project: IProjectStruct,
     parentGroup?: GitlabGroup,
-    projectsConfig?: ProjectPulumiConfig
+    projectsConfig?: ProjectPulumiConfig,
+    parent?: string[]
 ): ProjectData {
     let data: gitlab.ProjectArgs = {
-        "path": slugify(projectName)
+        "path": slugify(project.name)
     };
 
     if (parentGroup) {
@@ -142,45 +192,47 @@ function computeProjectData (
     return {
         "args": computeProjectArgs(
             provider,
-            projectInfo,
-            projectName,
+            project,
             data,
-            projectsConfig
+            projectsConfig,
+            parent
         ),
         "opts": {
-            "parent": parentGroup?.group ?? provider,
-            "provider": provider.provider
+            "parent": parentGroup?.group ?? provider.providers[provider.name],
+            "provider": provider.providers[provider.name].provider
         }
     };
 }
 
 /**
+ *
  * Create provider supported project
  *
- * @param {GitlabProvider} provider - Provider object
- * @param {string} projectName - Name of the project
- * @param {ProjectInfo} projectInfo - Information of the project (such as desc,
- *      etc.)
+ * @param {IProviderStruct} provider - Provider information object with name
+ *      and providers pulumi resource dictionary
+ * @param {IProjectStruct} project - Project information object with name
+ *      and project info from the stack
  * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
  * @param {GitlabGroup} [parentGroup] - Group object that define parent
  *      resources
+ * @param {string[]} [parent] - List of parent resource name
  */
 function createProject (
-    provider: GitlabProvider,
-    projectName: string,
-    projectInfo: ProjectInfo,
+    provider: IProviderStruct,
+    project: IProjectStruct,
     projectsConfig?: ProjectPulumiConfig,
-    parentGroup?: GitlabGroup
+    parentGroup?: GitlabGroup,
+    parent?: string[]
 ): void {
     const data = computeProjectData(
         provider,
-        projectInfo,
-        projectName,
+        project,
         parentGroup,
-        projectsConfig
+        projectsConfig,
+        parent
     );
 
-    const projectNameSlug = slugify(`${projectName}-${genId()}`);
+    const projectNameSlug = slugify(`${project.name}`);
     const currProject = new GitlabProject(
         projectNameSlug,
         data.args,
@@ -188,65 +240,71 @@ function createProject (
     );
 
     if (parentGroup) {
-        parentGroup.projects[projectName] = currProject;
+        parentGroup.projects[project.name] = currProject;
     } else {
-        provider.projects[projectName] = currProject;
+        provider.providers[provider.name].projects[project.name] = currProject;
     }
 }
 
 /**
+ *
  * Process to the deployment of git project for defined providers
  *
  * @param {ProvidersDict} providers - Set of providers
- * @param {string} projectName - Name of the project
- * @param {ProjectInfo} projectInfo - Information of the project (such as desc,
- *      etc.)
+ * @param {IProjectStruct} project - Project information object with name
+ *      and project info from the stack
  * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
  * @param {GitlabGroup} [parentGroup] - Group object that define parent
  *      resources
  * @param {string} [parentProvider] - Name of the provider of the parents
  *      resources
+ * @param {string[]} [parent] - List of parent resource name
  */
 function processProjects (
     providers: ProvidersDict,
-    projectName: string,
-    projectInfo: ProjectInfo,
+    project: IProjectStruct,
     projectsConfig?: ProjectPulumiConfig,
     parentGroup?: GitlabGroup,
-    parentProvider?: string
+    parentProvider?: string,
+    parent?: string[]
 ): void {
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (parentGroup && parentProvider) {
         createProject(
-            providers[parentProvider],
-            projectName,
-            projectInfo,
+            {
+                "name": parentProvider,
+                providers
+            },
+            project,
             projectsConfig,
-            parentGroup
+            parentGroup,
+            parent
         );
     } else {
         for (const iProvider in providers) {
             // eslint-disable-next-line max-len
             // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-            if (projectInfo.providers?.includes(iProvider)) {
+            if (project.info.providers?.includes(iProvider)) {
                 createProject(
-                    providers[iProvider],
-                    projectName,
-                    projectInfo,
+                    {
+                        "name": iProvider,
+                        providers
+                    },
+                    project,
                     projectsConfig,
-                    parentGroup
+                    parentGroup,
+                    parent
                 );
             }
         }
     }
 }
 
-
 /**
  * Initialize the processing of each projects defined in the stack
  *
  * @param {ProvidersDict} providers - Set of providers
- * @param {ProjectsPulumiInfo} projectsInfo - projects entry set in the stack
+ * @param {ProjectsPulumiInfo} [projectsInfo] - projects entry set in the stack
  * @param {ProjectPulumiConfig} [projectsConfig] - projectConfigs set in the
  *      stack
  * @param {GitlabGroup} parentGroup - Group parent of a project
@@ -264,8 +322,10 @@ export function initProject (
         if ("desc" in projectsInfo[iProject]) {
             processProjects(
                 providers,
-                iProject,
-                projectsInfo[iProject] as ProjectInfo,
+                {
+                    "info": projectsInfo[iProject] as ProjectInfo,
+                    "name": iProject
+                },
                 projectsConfig,
                 parentGroup,
                 parentProvider

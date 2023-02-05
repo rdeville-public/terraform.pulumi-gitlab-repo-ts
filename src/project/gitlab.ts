@@ -3,6 +3,10 @@ import * as gitlab from "@pulumi/gitlab";
 import * as pulumi from "@pulumi/pulumi";
 import * as utils from "../utils";
 import type {
+    GitlabProvider,
+    ProvidersDict
+} from "../provider";
+import type {
     ArgsDict
 } from "./types";
 import type {
@@ -58,12 +62,18 @@ interface IGitlabProjectPipelineScheduled {
     variables?: IGitlabProjectPipelineScheduleVariables;
 }
 
+interface IGitlabProjectMirrors {
+    [key: string]: gitlab.ProjectMirror;
+}
+
+
 interface IGitlabProjectPipelinesSchedule {
     [key: string]: IGitlabProjectPipelineScheduled;
 }
 
 export interface IGitlabProjectArgs {
     projectConfig: gitlab.ProjectArgs;
+    provider: GitlabProvider;
     labels?: ArgsDict;
     badges?: ArgsDict;
     hooks?: ArgsDict;
@@ -75,6 +85,9 @@ export interface IGitlabProjectArgs {
     deployTokens?: ArgsDict;
     pipelineTriggers?: ArgsDict;
     pipelinesSchedule?: ArgsDict;
+    mirrors?: ArgsDict;
+    parent?: string[];
+    providers?: ProvidersDict;
 }
 
 export interface IGitlabProject {
@@ -91,6 +104,7 @@ export interface IGitlabProject {
     deployTokens: IGitlabProjectDeployTokens;
     pipelineTriggers: IGitlabProjectPipelineTriggers;
     pipelinesSchedule: IGitlabProjectPipelinesSchedule;
+    mirrors: IGitlabProjectMirrors;
 }
 
 /**
@@ -129,6 +143,8 @@ export class GitlabProject extends pulumi.ComponentResource
 
     public pipelinesSchedule: IGitlabProjectPipelinesSchedule = {};
 
+    public mirrors: IGitlabProjectMirrors = {};
+
     /**
      * Constructor of the ComponentResource GitlabProject
      *
@@ -142,7 +158,7 @@ export class GitlabProject extends pulumi.ComponentResource
         args: IGitlabProjectArgs,
         opts?: pulumi.ComponentResourceOptions
     ) {
-        super("git-repo:gitlab-project", name, args, opts);
+        super(`gitlab-repo:project:${name}`, name, args, opts);
         this.name = name;
         this.project = new gitlab.Project(
             name,
@@ -154,6 +170,35 @@ export class GitlabProject extends pulumi.ComponentResource
         );
         this.addProjectResources(args, opts);
         this.registerOutputs();
+    }
+
+
+    /**
+     * Add pipelineTrigger to the object and create parent relationship
+     *
+     * @param {string} name - Name of the mirrors
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
+     */
+    public appendMirrors (
+        name: string,
+        args: gitlab.ProjectMirrorArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
+        const mirrorName =
+            `${utils.slugify(name)}`;
+        this.mirrors[name] =
+            new gitlab.ProjectMirror(
+                mirrorName,
+                {
+                    ...args,
+                    "project": this.project.id
+                },
+                {
+                    ...opts,
+                    "parent": this.project
+                }
+            );
     }
 
     /**
@@ -177,6 +222,7 @@ export class GitlabProject extends pulumi.ComponentResource
         this.addDeployTokens(args, opts);
         this.addPipelineTriggers(args, opts);
         this.addPipelinesSchedule(args, opts);
+        this.addMirrors(args, opts);
     }
 
     /**
@@ -191,7 +237,7 @@ export class GitlabProject extends pulumi.ComponentResource
     ): void {
         for (const iLabel in args.labels) {
             if ("color" in args.labels[iLabel]) {
-                const labelName = `${utils.slugify(iLabel)}-${utils.genId()}`;
+                const labelName = `${utils.slugify(iLabel)}`;
                 this.labels[iLabel] = new gitlab.Label(
                     labelName,
                     {
@@ -219,7 +265,7 @@ export class GitlabProject extends pulumi.ComponentResource
     ): void {
         for (const iBadge in args.badges) {
             if ("linkUrl" in args.badges[iBadge]) {
-                const badgeName = `${utils.slugify(iBadge)}-${utils.genId()}`;
+                const badgeName = `${utils.slugify(iBadge)}`;
                 this.badges[iBadge] = new gitlab.ProjectBadge(
                     badgeName,
                     {
@@ -247,7 +293,7 @@ export class GitlabProject extends pulumi.ComponentResource
     ): void {
         for (const iHook in args.hooks) {
             if ("url" in args.hooks[iHook]) {
-                const hookName = `${utils.slugify(iHook)}-${utils.genId()}`;
+                const hookName = `${utils.slugify(iHook)}`;
                 this.hooks[iHook] = new gitlab.ProjectHook(
                     hookName,
                     {
@@ -281,7 +327,7 @@ export class GitlabProject extends pulumi.ComponentResource
         for (const iVariable in args.variables) {
             if ("value" in args.variables[iVariable]) {
                 const variableName =
-                    `${utils.slugify(iVariable)}-${utils.genId()}`;
+                    `${utils.slugify(iVariable)}`;
                 this.variables[iVariable] = new gitlab.ProjectVariable(
                     variableName,
                     {
@@ -317,7 +363,7 @@ export class GitlabProject extends pulumi.ComponentResource
         for (const iAccessToken in args.accessTokens) {
             if ("scopes" in args.accessTokens[iAccessToken]) {
                 const accessTokenName =
-                    `${utils.slugify(iAccessToken)}-${utils.genId()}`;
+                    `${utils.slugify(iAccessToken)}`;
                 this.accessTokens[iAccessToken] = new gitlab.ProjectAccessToken(
                     accessTokenName,
                     {
@@ -346,7 +392,7 @@ export class GitlabProject extends pulumi.ComponentResource
         for (const iBranch in args.branches) {
             if ("ref" in args.branches[iBranch]) {
                 const branchName =
-                    `${utils.slugify(iBranch)}-${utils.genId()}`;
+                    `${utils.slugify(iBranch)}`;
                 this.branches[iBranch] = new gitlab.Branch(
                     branchName,
                     {
@@ -374,7 +420,7 @@ export class GitlabProject extends pulumi.ComponentResource
     ): void {
         for (const iProtectedBranch in args.protectedBranches) {
             const protectedBranchName =
-                `${utils.slugify(iProtectedBranch)}-${utils.genId()}`;
+                `${utils.slugify(iProtectedBranch)}`;
             this.protectedBranches[iProtectedBranch] =
                 new gitlab.BranchProtection(
                     protectedBranchName,
@@ -404,7 +450,7 @@ export class GitlabProject extends pulumi.ComponentResource
         for (const iProtectedTag in args.protectedTags) {
             if ("createAccessLevel" in args.protectedTags[iProtectedTag]) {
                 const protectedTagName =
-                    `${utils.slugify(iProtectedTag)}-${utils.genId()}`;
+                    `${utils.slugify(iProtectedTag)}`;
                 this.protectedTags[iProtectedTag] =
                     new gitlab.TagProtection(
                         protectedTagName,
@@ -435,7 +481,7 @@ export class GitlabProject extends pulumi.ComponentResource
         for (const iDeployToken in args.deployTokens) {
             if ("scopes" in args.deployTokens[iDeployToken]) {
                 const deployTokenName =
-                    `${utils.slugify(iDeployToken)}-${utils.genId()}`;
+                    `${utils.slugify(iDeployToken)}`;
                 this.deployTokens[iDeployToken] =
                     new gitlab.DeployToken(
                         deployTokenName,
@@ -465,7 +511,7 @@ export class GitlabProject extends pulumi.ComponentResource
         for (const iPipelineTrigger in args.pipelineTriggers) {
             if ("description" in args.pipelineTriggers[iPipelineTrigger]) {
                 const pipelineTriggerName =
-                    `${utils.slugify(iPipelineTrigger)}-${utils.genId()}`;
+                    `${utils.slugify(iPipelineTrigger)}`;
                 this.pipelineTriggers[iPipelineTrigger] =
                     new gitlab.PipelineTrigger(
                         pipelineTriggerName,
@@ -495,7 +541,7 @@ export class GitlabProject extends pulumi.ComponentResource
         for (const iPipelineSchedule in args.pipelinesSchedule) {
             if ("cron" in args.pipelinesSchedule[iPipelineSchedule]) {
                 const pipelineScheduleName =
-                    `${utils.slugify(iPipelineSchedule)}-${utils.genId()}`;
+                    `${utils.slugify(iPipelineSchedule)}`;
                 this.pipelinesSchedule[iPipelineSchedule] = {};
                 this.pipelinesSchedule[iPipelineSchedule].pipeline =
                     new gitlab.PipelineSchedule(
@@ -536,7 +582,7 @@ export class GitlabProject extends pulumi.ComponentResource
         for (const iVar in args.variables) {
             if (pipeline.pipeline) {
                 const pipelineScheduleVariableName =
-                    `${utils.slugify(iVar)}-${utils.genId()}`;
+                    `${utils.slugify(iVar)}`;
                 const pipelineId: pulumi.Input<number> = pipeline.pipeline.id.
                     apply(
                         (id) => Number(id)
@@ -564,5 +610,36 @@ export class GitlabProject extends pulumi.ComponentResource
             }
         }
     }
+
+    /**
+     * Add pipelineTrigger to the object and create parent relationship
+     *
+     * @param {IGitlabProjectArgs} args - This pulumi object arguments
+     * @param {pulumi.ComponentResourceOptions} [opts] - Pulumi resources
+     */
+    private addMirrors (
+        args: IGitlabProjectArgs,
+        opts?: pulumi.ComponentResourceOptions
+    ): void {
+        for (const iMirror in args.mirrors) {
+            if ("url" in args.mirrors[iMirror]) {
+                const mirrorName =
+                    `${utils.slugify(iMirror)}`;
+                this.mirrors[iMirror] =
+                    new gitlab.ProjectMirror(
+                        mirrorName,
+                        {
+                            ...args.mirrors[iMirror],
+                            "project": this.project.id
+                        } as gitlab.ProjectMirrorArgs,
+                        {
+                            ...opts,
+                            "parent": this.project
+                        }
+                    );
+            }
+        }
+    }
+
 
 }

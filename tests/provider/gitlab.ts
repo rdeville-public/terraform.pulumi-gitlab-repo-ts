@@ -7,11 +7,13 @@ const FAKE_TOKEN = "fakeToken";
 const FAKE_NAME = "fakeName";
 const FAKE_ALIAS = "fakeAlias";
 
-test("gitlabProvider", (currTest) => {
+test("gitlabProvider with default baseUrl", (currTest) => {
     const data: ProviderData = {
         "args": {
-            "baseUrl": FAKE_BASEURL,
-            "token": FAKE_TOKEN
+            "config": {
+                "token": FAKE_TOKEN
+            },
+            "username": "fakeUserName"
         },
         "opts": {
             "aliases": [{"name": FAKE_ALIAS}]
@@ -23,5 +25,27 @@ test("gitlabProvider", (currTest) => {
         data.opts
     );
 
-    currTest.is(gitlabProvider.name, FAKE_NAME);
+    currTest.is(gitlabProvider.name, "fakename");
+});
+
+test("gitlabProvider with fake baseUrl", (currTest) => {
+    const data: ProviderData = {
+        "args": {
+            "config": {
+                "baseUrl": FAKE_BASEURL,
+                "token": FAKE_TOKEN
+            },
+            "username": "fakeUserName"
+        },
+        "opts": {
+            "aliases": [{"name": FAKE_ALIAS}]
+        }
+    };
+    const gitlabProvider = new gitlab.GitlabProvider(
+        FAKE_NAME,
+        data.args,
+        data.opts
+    );
+
+    currTest.is(gitlabProvider.name, "fakename");
 });

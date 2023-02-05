@@ -7,16 +7,15 @@ import type {
     UserInfo,
     UsersPulumiInfo
 } from "./index";
-import {
-    genId,
-    slugify
-} from "../utils";
 import type {
     ArgsDict
 } from "./types";
 import {
     GitlabUser
 } from "./index";
+import {
+    slugify
+} from "../utils";
 
 /**
  * Compute user configuration
@@ -68,7 +67,7 @@ function manageUser (
         userName,
         userInfo
     );
-    const userNameSlug = slugify(`${userName}-${genId()}`);
+    const userNameSlug = slugify(`${userName}`);
     provider.users[userName] = new GitlabUser(
         userNameSlug,
         data.args,

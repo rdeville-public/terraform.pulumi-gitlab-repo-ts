@@ -8,6 +8,7 @@ FAKEVALUE
 Framagit
 gitmoji
 gitmojis
+linebreak
 PROVIDERNAME
 pulumi
 Pulumi

@@ -30,6 +30,7 @@ interface IGitlabGroupAccessToken {
 }
 
 export interface IGitlabGroupArgs {
+    providerUrl: URL;
     groupConfig: gitlab.GroupArgs;
     labels?: ArgsDict;
     badges?: ArgsDict;
@@ -95,7 +96,7 @@ export class GitlabGroup extends pulumi.ComponentResource
         args: IGitlabGroupArgs,
         opts?: pulumi.ComponentResourceOptions
     ) {
-        super("git-repo:gitlab-group", name, args, opts);
+        super(`gitlab-repo:group:${name}`, name, args, opts);
         this.name = name;
         this.group = new gitlab.Group(
             name,
@@ -121,7 +122,7 @@ export class GitlabGroup extends pulumi.ComponentResource
     private addLabels (args: IGitlabGroupArgs): void {
         for (const iLabel in args.labels) {
             if ("color" in args.labels[iLabel]) {
-                const labelName = `${utils.slugify(iLabel)}-${utils.genId()}`;
+                const labelName = `${utils.slugify(iLabel)}`;
                 this.labels[iLabel] = new gitlab.GroupLabel(
                     labelName,
                     {
@@ -145,7 +146,7 @@ export class GitlabGroup extends pulumi.ComponentResource
     private addBadges (args: IGitlabGroupArgs): void {
         for (const iBadge in args.badges) {
             if ("linkUrl" in args.badges[iBadge]) {
-                const badgeName = `${utils.slugify(iBadge)}-${utils.genId()}`;
+                const badgeName = `${utils.slugify(iBadge)}`;
                 this.badges[iBadge] = new gitlab.GroupBadge(
                     badgeName,
                     {
@@ -168,7 +169,7 @@ export class GitlabGroup extends pulumi.ComponentResource
     private addHooks (args: IGitlabGroupArgs): void {
         for (const iHook in args.hooks) {
             if ("url" in args.hooks[iHook]) {
-                const hookName = `${utils.slugify(iHook)}-${utils.genId()}`;
+                const hookName = `${utils.slugify(iHook)}`;
                 this.hooks[iHook] = new gitlab.GroupHook(
                     hookName,
                     {
@@ -197,7 +198,7 @@ export class GitlabGroup extends pulumi.ComponentResource
         for (const iVariable in args.variables) {
             if ("value" in args.variables[iVariable]) {
                 const variableName =
-                    `${utils.slugify(iVariable)}-${utils.genId()}`;
+                    `${utils.slugify(iVariable)}`;
                 this.variables[iVariable] = new gitlab.GroupVariable(
                     variableName,
                     {
@@ -229,7 +230,7 @@ export class GitlabGroup extends pulumi.ComponentResource
         for (const iAccessToken in args.accessTokens) {
             if ("scopes" in args.accessTokens[iAccessToken]) {
                 const accessTokenName =
-                    `${utils.slugify(iAccessToken)}-${utils.genId()}`;
+                    `${utils.slugify(iAccessToken)}`;
                 this.accessTokens[iAccessToken] = new gitlab.GroupAccessToken(
                     accessTokenName,
                     {

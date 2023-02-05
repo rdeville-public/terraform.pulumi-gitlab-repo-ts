@@ -2,6 +2,7 @@ import * as gitlab from "../../src/group/gitlab";
 import type * as pulumi from "@pulumi/pulumi";
 import test from "ava";
 
+const FAKE_BASEURL = "https://fake.gitlab.tld";
 const FAKE_NAME = "fakeName";
 const FAKE_ALIAS = "fakeAlias";
 
@@ -9,7 +10,8 @@ test("Create basic group", (currTest) => {
     const args: gitlab.IGitlabGroupArgs = {
         "groupConfig": {
             "path": FAKE_NAME
-        }
+        },
+        "providerUrl": new URL(FAKE_BASEURL)
     };
     const opts: pulumi.CustomResourceOptions = {
         "aliases": [{"name": FAKE_ALIAS}]
@@ -28,7 +30,8 @@ test("Create basic group with labels", (currTest) => {
     const args: gitlab.IGitlabGroupArgs = {
         "groupConfig": {
             "path": FAKE_NAME
-        }
+        },
+        "providerUrl": new URL(FAKE_BASEURL)
     };
     const opts: pulumi.CustomResourceOptions = {
         "aliases": [{"name": FAKE_ALIAS}]

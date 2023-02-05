@@ -225,3 +225,17 @@ config:
         AnotherAccesTokenName:
           scopes:
             - read_registry
+  git-repo:users:
+    "username":
+      providers:
+        provider_name.tld: 0
+      sshKeys:
+        sshKeyName:
+          key: "fooo"
+      gpgKeys:
+        gpgKeyName:
+          key: "fooo"
+      accessTokens:
+        tokenName:
+          scopes:
+            - read_repository

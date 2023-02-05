@@ -3,9 +3,15 @@ import type * as group from "../group";
 import type * as project from "../project";
 import * as pulumi from "@pulumi/pulumi";
 import type * as user from "../user";
+import * as utils from "../utils";
+import type {
+    ProviderConfigArgs
+} from "./types";
 
 export interface IGitlabProvider {
     name: string;
+    url: URL;
+    username: string;
     provider: gitlab.Provider;
     groups: group.GroupsDict;
     projects: project.ProjectsDict;
@@ -23,6 +29,10 @@ export class GitlabProvider extends pulumi.ComponentResource
     implements IGitlabProvider {
 
     public name = "";
+
+    public username = "";
+
+    public url: URL;
 
     public provider: gitlab.Provider;
 
@@ -42,14 +52,16 @@ export class GitlabProvider extends pulumi.ComponentResource
      */
     public constructor (
         name: string,
-        args: gitlab.ProviderArgs,
+        args: ProviderConfigArgs,
         opts?: pulumi.CustomResourceOptions
     ) {
-        super(`git-repo:gitlab-provider:${name}`, name, args, opts);
-        this.name = name;
+        super(`gitlab-repo:provider:${name}`, name, args, opts);
+        this.name = `${utils.slugify(name)}`;
+        this.url = args.url ?? new URL("https://gitlab.com");
+        this.username = args.username;
         this.provider = new gitlab.Provider(
-            this.name,
-            args,
+            name,
+            args.config,
             {
                 ...opts,
                 "parent": this

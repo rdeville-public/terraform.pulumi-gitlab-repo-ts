@@ -1,7 +1,7 @@
 import * as utils from "../utils";
 import type {
-    ProviderConfig,
     ProviderData,
+    ProviderPulumiConfig,
     ProvidersDict,
     ProvidersPulumiConfig
 } from "./index";
@@ -11,18 +11,25 @@ import {GitlabProvider} from "./index";
  * Create pulumi git provider corresponding to gitProvider in the stack
  *
  * @param {string} providerName - Name of the provider
- * @param {ProviderConfig} currProvider - configuration of the provider
+ * @param {ProviderPulumiConfig} currProvider - Configuration of the provider
  * @returns {GitlabProvider} Pulumi provider object
  */
 function createProvider (
     providerName: string,
-    currProvider: ProviderConfig
+    currProvider: ProviderPulumiConfig
 ): GitlabProvider {
-    const token = utils.getValue(providerName, currProvider.token);
+    const token = utils.getValue(providerName, currProvider.config.token);
     const data: ProviderData = {
         "args": {
-            "baseUrl": currProvider.baseUrl,
-            token
+            "config": {
+                "baseUrl": currProvider.config.baseUrl,
+                token
+            },
+            "url": new URL(
+                currProvider.config.baseUrl ??
+                    "https://gitlab.com/api/v4"
+            ),
+            "username": currProvider.username
         },
         "opts": {
             "aliases": [{"name": providerName}]
