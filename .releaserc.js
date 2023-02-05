@@ -47,12 +47,6 @@ module.exports = {
   ],
   plugins: [
     [
-      "semantic-release-commitlint",
-      {
-        failOnWarning: true,
-      },
-    ],
-    [
       "semantic-release-gitmoji",
       {
         releaseRules: RULES,
