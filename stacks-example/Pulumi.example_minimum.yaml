@@ -1,48 +1,40 @@
 encryptionsalt: "SHOULD_BE_GENERATED_WITH_COMMAND 'Pulumi stack init'"
+# This stack show you a minimum configuration to create a single group with a
+# single repo on a single gitlab instance. It also show you how to manage user
+# keys (SSH & GPG).
 config:
-  git-repo:gitProvider:
-    provider_name.tld:
-      type: gitlab
+  git-repo:gitlabProviders:
+    "Provider Name":
       baseUrl: https://gitlab.com/api/v4
+      # This key could be added with either `cmd:` or `env:` subkeys or using
+      # `pulumi config secret` command
       token: abcdefghijklmno
-    another_provider_name:
-      type: gitlab
-      baseUrl: https://another_provider.com/api/v4
-      token:
-        env: ENV_VARIABLE_NAME
-  git-repo:mainProvider: provider_name.tld
-  git-repo:groups:
-    my_group:
+  git-repo:gitlabMainProvider: "Provider Name"
+  git-repo:gitlabGroups:
+    "Group Name":
       desc: My Test group descrpition
       providers:
-        - provider_name.tld
-        - another_provider_name
-      groups:
-        my_sub_group:
-          desc: My Test group descrpition
-  git-repo:projects:
-    my_group:
-      my_project:
+        - "Provider Name"
+  git-repo:gitlabProjects:
+    "Group Name":
+      "Project Name in a Group":
         desc: My Test group in a first level group descrpition
-      my_sub_group:
-        my_project:
-          desc: My Test group in a nested group descrpition
-    my_project:
+    "Project Name in user namespace":
       desc: My Test group descrpition
     providers:
-      - provider_name.tld
-      - another_provider_name
-  git-repo:users:
-    "username":
+      - "Provider Name"
+  git-repo:gitlabUsers:
+    "User Name":
       providers:
-        provider_name.tld: 0
+        # Required if key "user" is used
+        "Provider Name": <USER_ID> # Should be an int
       sshKeys:
         sshKeyName:
-          key: "fooo"
+          key: "Public SSH key content"
       gpgKeys:
         gpgKeyName:
-          key: "fooo"
+          key: "Public GPG signature key content"
       accessTokens:
-        tokenName:
+        "Token Name":
           scopes:
             - read_repository
