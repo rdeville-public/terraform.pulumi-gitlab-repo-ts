@@ -32,3 +32,17 @@ config:
     providers:
       - provider_name.tld
       - another_provider_name
+  git-repo:users:
+    "username":
+      providers:
+        provider_name.tld: 0
+      sshKeys:
+        sshKeyName:
+          key: "fooo"
+      gpgKeys:
+        gpgKeyName:
+          key: "fooo"
+      accessTokens:
+        tokenName:
+          scopes:
+            - read_repository
