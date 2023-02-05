@@ -1,4 +1,4 @@
-# Welcome to git-repo 👋
+# Welcome to gitlab-repo 👋<br/>(Pulumi - TypeScript)
 
 <center>
 
@@ -6,9 +6,15 @@
 [![Maintenance][maintenance_badge]][maintenance_badge_url]
 ![License: (MIT OR Beerware)][license_badge]
 [![Changelog][changelog_badge]][changelog_badge_url]
+[![Build][build_badge]][build_badge_url]
+[![Release][release_badge]][release_badge_url]
 
 </center>
 
+[build_badge]: https://github.com/rdeville-public/pulumi.gitlab-repo-ts/actions/workflows/build.yaml/badge.svg
+[build_badge_url]: https://github.com/rdeville-public/pulumi.gitlab-repo-ts/actions/workflows/build.yaml
+[release_badge]: https://github.com/rdeville-public/pulumi.gitlab-repo-ts/actions/workflows/release.yaml/badge.svg
+[release_badge_url]: https://github.com/rdeville-public/pulumi.gitlab-repo-ts/actions/workflows/release.yaml
 [prerequisite_badge]: https://img.shields.io/badge/node-%3E%3D18.0.0-blue.svg
 [maintenance_badge]: https://img.shields.io/badge/Maintained%3F-yes-green.svg
 [maintenance_badge_url]: https://github.com/rdeville-public/git-repo/graphs/commit-activity
@@ -16,10 +22,12 @@
 [changelog_badge]: https://img.shields.io/badge/changelog-semantic%20release%20gitmoji-yellow
 [changelog_badge_url]: https://github.com/momocow/semantic-release-gitmoji
 
-> A [Pulumi][pulumi] program to manage Git Repo across multiple hosting
-> services.
+> A [Pulumi][pulumi] program to manage Gitlab resources such as Group, Projects
+> or User Key (SSH or GPG) across multiple Gitlab Instances.
 
 [pulumi]: https://www.pulumi.com/
+
+---
 
 ## 📌 Prerequisites
 

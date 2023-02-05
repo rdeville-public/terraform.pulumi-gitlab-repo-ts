@@ -39,7 +39,9 @@ function computeGroupConfig (
             typeof groupConfig !== "undefined" &&
             "default" in groupConfig
         ) {
-            if (providerName === slugify(config.require("mainProvider"))) {
+            if (providerName === slugify(config.require(
+                "gitlabMainProvider"
+            ))) {
                 return groupConfig.default as gitlab.GroupArgs;
             }
             return {

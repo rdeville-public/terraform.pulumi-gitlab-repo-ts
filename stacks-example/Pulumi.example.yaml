@@ -1,14 +1,12 @@
 encryptionsalt: "SHOULD_BE_GENERATED_WITH_COMMAND 'Pulumi stack init'"
+# This is a "normal" pulumi stack configuration. Not everything is shown below,
+# just some "complex" configuration with multiple providers, groups, projects or
+# user
 config:
-  # Git provider configuration
-  git-repo:gitProvider:
-    # Keys can be arbitrary, like foo or mydomain.tld. It is this key which will
-    # be used later
-    provider_name.tld:
-      # Type of provider, for the moment only 'gitlab' is supported
-      type: gitlab
-      # Required for Gitlab provider
+  git-repo:gitlabProviders:
+    "Provider Name":
       baseUrl: https://gitlab.com/api/v4
+      token: abcdefghijklmno
       # Token API to connect to this provider can be set with :
       #   * The 'pulumi config set' command
       #     `pulumi config set --secret --path 'gitProvider["provider_name"].token' TOKEN_API`
@@ -23,41 +21,57 @@ config:
       #     token:
       #       env: MY_PROVIDER_TOKEN_API
       #     ```
-      token: abcdefghijklmno
-    another_provider_name:
-      type: gitlab
+    "Another Provider":
       baseUrl: https://another_provider.com/api/v4
       token:
         env: ENV_VARIABLE_NAME
-  # Required, set the name of the provider you want to use as main provider
-  # for your group and repo.
-  git-repo:mainProvider: provider_name.tld
-  # (OPTIONAL)
-  # Set type of group configuration per provider type.
-  git-repo:groupConfigs:
-    # Type of the provider, for instance gitlab or github
-    gitlab:
-      # Default key, specify the default group configuration for the provider,
-      # for instance for Gitlab see
-      # https://www.pulumi.com/registry/packages/gitlab/api-docs/group/#inputs
-      default: {}
-      # Later will be added support for another type of group config (such as mirror or fork)
-  # Groups to create/manage with pulumi
-  git-repo:groups:
-    # Name of the group, can be any string
-    my_group:
-      # Description of the group
-      desc: My Test group description
-      # List of provider where to create the group, must be among `gitProvider` key
+  git-repo:gitlabMainProvider: "Provider Name"
+  git-repo:gitlabGroupConfigs:
+    # Default key, specify the default groups configuration depending on the
+    # main provider or the secondary provider (key mirror) see
+    # https://www.pulumi.com/registry/packages/gitlab/api-docs/group/#inputs
+    mirror: {}
+    default: {}
+  git-repo:repoConfigs:
+    # Default key, specify the default projects configuration depending on the
+    # main provider or the secondary provider (key mirror) see
+    # https://www.pulumi.com/registry/packages/gitlab/api-docs/project/#inputs
+    defaul: {}
+    mirror: {}
+  git-repo:gitlabGroups:
+    "Group Name":
+      desc: Group description
+      # As both provider are listed, they will exist on both Gitlab platform
       providers:
-        - provider_name.tld
-  # Set of repos de deploy within the group architecture
-  git-repo:project:
-    my_group:
-      my-repo:
+        - "Provider Name"
+        - "Another Provider"
+      "SubGroup Name":
+        desc: SubGroup description
+  git-repo:gitlabProject:
+    "Group Name":
+      # Project stored in the group "Group name"
+      "Repo Name in Group":
         desc: My repo description
-        logo: ./img/repos/programs/my-repo.png
-    # Repo without subgroup will be attached to user profile
-    my-repo:
+      "SubGroup Name":
+        # Project stored in the group "SubGroup name"
+        "Repo Name in Sub Group":
+          desc: My repo description
+    # Project stored in user profile used to deploy the stack
+    "Repo Name":
       desc: My repo description
-      logo: ./img/repos/programs/my-repo.png
+  git-repo:gitlabUsers:
+    "User Name":
+      # If both provider are specified, key will be deployed on both of them
+      providers:
+        "Provider Name": <USER_ID>
+        "Another Provider": <ANOTHER_USER_ID>
+      sshKeys:
+        title:
+          key: "Public SSH key content"
+      gpgKeys:
+        title:
+          key: "Public GPG key signature content"
+      accessTokens:
+        "Access Token Name":
+          scopes:
+            - read_repository

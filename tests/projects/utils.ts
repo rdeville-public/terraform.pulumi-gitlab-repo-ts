@@ -29,7 +29,7 @@ const PROJECT_DESC = "Fake Project Description";
 
 const ENV: {[key: string]: string} = {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    "PULUMI_CONFIG": `{ "project:mainProvider": "${MAIN_PROVIDER}" }`
+    "PULUMI_CONFIG": `{ "project:gitlabMainProvider": "${MAIN_PROVIDER}" }`
 };
 
 Object.entries(ENV).forEach(([key, val]) => {

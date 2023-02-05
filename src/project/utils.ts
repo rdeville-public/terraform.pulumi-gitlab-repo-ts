@@ -60,7 +60,7 @@ function computeProjectConfig (
             typeof providerProjectConfigs !== "undefined" &&
             "default" in providerProjectConfigs
         ) {
-            if (providerName === config.require("mainProvider")) {
+            if (providerName === config.require("gitlabMainProvider")) {
                 return providerProjectConfigs.default as gitlab.ProjectArgs;
             }
             return {
@@ -84,10 +84,10 @@ function computeProjectMirror (
     data: IGitlabProjectArgs
 ): void {
     const config: pulumi.Config = new pulumi.Config();
-    if (providerName !== config.require("mainProvider")) {
+    if (providerName !== config.require("gitlabMainProvider")) {
         // AccessToken should be initialized earlier
         if (data.accessTokens) {
-            data.accessTokens[config.require("mainProvider")] = {
+            data.accessTokens[config.require("gitlabMainProvider")] = {
                 "scopes": ["write_repository"]
             };
         }
