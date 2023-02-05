@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## [v0.14.1](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/compare/0.14.0...0.14.1) (2023-02-05)
+
+### Patch
+
+  * ➖ Remove @pulumi/github dependencies [`e478ca4`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/commit/e478ca4)
+  * ➖ Remove semantic-release-commitlint [`ee17b30`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/commit/ee17b30)
+  * 📌 Add pinned dependencies from previous commit [`9987d50`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/commit/9987d50)
+  * ➕ Add commitlint and semantic-release-commitlint dep [`b735cb4`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/commit/b735cb4)
+
+### Others
+
+  * 🔀 👷 Update CI to release after build and test only (#94) (Issues:[`#94`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/issues/94)[`#93`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/issues/93))[`2c4ff1e`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/commit/2c4ff1e)
+  * 🔀 ✨ Add commitlint in the CI (#95) (Issues:[`#95`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/issues/95)[`#30`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/issues/30))[`fbd06c0`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/commit/fbd06c0)
+  * 🔀 🚨 Remove semantic-release-commitlint (#96) (Issues:[`#96`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/issues/96))[`b685131`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/commit/b685131)
+  * 🔨 Add semantic-release-commitlint to releasrc [`be17975`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/commit/be17975)
+  * 🔨 Remove semantic-release-commitlint from releaserc [`b9b174d`](https://github.com/rdeville-public/pulumi.gitlab-repo-ts/commit/b9b174d)
+
 ## [v0.14.0](https://github.com/rdeville-public/git-repo/compare/0.13.0...0.14.0) (2023-02-05)
 
 ### Minor
