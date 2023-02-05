@@ -41,7 +41,7 @@ jobs:
         # run: yarn install --immutable # Fails if yarn.lock is modified (unfortunately only works for Yarn 2, and --frozen-lockfile is not the same!)
       - name: Check immutable yarn.lock
         run: git diff --exit-code
-      - name: Lint
+      - name: Test
         run: yarn test
 
   lint:
@@ -54,7 +54,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3
         with:
-          node-version: "16"
+          node-version: "lts/*"
           cache: yarn
       - name: Installation
         run: yarn
@@ -63,3 +63,25 @@ jobs:
         run: git diff --exit-code
       - name: Lint
         run: yarn lint:ci
+
+  commitlint:
+    name: Commit Lint
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3
+        with:
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3
+        with:
+          node-version: "lts/*"
+          cache: yarn
+      - name: Installation
+        run: yarn
+        # run: yarn install --immutable # Fails if yarn.lock is modified (unfortunately only works for Yarn 2, and --frozen-lockfile is not the same!)
+      - name: Check immutable yarn.lock
+        run: git diff --exit-code
+      - name: Commit Lint
+        run: yarn lint:commit
