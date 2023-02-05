@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## [v0.14.0](https://github.com/rdeville-public/git-repo/compare/0.13.0...0.14.0) (2023-02-05)
+
+### Minor
+
+  * ✨ Add username and mirroring support [`7220099`](https://github.com/rdeville-public/git-repo/commit/7220099)
+  * ✨ Add auto and manual mirroring support (#90) (Issues:[`#90`](https://github.com/rdeville-public/git-repo/issues/90)[`#67`](https://github.com/rdeville-public/git-repo/issues/67))[`75949a1`](https://github.com/rdeville-public/git-repo/commit/75949a1)
+
+### Patch
+
+  * 🔧 Add user configuration example [`4e15c19`](https://github.com/rdeville-public/git-repo/commit/4e15c19)
+
+### Others
+
+  * ✅ Add &amp; Refactor test for user and mirroring [`7eabdab`](https://github.com/rdeville-public/git-repo/commit/7eabdab)
+  * 🚨 Update cspell words [`15e9815`](https://github.com/rdeville-public/git-repo/commit/15e9815)
+
 ## [v0.13.0](https://github.com/rdeville-public/git-repo/compare/0.12.0...0.13.0) (2023-01-31)
 
 ### Minor
