@@ -7,5 +7,3 @@ then
 fi
 pre-commit install
 pre-commit install --hook-type commit-msg
-curl https://raw.githubusercontent.com/carloscuesta/gitmoji/master/packages/gitmojis/src/gitmojis.json  \
-  > ./node_modules/commitlint-plugin-gitmoji/lib/gitmojis.json
